@@ -2,11 +2,9 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
 import './assets/index.css'
-import 'element-plus/theme-chalk/el-loading.css';
+import 'element-plus/theme-chalk/el-loading.css'
 import App from './App.vue'
 import router from './router'
-
-
 
 // 如果您正在使用CDN引入，请删除下面一行。
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
