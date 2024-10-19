@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="fixed">
         <MainLeftTop></MainLeftTop>
         <MainLeftBottom class="mt-4"></MainLeftBottom>
     </div>

@@ -1,17 +1,17 @@
 <template>
-  <div class="max-w-[1440px] h-15 flex m-auto justify-between">
+  <div class="header max-w-[1440px] h-15 flex justify-between">
     <div class="flex text-base items-center">
-      <div class="flex items-center cursor-pointer">
+      <div class="flex items-center cursor-pointer" @click="backToHome">
         <img class="w-8 h-8" src="@/assets/svg/bird-duotone.svg" alt="" />
         <span class="mx-5">栖息地</span>
       </div>
-      <el-menu class="el-menu-popper-demo w-[600px] flex-1" mode="horizontal">
-        <el-menu-item index="2">名言广场</el-menu-item>
-        <el-menu-item index="3">
+      <el-menu class="el-menu-popper-demo w-[600px] flex-1" router mode="horizontal">
+        <el-menu-item index="2" route="famousSquare">名言广场</el-menu-item>
+        <el-menu-item index="3" route="toolbox">
           <img class="w-5 h-5" src="@/assets/svg/工具箱.svg" alt="" />
           工具箱
         </el-menu-item>
-        <el-menu-item index="4">
+        <el-menu-item index="4" route="label">
           <img class="w-5 h-5" src="@/assets/svg/标签.svg" alt="" />
           标签
         </el-menu-item>
@@ -20,12 +20,11 @@
             <img class="w-5 h-5" src="@/assets/svg/关于.svg" alt="" />
             关于
           </template>
-          <el-menu-item index="6-1">关于本网站</el-menu-item>
+          <el-menu-item index="6-1" route="about">关于本网站</el-menu-item>
         </el-sub-menu>
         <el-sub-menu index="7">
           <template #title> 友人帐 </template>
-          <el-menu-item index="7-1">item one</el-menu-item>
-          <el-menu-item index="7-2">item two</el-menu-item>
+          <el-menu-item index="7-1" route="friendChain">友链</el-menu-item>
         </el-sub-menu>
       </el-menu>
     </div>
@@ -41,9 +40,9 @@
         创造者中心
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item> 
+            <el-dropdown-item>
               <img class="w-5 h-5" src="@/assets/svg/用研.svg" alt="" />
-              写文章 
+              写文章
             </el-dropdown-item>
             <el-dropdown-item>记录文言</el-dropdown-item>
           </el-dropdown-menu>
@@ -63,5 +62,18 @@
   </div>
 </template>
 <script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const backToHome = () => {
+  console.log(router)
+  router.push('/')
+}
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="less">
+.header {
+  .el-menu-popper-demo {
+    border: none;
+  }
+}
+</style>
