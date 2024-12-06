@@ -46,7 +46,7 @@
       <div class="yellow"></div>
       <div class="blue"></div>
     </div>
-    <div class="p-4 bg-white mt-4 rounded-md">
+    <div :style="fixedStyle" class="p-4 bg-white mt-4 rounded-md">
       <div class="flex justify-between mb-4">
         <div class="text-base">精选文章</div>
         <div class="flex items-center cursor-pointer">
@@ -95,6 +95,20 @@ const data = ref([
     id: '5',
   },
 ])
+const fixedStyle = computed(() => {
+  if (store.windowScrollY > 800) {
+    return {
+      position:"fixed",
+      top:'20px',
+      width:'240px',
+      marginTop:0,
+      transform: 'translateY(0)',
+      transition: '.4s'
+    }
+  } else {
+    return {}
+  }
+})
 </script>
 <style scoped lang="less">
 .divider {

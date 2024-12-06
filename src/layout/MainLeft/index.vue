@@ -5,9 +5,7 @@
     </div>
 </template>
 <script setup>
-import MainLeftBottom from './components/MainLeftBottom.vue';
-import MainLeftTop from './components/MainLeftTop.vue';
+import MainLeftBottom from './components/MainLeftBottom.vue'
+import MainLeftTop from './components/MainLeftTop.vue'
 </script>
-<style scoped lang="scss">
-
-</style>
+<style scoped lang="scss"></style>

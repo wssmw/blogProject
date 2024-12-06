@@ -40,7 +40,7 @@
         创造者中心
         <template #dropdown>
           <el-dropdown-menu>
-            <el-dropdown-item>
+            <el-dropdown-item @click="jumpToEditor">
               <img class="w-5 h-5" src="@/assets/svg/用研.svg" alt="" />
               写文章
             </el-dropdown-item>
@@ -68,6 +68,9 @@ const router = useRouter()
 const backToHome = () => {
   console.log(router)
   router.push('/')
+}
+const jumpToEditor = () => {
+  router.push('/editor')
 }
 </script>
 <style scoped lang="less">

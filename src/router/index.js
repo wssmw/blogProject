@@ -38,6 +38,65 @@ const router = createRouter({
       name: 'friendChain',
       component: import('@/page/friendChain/index.vue'),
     },
+    // 关注
+    {
+      path: '/attention-article',
+      name: 'attention-article',
+      component: import('@/page/attentionArticle/index.vue'),
+    }, 
+    // 最新
+    {
+      path: '/last-article',
+      name: 'last-article',
+      component: import('@/page/lastArticle/index.vue'),
+    },
+    // 前端
+    {
+      path: '/frontend',
+      name: 'frontend',
+      component: import('@/page/frontend/index.vue'),
+    },
+    // 后端
+    {
+      path: '/backend',
+      name: 'backend',
+      component: import('@/page/backend/index.vue'),
+    },
+    // Android
+    {
+      path: '/android',
+      name: 'android',
+      component: import('@/page/android/index.vue'),
+    },
+    // iOS
+    {
+      path: '/ios',
+      name: 'ios',
+      component: import('@/page/ios/index.vue'),
+    },
+    // 人工智能
+    {
+      path: '/ai',
+      name: 'ai',
+      component: import('@/page/ai/index.vue'),
+    },
+    // 开发工具
+    {
+      path: '/freebie',
+      name: 'freebie',
+      component: import('@/page/freebie/index.vue'),
+    },
+    // 操作系统
+    {
+      path: '/operatingSystem',
+      name: 'operatingSystem',
+      component: import('@/page/operatingSystem/index.vue'),
+    },
+    {
+      path:'/editor',
+      name:'editor',
+      component:import('@/page/aieditor/index.vue')
+    }
   ],
 })
 

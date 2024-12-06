@@ -1,11 +1,40 @@
 <template>
   <div class="main_left_top bg-white rounded-md">
-    <div class="item">关注</div>
-    <div class="item">综合</div>
-    <div class="item">最新</div>
+    <template v-for="item in data" :key="item.key">
+      <div :class="`item ${currentRoutePath==`${item.router}`?'active':''}`" @click="changeRouter(item.router)">
+        {{ item.label }}
+      </div>
+    </template>
   </div>
 </template>
-<script setup></script>
+<script setup>
+let data = [
+  {
+    label:'关注',
+    router:'/attention-article',
+    key:'attention-article'
+  },
+  {
+    label:'综合',
+    router:'/',
+    key:'/'
+  },{
+    label:'最新',
+    router:'/last-article',
+    key:'last-article'
+  },
+]
+import { computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const router = useRouter()
+const route = useRoute()
+console.log(route)
+const currentRoutePath = computed(()=>route.path)
+const changeRouter = (route) => {
+  router.push(route)
+}
+</script>
 <style scoped lang="less">
 .main_left_top {
   display: flex;
@@ -21,8 +50,13 @@
     border-radius: 5px;
     cursor: pointer;
     &:hover {
-      background: #ecf0f1;
+      background: #f7f8fa;
+      color: #1e80ff;
     }
   }
+}
+.active {
+  background-color: #eaf2ff!important;
+  color: #1e80ff;
 }
 </style>
