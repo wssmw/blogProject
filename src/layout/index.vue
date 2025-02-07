@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import wsRequest from '@/api/index.js'
+import { computed, ref } from 'vue'
 import Header from './Header/index.vue'
 import MainLeft from './MainLeft/index.vue'
 import MainRight from './MainRight/index.vue'
+import Login from '../page/login/index.vue'
 import { appStore } from '../store/module/app'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const store = appStore()
 const route = useRoute()
+const router = useRouter()
 const isShow = computed(() => ['/editor'].includes(route.path))
 console.log(route, 'route')
 const headerStyle = computed(() => {
@@ -22,6 +25,28 @@ const headerStyle = computed(() => {
         }
     }
 })
+
+// 检查 URL 中是否有回调的 code
+const checkCallback = async () => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const code = urlParams.get('code')
+    if (code) {
+        const res = await wsRequest.get({
+            url: `/login/gitee/callback?code=${code}`,
+        })
+        let { token, userInfo } = res
+        store.userInfoChange(userInfo)
+        store.tokenChange(token)
+        console.log(res, 'res')
+        router.push('/')
+    }
+}
+checkCallback()
+
+const loginRef = ref()
+const loginHandle = () => {
+    loginRef.value.open()
+}
 </script>
 
 <template>
@@ -33,7 +58,7 @@ const headerStyle = computed(() => {
                     :style="headerStyle"
                     class="header fixed z-50 w-full h-[60px] flex justify-center bg-white"
                 >
-                    <Header></Header>
+                    <Header @login="loginHandle"></Header>
                 </div>
             </el-header>
             <el-container class="m-auto mt-5">
@@ -51,6 +76,7 @@ const headerStyle = computed(() => {
             </el-container>
         </el-container>
         <router-view v-else></router-view>
+        <Login ref="loginRef" :showDialog="showLoginModal"></Login>
     </div>
 </template>
 <style scoped lang="less">

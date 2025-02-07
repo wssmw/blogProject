@@ -4,12 +4,12 @@ import { onMounted } from 'vue'
 import { appStore } from './store/module/app'
 import { getLocalStorage, setLocalStorage } from './utils'
 const store = appStore()
-setLocalStorage('userInfo', {
-    cookie: 'qqqq',
-    id: '11',
-    name: 'wss',
-    career: '前端开发工程师',
-})
+// setLocalStorage('userInfo', {
+//     cookie: 'qqqq',
+//     id: '11',
+//     name: 'wss',
+//     career: '前端开发工程师',
+// })
 
 const userInfo = getLocalStorage('userInfo')
 console.log(userInfo)

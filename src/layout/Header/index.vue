@@ -54,8 +54,11 @@
         </el-badge>
       </div>
       <div class="w-[50px]">
-        <el-avatar :size="40">
-          <el-icon><UserFilled /></el-icon>
+        <el-avatar :size="40" class="cursor-pointer" v-if="!store.isLogin" @click="loginHandle">
+            登录
+        </el-avatar>
+        <el-avatar v-else>
+          <img :src="userInfo.avatar_url" alt="头像">
         </el-avatar>
       </div>
     </div>
@@ -63,14 +66,25 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
+import { appStore } from '../../store/module/app';
+import { computed } from 'vue';
 
 const router = useRouter()
+const store = appStore()
+const emit = defineEmits(['login'])
+
+const userInfo = computed(()=>store.userInfo)
+
 const backToHome = () => {
   console.log(router)
   router.push('/')
 }
 const jumpToEditor = () => {
   router.push('/editor')
+}
+
+const loginHandle = () => {
+  emit('login')
 }
 </script>
 <style scoped lang="less">
