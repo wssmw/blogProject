@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import wsRequest from '@/api/index.js'
 import { computed, ref } from 'vue'
 import Header from './Header/index.vue'
 import MainLeft from './MainLeft/index.vue'
@@ -7,6 +6,7 @@ import MainRight from './MainRight/index.vue'
 import Login from '../page/login/index.vue'
 import { appStore } from '../store/module/app'
 import { useRoute, useRouter } from 'vue-router'
+import { loginWidthGitee } from '../api/module/login'
 const store = appStore()
 const route = useRoute()
 const router = useRouter()
@@ -31,9 +31,7 @@ const checkCallback = async () => {
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
     if (code) {
-        const res = await wsRequest.get({
-            url: `/login/gitee/callback?code=${code}`,
-        })
+        const res = await loginWidthGitee(code)
         let { token, userInfo } = res
         store.userInfoChange(userInfo)
         store.tokenChange(token)
