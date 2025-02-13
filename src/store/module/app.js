@@ -20,7 +20,7 @@ export const appStore = defineStore(
         const userInfo = ref()
         const userInfoChange = e => {
             userInfo.value = e
-            if (e) {
+            if (Object.keys(e).length) {
                 isLoginChange(true)
             } else {
                 isLoginChange(false)

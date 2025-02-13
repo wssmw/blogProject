@@ -57,9 +57,56 @@
                 <el-avatar :size="40" class="cursor-pointer" v-if="!store.isLogin" @click="loginHandle">
                     登录
                 </el-avatar>
-                <el-avatar v-else>
-                    <img style="width: 30px; height: 30px" :src="userInfo.avatar_url" alt="头像" />
-                </el-avatar>
+                <el-popover v-else placement="bottom-end" :width="300" trigger="click">
+                    <template #reference>
+                        <el-avatar class="cursor-pointer">
+                            <img style="width: 30px; height: 30px" :src="userInfo.avatar_url" alt="头像" />
+                        </el-avatar>
+                    </template>
+                    <div class="p-2 flex flex-col items-center bg-white rounded-md relative">
+                        <div class="flex justify-start w-full items-center">
+                            <el-avatar :size="40">
+                                <el-icon><UserFilled /></el-icon>
+                            </el-avatar>
+                            <div class="ml-3 flex flex-col justify-between">
+                                <div class="text-lg">{{ userInfo.name }}</div>
+                                <div> 职业-{{ userInfo.career }} </div>
+                            </div>
+                        </div>
+                        <el-divider class="divider"></el-divider>
+                        <div class="bottom w-full">
+                            <div class="item">
+                                <div class="title"> 关注 </div>
+                                <div class="num"> 1 </div>
+                            </div>
+                            <div class="item">
+                                <div class="title"> 收藏 </div>
+                                <div class="num"> 1 </div>
+                            </div>
+                            <div class="item">
+                                <div class="title"> 文章 </div>
+                                <div class="num"> 1 </div>
+                            </div>
+                            <div class="item">
+                                <div class="title"> 名言 </div>
+                                <div class="num"> 1 </div>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap">
+                            <template v-for="item in data" :key="item.title">
+                                <div class="w-2/4 flex justify-center my-2 py-1 rounded hover:bg-slate-100">
+                                    <img class="w-5 h-5 mr-2" src="@/assets/svg/关于.svg" alt="" />
+                                    {{ item.title }}
+                                </div>
+                            </template>
+                        </div>
+                        <el-divider class="divider"></el-divider>
+                        <div class="w-full flex justify-between font-semibold">
+                            <span>我的设置</span>
+                            <span class="cursor-pointer" @click="logOutHandle">退出</span>
+                        </div>
+                    </div>
+                </el-popover>
             </div>
         </div>
     </div>
@@ -67,13 +114,37 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { appStore } from '../../store/module/app'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const router = useRouter()
 const store = appStore()
 const emit = defineEmits(['login'])
 
 const userInfo = computed(() => store.userInfo)
+
+const data = ref([
+    {
+        title: '创作中心',
+    },
+    {
+        title: '我的主页',
+    },
+    {
+        title: '名言空间',
+    },
+    {
+        title: '我的关注',
+    },
+    {
+        title: '我的专栏',
+    },
+    {
+        title: '我的点赞',
+    },
+    {
+        title: '我的足迹',
+    },
+])
 
 const backToHome = () => {
     console.log(router)
@@ -86,11 +157,39 @@ const jumpToEditor = () => {
 const loginHandle = () => {
     emit('login')
 }
+
+const logOutHandle = () => {
+    console.log('这里执行')
+    console.log(store)
+    store.userInfoChange({})
+    store.tokenChange('')
+}
 </script>
 <style scoped lang="less">
 .header {
     .el-menu-popper-demo {
         border: none;
+    }
+}
+.divider {
+    margin: 10px 0 !important;
+}
+.bottom {
+    display: flex;
+    .item {
+        width: 25%;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .num {
+            color: #fa8739;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .title {
+            font-size: 16px;
+        }
     }
 }
 </style>
