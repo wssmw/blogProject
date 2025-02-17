@@ -22,10 +22,16 @@
 import { ElMessage } from 'element-plus'
 import { ref } from 'vue'
 
+const props = defineProps(['content'])
+const emit = defineEmits(['releaseHandle'])
+
 const articleTitle = ref()
 const releaseHandle = () => {
+    console.log(props.content)
     if (!articleTitle.value) {
-        ElMessage('123')
+        ElMessage('请输入标题')
+    } else {
+        emit('releaseHandle', articleTitle.value)
     }
 }
 </script>

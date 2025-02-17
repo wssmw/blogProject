@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios from 'axios'
 
-import { ElLoading } from "element-plus";
+import { ElLoading } from 'element-plus'
+import { getSessionStorage } from '../../utils'
 
 const DEAFULT_LOADING = true
 
@@ -18,38 +19,43 @@ class WsRequest {
         this.isShowLoading = config.isShowLoading ?? DEAFULT_LOADING
         this.interceptors = config.interceptors
         this.instance.interceptors.request.use(
-            (config) => {
+            config => {
                 if (this.isShowLoading) {
                     this.loading = ElLoading.service({
                         fullscreen: true,
                         text: '努力加载中！',
-                        background: '#EEE'
+                        background: '#EEE',
                     })
+                }
+                let token = (getSessionStorage('App') || {}).token
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`
                 }
                 return config
             },
-            (error) => {
-                console.log(error);
-            }
+            error => {
+                console.log(error)
+            },
         )
         this.instance.interceptors.response.use(
-            (response) => {
+            response => {
                 this.loading?.close()
                 return response.data
             },
-            (err) => {
+            err => {
                 this.loading?.close()
-                console.log(err);
-            }
+                console.log(err)
+            },
         )
     }
     request(config) {
         return new Promise((resolve, reject) => {
-            this.instance.request(config)
-                .then((res) => {
+            this.instance
+                .request(config)
+                .then(res => {
                     resolve(res)
                 })
-                .catch((err) => {
+                .catch(err => {
                     reject(err)
                 })
         })
@@ -60,6 +66,5 @@ class WsRequest {
     post(config) {
         return this.request({ ...config, method: 'POST' })
     }
-
 }
 export default WsRequest

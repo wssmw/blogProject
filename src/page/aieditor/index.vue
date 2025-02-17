@@ -1,7 +1,10 @@
 <template>
     <div class="aieditor">
-        <Header></Header>
+        <Header @releaseHandle="releaseHandle"></Header>
         <div ref="aiEditorRef" class="aiEditorRef"></div>
+        <el-dialog title="文章发布" v-model="showDialog">
+            <Release :data="data"></Release>
+        </el-dialog>
     </div>
 </template>
 
@@ -9,17 +12,35 @@
 import Header from './components/header.vue'
 import { AiEditor } from 'aieditor'
 import 'aieditor/dist/style.css'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import Release from './components/release.vue'
+import { ElMessage } from 'element-plus'
 
 const aiEditorRef = ref()
 let aiEditor
-let html = ref()
 onMounted(() => {
     aiEditor = new AiEditor({
         element: aiEditorRef.value,
         placeholder: '点击输入内容...',
     })
 })
+
+const data = reactive({
+    title: '',
+    html: '',
+})
+const showDialog = ref(true)
+// 发布
+const releaseHandle = title => {
+    data.html = aiEditor.getHtml()
+    data.title = title
+    if (data.html === '<p></p>') {
+        ElMessage('请输入内容')
+        return
+    }
+    showDialog.value = true
+}
+
 onUnmounted(() => {
     aiEditor && aiEditor.destroy()
 })
