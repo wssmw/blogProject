@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 import { ElLoading } from 'element-plus'
-import { getSessionStorage } from '../../utils'
+import { appStore } from '@/store/module/app'
 
 const DEAFULT_LOADING = true
 
@@ -27,10 +27,13 @@ class WsRequest {
                         background: '#EEE',
                     })
                 }
-                let token = (getSessionStorage('App') || {}).token
-                if (token) {
-                    config.headers.Authorization = `Bearer ${token}`
+                let store = appStore()
+                if (store.token) {
+                    config.headers.Authorization = `Bearer ${store.token}`
                 }
+                // let token = (getSessionStorage('App') || {}).token
+                // if (token) {
+                // }
                 return config
             },
             error => {

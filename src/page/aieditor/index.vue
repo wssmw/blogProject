@@ -29,7 +29,7 @@ const data = reactive({
     title: '',
     html: '',
 })
-const showDialog = ref(true)
+const showDialog = ref(false)
 // 发布
 const releaseHandle = title => {
     data.html = aiEditor.getHtml()

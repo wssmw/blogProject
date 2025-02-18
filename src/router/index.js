@@ -8,6 +8,11 @@ const router = createRouter({
             name: 'home',
             component: () => import('@/page/home/index.vue'),
         },
+        {
+            path: '/article/:id',
+            name: 'article',
+            component: () => import('@/page/article/index.vue'),
+        },
         // 名言广场
         {
             path: '/famousSquare',

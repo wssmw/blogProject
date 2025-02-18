@@ -14,3 +14,9 @@ export const getArticleRequest = async data => {
         data,
     })
 }
+// 查看单个文章
+export const getArticleByIdRequest = async id => {
+    return wsRequest.get({
+        url: `/article/getArticle/${id}`,
+    })
+}

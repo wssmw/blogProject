@@ -2,7 +2,10 @@
     <div>
         <div v-if="articleList.length">
             <template v-for="item in articleList" :key="item.id">
-                <div class="cursor-pointer flex justify-between items-center w-full h-[100px] border-b border-solid">
+                <div
+                    class="cursor-pointer flex justify-between items-center w-full h-[100px] border-b border-solid"
+                    @click="clickHandle(item)"
+                >
                     <div class="flex flex-1 flex-col justify-between h-[78px] overflow-hidden">
                         <div class="text-lg font-medium text-ellipsis overflow-hidden whitespace-nowrap">{{
                             item.title
@@ -42,6 +45,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { getArticleRequest } from '@/api/module/articles'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 let articleList = ref([])
 let tagType = ref(['primary', 'success', 'warning'])
 onMounted(async () => {
@@ -49,5 +54,10 @@ onMounted(async () => {
     let { total, articles } = data
     articleList.value = articles
 })
+const clickHandle = e => {
+    console.log(e, 'item')
+    console.log(e.id, 'item')
+    router.push(`/article/${e.id}`)
+}
 </script>
 <style scoped lang="less"></style>
