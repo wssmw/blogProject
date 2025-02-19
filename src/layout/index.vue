@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Header from './Header/index.vue'
-import MainLeft from './left/mainleft.vue'
+import MainLeft from './left/mainLeft.vue'
 import MainRight from './right/mainRight.vue'
 import Login from '../page/login/index.vue'
 import { appStore } from '../store/module/app'
@@ -44,10 +44,6 @@ const checkCallback = async () => {
 }
 checkCallback()
 
-const loginRef = ref()
-const loginHandle = () => {
-    loginRef.value.open()
-}
 </script>
 
 <template>
@@ -59,7 +55,7 @@ const loginHandle = () => {
                     :style="headerStyle"
                     class="header fixed z-50 w-full h-[60px] flex justify-center bg-white"
                 >
-                    <Header @login="loginHandle"></Header>
+                    <Header></Header>
                 </div>
             </el-header>
             <el-container class="m-auto mt-5" v-if="isArticle">

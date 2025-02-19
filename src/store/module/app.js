@@ -32,6 +32,11 @@ export const appStore = defineStore(
         const tokenChange = e => {
             token.value = e
         }
+        // token
+        let showLoginModal = ref(false)
+        const showLoginModalChange = e => {
+            showLoginModal.value = e
+        }
         return {
             windowScrollY,
             windowScrollYChange,
@@ -41,6 +46,8 @@ export const appStore = defineStore(
             userInfoChange,
             token,
             tokenChange,
+            showLoginModal,
+            showLoginModalChange,
         }
     },
     {

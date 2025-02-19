@@ -3,7 +3,7 @@ import axios from 'axios'
 import { ElLoading } from 'element-plus'
 import { appStore } from '@/store/module/app'
 
-const DEAFULT_LOADING = true
+const DEAFULT_LOADING = false
 
 class WsRequest {
     // axios实例

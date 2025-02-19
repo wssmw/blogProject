@@ -9,7 +9,7 @@
         <el-button size="large">去签到</el-button>
       </div>
     </div>
-    <div v-if="!isLogin" class="p-4 flex flex-col items-center bg-white mt-4 rounded-md">
+    <div v-if="!isLogin" class="p-4 flex flex-col items-center cursor-pointer bg-white mt-4 rounded-md" @click="loginHandle">
       <el-icon size="40"><User /></el-icon>
       <div class="text-base">登录</div>
     </div>
@@ -109,6 +109,10 @@ const fixedStyle = computed(() => {
     return {}
   }
 })
+
+const loginHandle = () => {
+  store.showLoginModalChange(true)
+}
 </script>
 <style scoped lang="less">
 .divider {

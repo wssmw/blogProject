@@ -1,5 +1,5 @@
 <template>
-    <el-dialog class="dialog" v-model="showDialog" :title="dialogTitle" width="400">
+    <el-dialog class="dialog" v-model="showDialog" :title="dialogTitle" width="400" @close="dialogCloseHandle">
         <div class="login" v-if="showContent === 1">
             <el-input class="input" v-model="userInfo.userName" placeholder="请输入账号"></el-input>
             <el-input type="password" class="input" v-model="userInfo.passWord" placeholder="请输入密码"></el-input>
@@ -31,7 +31,7 @@
 </template>
 <script setup>
 import { ElMessage } from 'element-plus'
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { loginRequest, registerRequest } from '../../api/module/login'
 import { appStore } from '../../store/module/app'
 const store = appStore()
@@ -39,10 +39,7 @@ const store = appStore()
 const dialogTitle = ref('登录')
 const showContent = ref(1) // 登录,注册,忘记密码 分别对应1,2,3
 
-let showDialog = ref(false)
-const open = () => {
-    showDialog.value = true
-}
+let showDialog = computed(()=>store.showLoginModal)
 
 const giteeLogin = () => {
     window.location.href = `http://localhost:1234/login/gitee`
@@ -52,6 +49,10 @@ const userInfo = reactive({
     userName: '',
     passWord: '',
 })
+
+const dialogCloseHandle= () =>{
+    store.showLoginModalChange(false)
+}
 
 const resetHandle = () => {
     userInfo.passWord = ''
@@ -76,7 +77,7 @@ const loginHandle = async () => {
         store.tokenChange(token)
         store.userInfoChange(userInfo)
         ElMessage.success('登录成功~')
-        showDialog.value = false
+        store.showLoginModalChange(false)
     } else {
         ElMessage.error(res.message)
     }
@@ -113,9 +114,6 @@ const returnLoginHandle = () => {
     resetHandle()
 }
 
-defineExpose({
-    open,
-})
 </script>
 <style scoped lang="less">
 .dialog {

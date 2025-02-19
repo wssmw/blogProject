@@ -115,6 +115,7 @@
 import { useRouter } from 'vue-router'
 import { appStore } from '../../store/module/app'
 import { computed, ref } from 'vue'
+import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const store = appStore()
@@ -151,11 +152,16 @@ const backToHome = () => {
     router.push('/')
 }
 const jumpToEditor = () => {
-    router.push('/editor')
+    if(store.isLogin) {
+        router.push('/editor')
+    }else {
+        ElMessage.warning('请先登录')
+        store.showLoginModalChange(true)
+    }
 }
 
 const loginHandle = () => {
-    emit('login')
+    store.showLoginModalChange(true)
 }
 
 const logOutHandle = () => {

@@ -24,7 +24,7 @@
                 </el-upload>
             </el-form-item>
             <el-form-item label="添加标签：" required>
-                <el-select v-model="formData.tags" multiple>
+                <el-select v-model="formData.tags" multiple placeholder="请选择标签">
                     <template v-for="item in tagsList" :key="item.value">
                         <el-option :value="item.value">{{ item.label }}</el-option>
                     </template>
@@ -47,10 +47,11 @@
     </div>
 </template>
 <script setup>
-import { reactive } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { createArticleRequest } from '../../../api/module/articles'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
+import { getTagListRequest } from '../../../api/module/tags'
 
 const prop = defineProps({
     data: {
@@ -58,20 +59,7 @@ const prop = defineProps({
     },
 })
 const router = useRouter()
-const tagsList = [
-    {
-        label: '1',
-        value: '1',
-    },
-    {
-        label: '2',
-        value: '2',
-    },
-    {
-        label: '3',
-        value: '3',
-    },
-]
+const tagsList = ref()
 
 const categoryList = [
     {
@@ -99,6 +87,15 @@ const fileChangeHandle = e => {
     console.log(e)
 }
 
+onMounted(async () => {
+    const { data } = await getTagListRequest()
+    tagsList.value = data.map(item => {
+        return {
+            label: item.name,
+            value: item.id,
+        }
+    })
+})
 const releaseSubmitHandle = async () => {
     let params = {
         title: prop.data.title,
