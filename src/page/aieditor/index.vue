@@ -15,6 +15,7 @@ import 'aieditor/dist/style.css'
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
 import Release from './components/release.vue'
 import { ElMessage } from 'element-plus'
+import { articleUploadRequest } from '../../api/module/articles'
 
 const aiEditorRef = ref()
 let aiEditor
@@ -22,6 +23,34 @@ onMounted(() => {
     aiEditor = new AiEditor({
         element: aiEditorRef.value,
         placeholder: '点击输入内容...',
+        image: {
+            uploader: (file, uploadUrl, headers, formName) => {
+                console.log(file, uploadUrl, headers, formName)
+                const formData = new FormData()
+                formData.append('file', file)
+                console.log(formData, 'formData')
+                return new Promise((resolve, reject) => {
+                    articleUploadRequest(formData)
+                        .then(res => {
+                            console.log(res)
+                            let resp = {
+                                errorCode: 0,
+                                data: {
+                                    src: res.data.url,
+                                },
+                            }
+                            console.log(resp, 'resp')
+                            return resp
+                        })
+                        .then(json => {
+                            resolve(json)
+                        })
+                        .catch(error => {
+                            reject(error)
+                        })
+                })
+            },
+        },
     })
 })
 

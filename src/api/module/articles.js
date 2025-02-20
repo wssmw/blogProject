@@ -20,3 +20,10 @@ export const getArticleByIdRequest = async id => {
         url: `/article/getArticle/${id}`,
     })
 }
+// 上传文章中的图片
+export const articleUploadRequest = async data => {
+    return wsRequest.post({
+        url: `/article/upload`,
+        data,
+    })
+}

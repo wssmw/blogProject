@@ -15,13 +15,24 @@
                 </div>
             </el-form-item>
             <el-form-item label="文章封面：">
-                <el-upload class="upload-demo" drag :auto-upload="false" :on-change="fileChangeHandle">
+                <el-upload
+                    v-model:file-list="fileList"
+                    class="upload-demo"
+                    drag
+                    action="http://localhost:8000/api/article/upload"
+                    :headers="headers"
+                    :limit="1"
+                    :on-success="successUploadHandle"
+                >
                     <el-icon class="el-icon--upload"><upload-filled /></el-icon>
                     <div class="el-upload__text"> 把文件拖到此处或 <em>点击上传文件</em> </div>
                     <template #tip>
                         <div class="el-upload__tip"> 上传大小不超过5MB 格式为png/jpg/jpeg的文件 </div>
                     </template>
                 </el-upload>
+                <el-dialog v-model="dialogVisible">
+                    <img w-full :src="dialogImageUrl" alt="Preview Image" />
+                </el-dialog>
             </el-form-item>
             <el-form-item label="添加标签：" required>
                 <el-select v-model="formData.tags" multiple placeholder="请选择标签">
@@ -52,6 +63,7 @@ import { createArticleRequest } from '../../../api/module/articles'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { getTagListRequest } from '../../../api/module/tags'
+import { appStore } from '../../../store/module/app'
 
 const prop = defineProps({
     data: {
@@ -60,7 +72,11 @@ const prop = defineProps({
 })
 const router = useRouter()
 const tagsList = ref()
+const store = appStore()
 
+const headers = {
+    Authorization: `Bearer ${store.token}`,
+}
 const categoryList = [
     {
         lable: '后端',
@@ -77,14 +93,15 @@ const formData = reactive({
     tags: [], //标签
     summary: '', //文章摘要
     type: '1', //文章类型
+    cover_url: '', //封面地址
 })
 
 const tagChangeHandle = e => {
     formData.category = e
 }
 
-const fileChangeHandle = e => {
-    console.log(e)
+const successUploadHandle = res => {
+    formData.cover_url = res.data.url
 }
 
 onMounted(async () => {
@@ -103,6 +120,7 @@ const releaseSubmitHandle = async () => {
         tags: formData.tags,
         summary: formData.summary,
         category: formData.category,
+        cover_url: formData.cover_url,
     }
     console.log(params)
     const result = await createArticleRequest(params)

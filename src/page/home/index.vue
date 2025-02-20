@@ -33,8 +33,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-[108px] h-[78px] ml-4" v-if="item.picture">
-                        <img class="w-[108px] h-[72px]" :src="item.picture" alt="" />
+                    <div class="w-[108px] h-[78px] ml-4" v-if="item.cover_url">
+                        <img class="w-[108px] h-[72px]" :src="item.cover_url" alt="" />
                     </div>
                 </div>
             </template>
