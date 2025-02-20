@@ -62,11 +62,7 @@ checkCallback()
                 <el-aside class="mx-4" width="60px">
                     <ArticleLeft :style="headerStyle"></ArticleLeft>
                 </el-aside>
-                <div class="min-h-[900px]">
-                    <el-main class="w-[760px] bg-white rounded-md">
-                        <router-view></router-view>
-                    </el-main>
-                </div>
+                <router-view></router-view>
                 <el-aside class="mx-4" width="260px">
                     <ArticleRight></ArticleRight>
                 </el-aside>
