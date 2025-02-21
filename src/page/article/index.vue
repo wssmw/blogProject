@@ -14,7 +14,7 @@
             </div>
             <AieContent :html="data?.content"></AieContent>
         </div>
-        <comment></comment>
+        <comment :articleId="id"></comment>
     </div>
 </template>
 <script setup>
@@ -39,6 +39,7 @@ onMounted(async () => {
 <style scoped lang="less">
 .article {
     width: 760px;
+    padding-bottom: 40px;
     .article_content {
         background: white;
         border-radius: 6px;

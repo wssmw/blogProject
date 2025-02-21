@@ -15,6 +15,7 @@
     "less": "^4.2.0",
     "pinia": "^2.2.4",
     "pinia-plugin-persist": "^1.0.0",
+    "tocbot": "^4.35.0",
     "vue": "^3.5.10",
     "vue-router": "^4.4.5"
   },

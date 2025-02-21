@@ -3,9 +3,10 @@
         <div class="title">评论{{ 123 }}</div>
         <div class="create_comment">
             <div class="avatar">
-                <img :src="userInfo.avatar_url" alt="" />
+                <img v-if="store.isLogin" :src="userInfo.avatar_url" alt="" />
+                <el-icon size="40" v-else><UserFilled /></el-icon>
             </div>
-            <div class="textarea">
+            <div class="textarea" v-if="store.isLogin">
                 <el-input
                     v-model="textarea"
                     resize="none"
@@ -16,21 +17,50 @@
                 >
                 </el-input>
                 <div class="submit">
-                    <el-button @click="commentHandle">评论</el-button>
+                    <el-button class="btn" @click="commentHandle">评论</el-button>
                 </div>
             </div>
+            <div class="noLogin_textarea" v-else>
+                <el-button class="btn" @click="loginHandle">登录/注册</el-button>
+                <span>登录之后即可评论~</span>
+            </div>
+        </div>
+        <div class="commentlist">
+            <template v-for="item in commentList" :key="item.id"> {{ item.nickname }}:{{ item.content }} </template>
         </div>
     </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { appStore } from '../../../store/module/app'
-
+import { createCommentRequest, getCommentListRequest } from '../../../api/module/comment'
+import { ElMessage } from 'element-plus'
+const props = defineProps(['articleId'])
 const store = appStore()
 const userInfo = computed(() => store.userInfo)
-const textarea = ref()
 
-const commentHandle = () => {}
+const commentList = ref()
+onMounted(async () => {
+    const result = await getCommentListRequest({ articleId: props.articleId })
+    console.log(result)
+    commentList.value = result.data.comments
+})
+
+const textarea = ref()
+const commentHandle = async () => {
+    const result = await createCommentRequest({
+        articleId: props.articleId,
+        content: textarea.value,
+    })
+    if (result.success) {
+        ElMessage.success('评论成功')
+    } else {
+        ElMessage.error('评论失败')
+    }
+}
+const loginHandle = () => {
+    store.showLoginModalChange(true)
+}
 </script>
 <style scoped lang="less">
 .comment {
@@ -52,17 +82,47 @@ const commentHandle = () => {}
             border-radius: 50%;
             overflow: hidden;
             margin-right: 16px;
+            .el-icon {
+                width: 100%;
+                height: 100%;
+            }
         }
         .textarea {
             flex-grow: 1;
             position: relative;
-            // border: 1px solid black;
+            border: 2px solid #f2f3f5;
+            border-radius: 4px;
+            :deep(.el-textarea__inner) {
+                border: none;
+                box-shadow: none;
+            }
             .input {
                 border: none;
             }
             .submit {
+                text-align: right;
+                .btn {
+                    margin: 10px 10px 10px 0;
+                }
             }
         }
+        .noLogin_textarea {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f2f3f5;
+            border-radius: 4px;
+            .btn {
+                margin: 40px 0;
+            }
+            span {
+                margin-left: 20px;
+            }
+        }
+    }
+    .commentlist {
+        margin-top: 20px;
     }
 }
 </style>

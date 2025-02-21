@@ -9,18 +9,6 @@
         <div class="item">
             <img class="img" src="@/assets/svg/标签.svg" alt="" />
         </div>
-        <div class="item">
-            <img class="img" src="@/assets/svg/标签.svg" alt="" />
-        </div>
-        <div class="item">
-            <img class="img" src="@/assets/svg/标签.svg" alt="" />
-        </div>
-        <div class="item">
-            <img class="img" src="@/assets/svg/标签.svg" alt="" />
-        </div>
-        <div class="item">
-            <img class="img" src="@/assets/svg/标签.svg" alt="" />
-        </div>
     </div>
 </template>
 <script setup></script>
