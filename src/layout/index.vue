@@ -31,11 +31,12 @@ const headerStyle = computed(() => {
 
 // 检查 URL 中是否有回调的 code
 const checkCallback = async () => {
+    store.showLoginModalChange(false)
     const urlParams = new URLSearchParams(window.location.search)
     const code = urlParams.get('code')
     if (code) {
         const res = await loginWidthGitee(code)
-        let { token, userInfo } = res
+        let { token, userInfo } = res.data
         store.userInfoChange(userInfo)
         store.tokenChange(token)
         console.log(res, 'res')
@@ -43,7 +44,6 @@ const checkCallback = async () => {
     }
 }
 checkCallback()
-
 </script>
 
 <template>

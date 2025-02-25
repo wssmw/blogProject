@@ -59,15 +59,21 @@
                 </el-avatar>
                 <el-popover v-else placement="bottom-end" :width="300" trigger="click">
                     <template #reference>
-                        <el-avatar class="cursor-pointer">
-                            <img style="width: 30px; height: 30px" :src="userInfo.avatar_url" alt="头像" />
-                        </el-avatar>
+                        <img
+                            class="cursor-pointer rounded-full"
+                            style="width: 36px; height: 36px"
+                            :src="userInfo.avatar_url"
+                            alt="头像"
+                        />
                     </template>
                     <div class="p-2 flex flex-col items-center bg-white rounded-md relative">
                         <div class="flex justify-start w-full items-center">
-                            <el-avatar :size="40">
-                                <el-icon><UserFilled /></el-icon>
-                            </el-avatar>
+                            <img
+                                class="cursor-pointer rounded-full"
+                                style="width: 36px; height: 36px"
+                                :src="userInfo.avatar_url"
+                                alt="头像"
+                            />
                             <div class="ml-3 flex flex-col justify-between">
                                 <div class="text-lg">{{ userInfo.name }}</div>
                                 <div> 职业-{{ userInfo.career }} </div>
@@ -152,9 +158,9 @@ const backToHome = () => {
     router.push('/')
 }
 const jumpToEditor = () => {
-    if(store.isLogin) {
+    if (store.isLogin) {
         router.push('/editor')
-    }else {
+    } else {
         ElMessage.warning('请先登录')
         store.showLoginModalChange(true)
     }

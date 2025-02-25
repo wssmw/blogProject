@@ -35,3 +35,30 @@ export const transDate = (ms, type) => {
         (hasS ? s : '')
     )
 }
+
+export const getTimeAgo = date => {
+    console.log(date)
+    date = new Date(date)
+    const now = new Date()
+    const diffInMs = now - date // 计算时间差（毫秒）
+
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24)) // 转换为天数
+
+    if (diffInDays <= 7) {
+        if (diffInDays == 0) {
+            return '刚刚'
+        }
+        return `${diffInDays}天前`
+    } else if (diffInDays <= 28) {
+        // 4周大约28天
+        const diffInWeeks = Math.floor(diffInDays / 7)
+        return `${diffInWeeks}周前`
+    } else if (diffInDays <= 365) {
+        // 12个月大约365天
+        const diffInMonths = Math.floor(diffInDays / 30) // 近似计算月份
+        return `${diffInMonths}月前`
+    } else {
+        const diffInYears = Math.floor(diffInDays / 365)
+        return `${diffInYears}年前`
+    }
+}

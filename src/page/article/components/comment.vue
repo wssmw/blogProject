@@ -25,9 +25,7 @@
                 <span>登录之后即可评论~</span>
             </div>
         </div>
-        <div class="commentlist">
-            <template v-for="item in commentList" :key="item.id"> {{ item.nickname }}:{{ item.content }} </template>
-        </div>
+        <CommentList :commentList="commentList" :articleId="props.articleId"></CommentList>
     </div>
 </template>
 <script setup>
@@ -35,6 +33,7 @@ import { computed, onMounted, ref } from 'vue'
 import { appStore } from '../../../store/module/app'
 import { createCommentRequest, getCommentListRequest } from '../../../api/module/comment'
 import { ElMessage } from 'element-plus'
+import CommentList from './commentList.vue'
 const props = defineProps(['articleId'])
 const store = appStore()
 const userInfo = computed(() => store.userInfo)
