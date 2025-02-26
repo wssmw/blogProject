@@ -1,21 +1,29 @@
 <template>
-    <div class="article">
-        <div class="article_content">
-            <h1 class="title">{{ data?.title }}</h1>
-            <div class="message">
-                <div class="author">
-                    {{ data?.author_nickname }}
+    <el-container class="article mt-5">
+        <el-aside class="mx-4" width="60px">
+            <ArticleLeft></ArticleLeft>
+        </el-aside>
+        <div class="w-[760px] bg-white rounded-md">
+            <div class="article_content">
+                <h1 class="title">{{ data?.title }}</h1>
+                <div class="message">
+                    <div class="author">
+                        {{ data?.author_nickname }}
+                    </div>
+                    <div class="createTime">
+                        {{ transDate(data?.created_at, 'yyyy-MM-dd HH:mm:ss') }}
+                    </div>
+                    <div class="view"> 123 </div>
+                    <div class="category_name"> 分类:{{ data?.category_name }} </div>
                 </div>
-                <div class="createTime">
-                    {{ transDate(data?.created_at, 'yyyy-MM-dd HH:mm:ss') }}
-                </div>
-                <div class="view"> 123 </div>
-                <div class="category_name"> 分类:{{ data?.category_name }} </div>
+                <AieContent :html="data?.content"></AieContent>
             </div>
-            <AieContent :html="data?.content"></AieContent>
+            <comment :articleId="id"></comment>
         </div>
-        <comment :articleId="id"></comment>
-    </div>
+        <el-aside class="mx-4" width="260px">
+            <ArticleRight></ArticleRight>
+        </el-aside>
+    </el-container>
 </template>
 <script setup>
 import { computed, onMounted, ref } from 'vue'
@@ -24,6 +32,8 @@ import { getArticleByIdRequest } from '../../api/module/articles'
 import AieContent from './components/aieContent.vue'
 import comment from './components/comment.vue'
 import { transDate } from '../../utils'
+import ArticleLeft from './components/articleLeft.vue'
+import ArticleRight from './components/articleRight.vue'
 
 const route = useRoute()
 let id = computed(() => route.params.id)
@@ -38,9 +48,11 @@ onMounted(async () => {
 </script>
 <style scoped lang="less">
 .article {
-    width: 760px;
+    display: flex;
+    justify-content: center;
     padding-bottom: 40px;
     .article_content {
+        width: 760px;
         background: white;
         border-radius: 6px;
         padding: 20px;

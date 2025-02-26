@@ -1,19 +1,18 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import Header from './Header/index.vue'
-import MainLeft from './left/mainLeft.vue'
-import MainRight from './right/mainRight.vue'
+import MainLeft from './mainLeft/index.vue'
+import MainRight from './mainRight/index.vue'
 import Login from '../page/login/index.vue'
 import { appStore } from '../store/module/app'
 import { useRoute, useRouter } from 'vue-router'
 import { loginWidthGitee } from '../api/module/login'
-import ArticleLeft from './left/articleLeft.vue'
-import ArticleRight from './right/articleRight.vue'
 const store = appStore()
 const route = useRoute()
 const router = useRouter()
-const isShow = computed(() => route.path.includes('/editor'))
-const isArticle = computed(() => route.path.includes('/article'))
+console.log('route.path.split(" / ")[0]', route.path.split('/')[1])
+const isShow = computed(() => ['editor', 'article'].includes(route.path.split('/')[1]))
+const isEditor = computed(() => route.path.includes('/editor'))
 console.log(route, 'route')
 const headerStyle = computed(() => {
     if (store.windowScrollY > 400) {
@@ -48,26 +47,17 @@ checkCallback()
 
 <template>
     <div class="layout">
+        <el-header class="el-header" v-if="!isEditor">
+            <div
+                ref="headerRef"
+                :style="headerStyle"
+                class="header fixed z-50 w-full h-[60px] flex justify-center bg-white"
+            >
+                <Header></Header>
+            </div>
+        </el-header>
         <el-container v-if="!isShow">
-            <el-header class="el-header">
-                <div
-                    ref="headerRef"
-                    :style="headerStyle"
-                    class="header fixed z-50 w-full h-[60px] flex justify-center bg-white"
-                >
-                    <Header></Header>
-                </div>
-            </el-header>
-            <el-container class="m-auto mt-5" v-if="isArticle">
-                <el-aside class="mx-4" width="60px">
-                    <ArticleLeft :style="headerStyle"></ArticleLeft>
-                </el-aside>
-                <router-view></router-view>
-                <el-aside class="mx-4" width="260px">
-                    <ArticleRight></ArticleRight>
-                </el-aside>
-            </el-container>
-            <el-container class="m-auto mt-5" v-else>
+            <el-container class="m-auto mt-5">
                 <el-aside class="mx-4" width="160px">
                     <MainLeft :style="headerStyle"></MainLeft>
                 </el-aside>

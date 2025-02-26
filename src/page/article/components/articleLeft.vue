@@ -15,6 +15,7 @@
 <style scoped lang="less">
 .article_left {
     position: fixed;
+    margin-top: 40px;
     .item {
         display: flex;
         justify-content: center;
