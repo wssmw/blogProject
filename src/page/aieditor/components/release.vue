@@ -106,7 +106,7 @@ const successUploadHandle = res => {
 
 onMounted(async () => {
     const { data } = await getTagListRequest()
-    tagsList.value = data.map(item => {
+    tagsList.value = data.tags.map(item => {
         return {
             label: item.name,
             value: item.id,

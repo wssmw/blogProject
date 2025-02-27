@@ -1,7 +1,7 @@
 <template>
     <el-container class="article mt-5">
         <el-aside class="mx-4" width="60px">
-            <ArticleLeft></ArticleLeft>
+            <ArticleLeft :data="data" :style="headerStyle"></ArticleLeft>
         </el-aside>
         <div class="w-[760px] bg-white rounded-md">
             <div class="article_content">
@@ -23,6 +23,7 @@
         <el-aside class="mx-4" width="260px">
             <ArticleRight></ArticleRight>
         </el-aside>
+        <el-backtop :right="100" :bottom="100" />
     </el-container>
 </template>
 <script setup>
@@ -34,6 +35,21 @@ import comment from './components/comment.vue'
 import { transDate } from '../../utils'
 import ArticleLeft from './components/articleLeft.vue'
 import ArticleRight from './components/articleRight.vue'
+import { appStore } from '../../store/module/app'
+const store = appStore()
+const headerStyle = computed(() => {
+    if (store.windowScrollY > 400) {
+        return {
+            transition: 'transform .2s ease-in-out',
+            transform: 'translate3d(0,-60px,0)',
+        }
+    } else {
+        return {
+            transition: 'transform .2s ease-in-out',
+            transform: 'translate3d(0,0,0)',
+        }
+    }
+})
 
 const route = useRoute()
 let id = computed(() => route.params.id)

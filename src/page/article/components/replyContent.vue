@@ -2,8 +2,12 @@
     <div class="reply_content">
         <div class="reply_action">
             <div class="time">{{ getTimeAgo(commentItem.created_at) }}</div>
-            <div class="digg">320</div>
-            <div class="comment_on" @click="commentHandle">回复</div>
+            <div class="digg" @click="diggHandle">
+                <img v-if="hasLiked" class="img" src="../../../assets/svg/点赞_1.svg" alt="" />
+                <img v-else class="img" src="../../../assets/svg/点赞.svg" alt="" />
+                <span>{{ likeCount ? likeCount : '点赞' }}</span>
+            </div>
+            <div class="comment_on" @click="commentHandle">{{ showTextarea ? '取消回复' : '回复' }}</div>
         </div>
         <div class="textarea" v-if="showTextarea">
             <el-input
@@ -26,6 +30,7 @@ import { ref } from 'vue'
 import { createCommentRequest } from '../../../api/module/comment'
 import { ElMessage } from 'element-plus'
 import { getTimeAgo } from '../../../utils'
+import { likeCommentRequest } from '../../../api/module/likes'
 
 const { commentItem, articleId } = defineProps({
     commentItem: {
@@ -39,9 +44,20 @@ console.log(commentItem, 'commentItem')
 const textarea = ref()
 const showTextarea = ref(false)
 
+// 点赞
+const hasLiked = ref(commentItem.has_liked)
+const likeCount = ref(commentItem.like_count)
+const diggHandle = async () => {
+    const results = await likeCommentRequest({ commentId: commentItem.id })
+    console.log(results)
+    if (results.success) {
+        ElMessage.success(results.message)
+        hasLiked.value = !hasLiked.value
+        likeCount.value = likeCount.value + (hasLiked.value ? 1 : -1)
+    }
+}
+// 评论
 const commentHandle = () => {
-    console.log(commentItem, 'commentItem')
-
     showTextarea.value = !showTextarea.value
 }
 
@@ -76,6 +92,15 @@ const submitCommentHandle = async () => {
         }
         .digg {
             margin: 0 16px;
+            display: flex;
+            align-items: center;
+            .img {
+                width: 16px;
+                height: 16px;
+            }
+            span {
+                margin-left: 4px;
+            }
         }
         .comment_on {
             &:hover {
