@@ -35,11 +35,24 @@
             <el-icon size="20"><WarnTriangleFilled /></el-icon>
         </div>
     </div>
+    
+    <!-- 登录弹窗组件 -->
+    <el-dialog
+        v-model="loginDialogVisible"
+        title="登录"
+        width="400px"
+        :show-close="true"
+        @close="closeLoginDialog"
+    >
+        <!-- 这里放登录表单组件 -->
+        <login-form @success="closeLoginDialog" />
+    </el-dialog>
 </template>
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { likeArticleRequest } from '../../../api/module/likes'
 import { ElMessage } from 'element-plus'
+import { useLogin } from '@/hooks/useLogin'
 
 const { data } = defineProps({
     data: {
@@ -48,24 +61,25 @@ const { data } = defineProps({
     },
 })
 
-// 创建完整的本地数据副本
 const localData = ref({ ...data })
-
-// 使用本地数据的计算属性
 const likeCount = computed(() => localData.value.like_count)
 const hasLiked = computed(() => !!localData.value.has_liked)
 
+// 使用登录hooks
+const { withLogin } = useLogin()
+
 const likeHandle = async () => {
-    const result = await likeArticleRequest({ articleId: data.id })
-    if (result.success) {
-        ElMessage.success(result.message)
-        // 更新本地数据
-        localData.value = {
-            ...localData.value,
-            has_liked: !localData.value.has_liked,
-            like_count: localData.value.like_count + (localData.value.has_liked ? -1 : 1)
+    withLogin(async () => {
+        const result = await likeArticleRequest({ articleId: data.id })
+        if (result.success) {
+            ElMessage.success(result.message)
+            localData.value = {
+                ...localData.value,
+                has_liked: !localData.value.has_liked,
+                like_count: localData.value.like_count + (localData.value.has_liked ? -1 : 1)
+            }
         }
-    }
+    })
 }
 
 // 监听父组件数据变化
