@@ -18,8 +18,22 @@
                                 }}</div>
                                 <el-divider direction="vertical"></el-divider>
                                 <div class="mx-2">查看{{ item.viewTimes }}</div>
-                                <div class="mx-2">评论{{ item.commentTimes }}</div>
-                                <div class="mx-2">赞{{ item.likeTimes }}</div>
+                                <div class="mx-2 flex items-center"
+                                    ><el-icon size="16" class="mr-1"><ChatDotRound /></el-icon
+                                    >{{ item.comment_count }}</div
+                                >
+                                <div class="mx-2 flex">
+                                    <img
+                                        v-if="item.has_liked"
+                                        class="img w-[16px]"
+                                        src="../../assets/svg/点赞_1.svg"
+                                        alt=""
+                                    />
+                                    <img v-else class="img w-[16px]" src="../../assets/svg/点赞.svg" alt="" />
+                                    <span class="ml-1">
+                                        {{ item.like_count }}
+                                    </span>
+                                </div>
                             </div>
                             <div class="flex">
                                 <template

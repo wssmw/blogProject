@@ -9,7 +9,7 @@
                             class="mx-1"
                             @change="tagChangeHandle(item.value)"
                         >
-                            {{ item.lable }}
+                            {{ item.label }}
                         </el-check-tag>
                     </template>
                 </div>
@@ -64,6 +64,7 @@ import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { getTagListRequest } from '../../../api/module/tags'
 import { appStore } from '../../../store/module/app'
+import { getCategoryListRequest } from '../../../api/module/category'
 
 const prop = defineProps({
     data: {
@@ -77,16 +78,7 @@ const store = appStore()
 const headers = {
     Authorization: `Bearer ${store.token}`,
 }
-const categoryList = [
-    {
-        lable: '后端',
-        value: '1',
-    },
-    {
-        lable: '前端',
-        value: '2',
-    },
-]
+const categoryList = ref()
 
 const formData = reactive({
     category: '', //分类
@@ -97,7 +89,7 @@ const formData = reactive({
 })
 
 const tagChangeHandle = e => {
-    formData.category = e
+    formData.category = String(e)
 }
 
 const successUploadHandle = res => {
@@ -106,7 +98,14 @@ const successUploadHandle = res => {
 
 onMounted(async () => {
     const { data } = await getTagListRequest()
+    const category = await getCategoryListRequest()
     tagsList.value = data.tags.map(item => {
+        return {
+            label: item.name,
+            value: item.id,
+        }
+    })
+    categoryList.value = category.data.categories.map(item => {
         return {
             label: item.name,
             value: item.id,
