@@ -56,20 +56,18 @@ checkCallback()
                 <Header></Header>
             </div>
         </el-header>
-        <el-container v-if="!isShow">
-            <el-container class="m-auto mt-5">
-                <el-aside class="mx-4" width="160px">
-                    <MainLeft :style="headerStyle"></MainLeft>
-                </el-aside>
-                <div class="min-h-[900px]">
-                    <el-main class="w-[760px] bg-white rounded-md">
-                        <router-view></router-view>
-                    </el-main>
-                </div>
-                <el-aside class="mx-4" width="260px">
-                    <MainRight></MainRight>
-                </el-aside>
-            </el-container>
+        <el-container class="m-auto mt-5 justify-center" v-if="!isShow">
+            <el-aside class="mx-4" width="160px">
+                <MainLeft :style="headerStyle"></MainLeft>
+            </el-aside>
+            <div class="min-h-[900px]">
+                <el-main class="w-[760px] bg-white rounded-md">
+                    <router-view></router-view>
+                </el-main>
+            </div>
+            <el-aside class="mx-4" width="260px">
+                <MainRight></MainRight>
+            </el-aside>
         </el-container>
         <router-view v-else></router-view>
         <Login ref="loginRef" :showDialog="showLoginModal"></Login>
