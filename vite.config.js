@@ -18,8 +18,8 @@ export default defineConfig({
         proxy: {
             '/api': {
                 // target: 'http://127.0.0.1:4523/m1/3781196-0-default',
-                // target: 'http://14.103.231.45:8000',
-                target: 'http://localhost:1234',
+                target: 'http://14.103.231.45:8000',
+                // target: 'http://localhost:1234',
                 rewrite: path => path.replace(/^\/api/, ''),
             },
         },

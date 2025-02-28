@@ -11,7 +11,7 @@ const store = appStore()
 const route = useRoute()
 const router = useRouter()
 console.log('route.path.split(" / ")[0]', route.path.split('/')[1])
-const isShow = computed(() => ['editor', 'article', 'user'].includes(route.path.split('/')[1]))
+const isShow = computed(() => ['editor', 'article', 'user', 'about'].includes(route.path.split('/')[1]))
 const isEditor = computed(() => route.path.includes('/editor'))
 console.log(route, 'route')
 const headerStyle = computed(() => {
