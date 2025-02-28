@@ -22,7 +22,46 @@
                 <el-tab-pane label="点赞" name="likes">likes</el-tab-pane>
             </el-tabs>
         </div>
-        <div class="right">right</div>
+        <div class="right">
+            <div class="achievement">
+                <div class="title">个人成就</div>
+                <el-divider></el-divider>
+                <div class="item">
+                    <el-icon size="16"><Document /></el-icon>
+                    <div class="desc">发布文章</div>
+                    <div class="num">1</div>
+                </div>
+                <div class="item">
+                    <el-icon size="16"><Document /></el-icon>
+                    <div class="desc">发布文章</div>
+                    <div class="num">1</div>
+                </div>
+                <div class="item">
+                    <el-icon size="16"><Document /></el-icon>
+                    <div class="desc">发布文章</div>
+                    <div class="num">1</div>
+                </div>
+                <div class="item">
+                    <el-icon size="16"><Document /></el-icon>
+                    <div class="desc">发布文章</div>
+                    <div class="num">1</div>
+                </div>
+            </div>
+            <div class="follow">
+                <div class="item">
+                    <div class="top">关注了</div>
+                    <div class="num">1</div>
+                </div>
+                <div class="item">
+                    <div class="top">关注了</div>
+                    <div class="num">1</div>
+                </div>
+            </div>
+            <div class="createTime">
+                <div class="left">加入于</div>
+                <div class="right">2023-02-02</div>
+            </div>
+        </div>
     </div>
 </template>
 <script setup>
@@ -87,7 +126,48 @@ const activeName = ref('recently')
     }
     .right {
         width: 16.6%;
-        background-color: pink;
+        .achievement {
+            padding: 20px;
+            background: white;
+            border-radius: 4px;
+            .title {
+                font-size: 16px;
+                font-weight: 600;
+                color: #31445b;
+            }
+            .item {
+                display: flex;
+                align-items: center;
+                margin: 10px 0;
+                .desc {
+                    margin: 0 10px;
+                    color: #5a5e66;
+                    font-size: 14px;
+                }
+            }
+        }
+        .follow {
+            padding: 20px;
+            margin-top: 20px;
+            background: white;
+            border-radius: 4px;
+            display: flex;
+            justify-content: space-around;
+            .item {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+        .createTime {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            .right {
+                width: 78px;
+            }
+        }
     }
 }
 </style>
