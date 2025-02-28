@@ -58,7 +58,6 @@
         <div v-if="loading" class="loading">加载中...</div>
         <div v-if="noMoreData" class="no-more">没有更多数据了</div>
         <div ref="observerTarget"></div>
-        <el-backtop :right="100" :bottom="50" />
     </div>
 </template>
 <script setup>

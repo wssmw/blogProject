@@ -11,7 +11,7 @@ const store = appStore()
 const route = useRoute()
 const router = useRouter()
 console.log('route.path.split(" / ")[0]', route.path.split('/')[1])
-const isShow = computed(() => ['editor', 'article'].includes(route.path.split('/')[1]))
+const isShow = computed(() => ['editor', 'article', 'user'].includes(route.path.split('/')[1]))
 const isEditor = computed(() => route.path.includes('/editor'))
 console.log(route, 'route')
 const headerStyle = computed(() => {
@@ -71,6 +71,7 @@ checkCallback()
         </el-container>
         <router-view v-else></router-view>
         <Login ref="loginRef" :showDialog="showLoginModal"></Login>
+        <el-backtop :right="50" :bottom="50" />
     </div>
 </template>
 <style scoped lang="less">

@@ -9,7 +9,7 @@ export const getLocalStorage = key => {
 export const getSessionStorage = key => {
     return JSON.parse(sessionStorage.getItem(key))
 }
-export const transDate = (ms, type) => {
+export const transDate = (ms, type = 'yyyy-MM-dd HH:mm:ss') => {
     ms = new Date(ms)
     let hasY = type.includes('yyyy')
     let hasM = type.includes('MM')

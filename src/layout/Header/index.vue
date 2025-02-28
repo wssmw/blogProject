@@ -3,7 +3,7 @@
         <div class="flex text-base items-center">
             <div class="flex items-center cursor-pointer" @click="backToHome">
                 <img class="w-8 h-8" src="@/assets/svg/bird-duotone.svg" alt="" />
-                <span class="mx-5">栖息地</span>
+                <span class="mx-5">拾光</span>
             </div>
             <el-menu class="el-menu-popper-demo w-[600px] flex-1" router mode="horizontal">
                 <el-menu-item index="2" route="famousSquare">名言广场</el-menu-item>
@@ -30,7 +30,7 @@
         </div>
         <div class="flex items-center justify-around">
             <div class="w-[280px]">
-                <el-input class="h-10" placeholder="探索栖息地">
+                <el-input class="h-10" placeholder="探索拾光">
                     <template #suffix>
                         <el-icon><Search /></el-icon>
                     </template>
@@ -57,7 +57,7 @@
                 <el-avatar :size="40" class="cursor-pointer" v-if="!store.isLogin" @click="loginHandle">
                     登录
                 </el-avatar>
-                <el-popover v-else placement="bottom-end" :width="300" trigger="click">
+                <el-popover v-else placement="bottom-end" :width="300" trigger="click" ref="popover">
                     <template #reference>
                         <img
                             class="cursor-pointer rounded-full"
@@ -100,7 +100,10 @@
                         </div>
                         <div class="flex flex-wrap">
                             <template v-for="item in data" :key="item.title">
-                                <div class="w-2/4 flex justify-center my-2 py-1 rounded hover:bg-slate-100">
+                                <div
+                                    class="w-2/4 flex justify-center my-2 py-1 rounded hover:bg-slate-100"
+                                    @click="clickHandle"
+                                >
                                     <img class="w-5 h-5 mr-2" src="@/assets/svg/关于.svg" alt="" />
                                     {{ item.title }}
                                 </div>
@@ -125,7 +128,6 @@ import { ElMessage } from 'element-plus'
 
 const router = useRouter()
 const store = appStore()
-const emit = defineEmits(['login'])
 
 const userInfo = computed(() => store.userInfo)
 
@@ -175,6 +177,12 @@ const logOutHandle = () => {
     console.log(store)
     store.userInfoChange({})
     store.tokenChange('')
+}
+const popover = ref()
+
+const clickHandle = () => {
+    router.push('/user')
+    popover.value.hide()
 }
 </script>
 <style scoped lang="less">

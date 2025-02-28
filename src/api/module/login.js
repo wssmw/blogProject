@@ -6,6 +6,12 @@ export const loginWidthGitee = async code => {
         url: `/login/gitee/callback?code=${code}`,
     })
 }
+// 获取commit信息
+export const getCommitMessageGitee = async () => {
+    return wsRequest.get({
+        url: `/users/getCommitMessage`,
+    })
+}
 // 注册
 export const registerRequest = async data => {
     return wsRequest.post({

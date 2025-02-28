@@ -23,7 +23,6 @@
         <el-aside class="mx-4" width="260px">
             <ArticleRight></ArticleRight>
         </el-aside>
-        <el-backtop :right="100" :bottom="100" />
     </el-container>
 </template>
 <script setup>

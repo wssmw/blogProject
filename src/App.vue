@@ -17,6 +17,8 @@ if (userInfo) {
     store.userInfoChange(userInfo)
 }
 onMounted(() => {
+    window.scrollTo(0, 0) // 页面加载时滚动到顶部
+    store.windowScrollYChange(0)
     window.addEventListener('scroll', () => {
         store.windowScrollYChange(window.scrollY)
     })
