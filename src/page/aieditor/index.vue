@@ -27,7 +27,7 @@ onMounted(() => {
             uploader: (file, uploadUrl, headers, formName) => {
                 console.log(file, uploadUrl, headers, formName)
                 const formData = new FormData()
-                formData.append('file', file)
+                formData.append(file.name, file)
                 console.log(formData, 'formData')
                 return new Promise((resolve, reject) => {
                     articleUploadRequest(formData)
