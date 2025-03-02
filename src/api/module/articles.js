@@ -27,3 +27,10 @@ export const articleUploadRequest = async data => {
         data,
     })
 }
+// 获取当前用户下的文章
+export const getUserArticlesRequest = async data => {
+    return wsRequest.post({
+        url: `/article/getUserArticles`,
+        data,
+    })
+}

@@ -16,7 +16,9 @@
             </div>
             <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
                 <el-tab-pane label="最近" name="recently">User</el-tab-pane>
-                <el-tab-pane label="文章" name="article">article</el-tab-pane>
+                <el-tab-pane label="文章" name="article" lazy>
+                    <userArticle />
+                </el-tab-pane>
                 <el-tab-pane label="收藏集" name="collect">collect</el-tab-pane>
                 <el-tab-pane label="关注" name="follow">follow</el-tab-pane>
                 <el-tab-pane label="点赞" name="likes">likes</el-tab-pane>
@@ -67,7 +69,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { appStore } from '../../store/module/app'
-
+import userArticle from './components/userArticle.vue'
 const store = appStore()
 const userInfo = computed(() => store.userInfo)
 
