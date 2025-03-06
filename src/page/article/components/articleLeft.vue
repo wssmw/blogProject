@@ -26,7 +26,8 @@
             :color="data?.has_liked ? '#1e80ff' : '#c2c8d1'"
             :hidden="!data?.comment_count"
         >
-            <el-icon size="20"><Star /></el-icon>
+            <el-icon v-if="!hasCollecte" size="20" @click="collecteHandle"><Star /></el-icon>
+            <el-icon v-else color="#ffb800" size="20" @click="collecteHandle"><StarFilled /></el-icon>
         </el-badge>
         <div class="item">
             <el-icon size="20"><Share /></el-icon>
@@ -35,15 +36,9 @@
             <el-icon size="20"><WarnTriangleFilled /></el-icon>
         </div>
     </div>
-    
+
     <!-- 登录弹窗组件 -->
-    <el-dialog
-        v-model="loginDialogVisible"
-        title="登录"
-        width="400px"
-        :show-close="true"
-        @close="closeLoginDialog"
-    >
+    <el-dialog v-model="loginDialogVisible" title="登录" width="400px" :show-close="true" @close="closeLoginDialog">
         <!-- 这里放登录表单组件 -->
         <login-form @success="closeLoginDialog" />
     </el-dialog>
@@ -57,14 +52,15 @@ import { useLogin } from '@/hooks/useLogin'
 const { data } = defineProps({
     data: {
         type: Object,
-        required: true
+        required: true,
     },
 })
 
 const localData = ref({ ...data })
 const likeCount = computed(() => localData.value.like_count)
 const hasLiked = computed(() => !!localData.value.has_liked)
-
+const hasCollecte = computed(() => !!localData.value.has_collected)
+console.log(hasCollecte, 'hasCollecte')
 // 使用登录hooks
 const { withLogin } = useLogin()
 
@@ -76,16 +72,21 @@ const likeHandle = async () => {
             localData.value = {
                 ...localData.value,
                 has_liked: !localData.value.has_liked,
-                like_count: localData.value.like_count + (localData.value.has_liked ? -1 : 1)
+                like_count: localData.value.like_count + (localData.value.has_liked ? -1 : 1),
             }
         }
     })
 }
 
+const collecteHandle = async () => {}
 // 监听父组件数据变化
-watch(() => data, (newData) => {
-    localData.value = { ...newData }
-}, { deep: true })
+watch(
+    () => data,
+    newData => {
+        localData.value = { ...newData }
+    },
+    { deep: true },
+)
 </script>
 <style scoped lang="less">
 .article_left {
@@ -109,4 +110,3 @@ watch(() => data, (newData) => {
     }
 }
 </style>
-

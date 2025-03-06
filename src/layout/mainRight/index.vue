@@ -59,8 +59,11 @@
                 </div>
             </div>
             <div class="content">
-                <template v-for="item in data" :key="item.id">
-                    <div class="flex items-center my-4 cursor-pointer hover:text-indigo-500">
+                <template v-for="item in hotData" :key="item.id">
+                    <div
+                        class="flex items-center my-4 cursor-pointer hover:text-indigo-500"
+                        @click="articleHandle(item)"
+                    >
                         <div class="border-solid border-2 border-indigo-500 h-5 mr-2"></div>
                         <div class="text-base overflow-hidden w-full">{{ item.title }}</div>
                     </div>
@@ -72,33 +75,21 @@
     </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { appStore } from '../../store/module/app'
+import { getHotArticlesRequest } from '@/api/module/articles.js'
+import { useRouter } from 'vue-router'
+const router = useRouter()
 const store = appStore()
 const isLogin = computed(() => store.isLogin)
 const userInfo = computed(() => store.userInfo)
-const data = ref([
-    {
-        title: '我的名字1',
-        id: '1',
-    },
-    {
-        title: '我的名字2',
-        id: '2',
-    },
-    {
-        title: '我的名字3',
-        id: '3',
-    },
-    {
-        title: '我的名字4',
-        id: '4',
-    },
-    {
-        title: '我的名字5',
-        id: '5',
-    },
-])
+
+const hotData = ref([])
+onMounted(async () => {
+    const { data } = await getHotArticlesRequest({ days: 20 })
+    console.log(data, 'results')
+    hotData.value = data.articles
+})
 const fixedStyle = computed(() => {
     if (store.windowScrollY > 800) {
         return {
@@ -116,6 +107,10 @@ const fixedStyle = computed(() => {
 
 const loginHandle = () => {
     store.showLoginModalChange(true)
+}
+
+const articleHandle = item => {
+    router.push(`/article/${item.id}`)
 }
 </script>
 <style scoped lang="less">

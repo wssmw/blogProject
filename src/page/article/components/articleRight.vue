@@ -3,7 +3,7 @@
         <div class="author">
             <div class="top">
                 <div class="avatar">
-                    <img class="img" src="@/assets/svg/标签.svg" alt="" />
+                    <img class="img" :src="data.cover_url" alt="" />
                 </div>
                 <div class="avatar_name">名字</div>
             </div>
@@ -21,14 +21,26 @@
                     <div class="desc">文章</div>
                 </div>
             </div>
-            <div class="bot">
+            <div class="bot" v-if="data.user_id !== userInfo.id">
                 <el-button class="btn">关注</el-button>
                 <el-button class="btn">私信</el-button>
             </div>
         </div>
     </div>
 </template>
-<script setup></script>
+<script setup>
+import { appStore } from '../../../store/module/app'
+import { computed } from 'vue'
+const { data } = defineProps({
+    data: {
+        type: Object,
+        required: true,
+    },
+})
+const store = appStore()
+const userInfo = computed(() => store.userInfo)
+console.log(data, 'datazzz')
+</script>
 <style scoped lang="less">
 .article_right {
     .author {

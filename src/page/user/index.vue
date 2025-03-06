@@ -3,10 +3,10 @@
         <div class="left">
             <div class="user_info">
                 <div class="user_info_left">
-                    <img class="img" :src="userInfo.avatar_url" alt="" />
+                    <img class="img" :src="userInfo?.avatar_url" alt="" />
                 </div>
                 <div class="user_info_mid">
-                    <div class="nickname">{{ userInfo.nickname }}</div>
+                    <div class="nickname">{{ userInfo?.nickname }}</div>
                     <div class="career">职业</div>
                     <div class="desc">简介</div>
                 </div>
@@ -80,7 +80,6 @@ const userInfo = computed(() => store.userInfo)
 const route = useRoute()
 const id = ref(route.params.id)
 console.log(id.value)
-console.log(userInfo.value.id)
 const activeName = ref('recently')
 </script>
 <style scoped lang="less">

@@ -21,7 +21,7 @@
             <comment :articleId="id"></comment>
         </div>
         <el-aside class="mx-4" width="260px">
-            <ArticleRight></ArticleRight>
+            <ArticleRight :data="data"></ArticleRight>
         </el-aside>
     </el-container>
 </template>

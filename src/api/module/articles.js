@@ -34,3 +34,10 @@ export const getUserArticlesRequest = async data => {
         data,
     })
 }
+// 查看热度最高的文章列表
+export const getHotArticlesRequest = async data => {
+    return wsRequest.post({
+        url: `/article/getHotArticles`,
+        data,
+    })
+}
