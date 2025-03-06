@@ -181,7 +181,8 @@ const logOutHandle = () => {
 const popover = ref()
 
 const clickHandle = () => {
-    router.push('/user')
+    console.log(store.userInfo)
+    router.push(`/user/${store.userInfo.id}`)
     popover.value.hide()
 }
 </script>

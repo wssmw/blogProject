@@ -103,7 +103,7 @@ const router = createRouter({
             component: () => import('@/page/aieditor/index.vue'),
         },
         {
-            path: '/user',
+            path: '/user/:id',
             name: 'user',
             component: () => import('@/page/user/index.vue'),
         },

@@ -11,7 +11,8 @@
                     <div class="desc">简介</div>
                 </div>
                 <div class="user_info_right">
-                    <el-button>编辑个人资料</el-button>
+                    <el-button v-if="id === userInfo.id">编辑个人资料</el-button>
+                    <el-button v-else>关注Ta</el-button>
                 </div>
             </div>
             <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
@@ -19,7 +20,9 @@
                 <el-tab-pane label="文章" name="article" lazy>
                     <userArticle />
                 </el-tab-pane>
-                <el-tab-pane label="收藏集" name="collect">collect</el-tab-pane>
+                <el-tab-pane label="收藏集" name="collect" lazy>
+                    <UserCollect />
+                </el-tab-pane>
                 <el-tab-pane label="关注" name="follow">follow</el-tab-pane>
                 <el-tab-pane label="点赞" name="likes">likes</el-tab-pane>
             </el-tabs>
@@ -70,9 +73,14 @@
 import { computed, ref } from 'vue'
 import { appStore } from '../../store/module/app'
 import userArticle from './components/userArticle.vue'
+import UserCollect from './components/userCollect.vue'
+import { useRoute } from 'vue-router'
 const store = appStore()
 const userInfo = computed(() => store.userInfo)
-
+const route = useRoute()
+const id = ref(route.params.id)
+console.log(id.value)
+console.log(userInfo.value.id)
 const activeName = ref('recently')
 </script>
 <style scoped lang="less">

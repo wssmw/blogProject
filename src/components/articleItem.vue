@@ -10,7 +10,10 @@
             <div class="text-ellipsis overflow-hidden whitespace-nowrap">{{ articleItem.summary }}</div>
             <div class="flex justify-between">
                 <div class="flex items-center">
-                    <div class="max-w-[132px] text-nowrap text-ellipsis overflow-hidden mr-1">{{
+                    <div v-if="isUserHomePage" class="max-w-[132px] text-nowrap text-ellipsis overflow-hidden mr-1">{{
+                        getTimeAgo(articleItem.updated_at)
+                    }}</div>
+                    <div v-else class="max-w-[132px] text-nowrap text-ellipsis overflow-hidden mr-1">{{
                         articleItem.author_name
                     }}</div>
                     <el-divider direction="vertical"></el-divider>
@@ -49,10 +52,15 @@
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
+import { getTimeAgo } from '../utils'
 const { articleItem } = defineProps({
     articleItem: {
         type: Object,
         default: () => {},
+    },
+    isUserHomePage: {
+        type: Boolean,
+        default: false,
     },
 })
 const TAG_TYPES = ['primary', 'success', 'warning']
