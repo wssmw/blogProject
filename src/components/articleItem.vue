@@ -13,9 +13,12 @@
                     <div v-if="isUserHomePage" class="max-w-[132px] text-nowrap text-ellipsis overflow-hidden mr-1">{{
                         getTimeAgo(articleItem.updated_at)
                     }}</div>
-                    <div v-else class="max-w-[132px] text-nowrap text-ellipsis overflow-hidden mr-1">{{
-                        articleItem.author_name
-                    }}</div>
+                    <div
+                        v-else
+                        class="max-w-[132px] text-nowrap text-ellipsis overflow-hidden mr-1"
+                        @click.stop="goToUserHandle(articleItem.user_id)"
+                        >{{ articleItem.author_name }}</div
+                    >
                     <el-divider direction="vertical"></el-divider>
                     <div class="mx-2 flex items-center">
                         <el-icon size="16" class="mr-1"><View /></el-icon>
@@ -68,6 +71,11 @@ const TAG_TYPES = ['primary', 'success', 'warning']
 const router = useRouter()
 const clickHandle = article => {
     router.push(`/article/${article.id}`)
+}
+
+const goToUserHandle = userId => {
+    console.log(userId)
+    router.push(`/user/${userId}`)
 }
 </script>
 <style scoped lang="scss"></style>

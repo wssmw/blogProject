@@ -1,6 +1,9 @@
 <template>
     <div>
-        <articleItem :isUserHomePage="true" v-for="item in articleList" :key="item.id" :articleItem="item" />
+        <div v-if="articleList.length">
+            <articleItem :isUserHomePage="true" v-for="item in articleList" :key="item.id" :articleItem="item" />
+        </div>
+        <el-empty v-else description="暂无数据" />
     </div>
 </template>
 <script setup>

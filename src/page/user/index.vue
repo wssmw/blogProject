@@ -86,10 +86,10 @@ const activeName = ref('recently')
 <style scoped lang="less">
 .user {
     width: 1280px;
-    height: 2280px;
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    padding-bottom: 20px;
     .left {
         width: 66.6%;
         margin-right: 16px;
