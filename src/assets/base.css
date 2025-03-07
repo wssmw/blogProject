@@ -1,6 +1,12 @@
 /* CSS 初始化开始 */
-html {
-    overflow-x: hidden;
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+#app {
+    overflow-x: auto;
+    height: 100vh;
 }
 * {
     /*把所有标签的内外边距取消掉*/

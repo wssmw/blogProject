@@ -10,6 +10,10 @@ export const appStore = defineStore(
             windowScrollY.value = e
         }
 
+        const windowInnerWidth = ref(1280)
+        const windowInnerWidthChange = e => {
+            windowInnerWidth.value = e
+        }
         // 是否登录
         const isLogin = ref(false)
         const isLoginChange = e => {
@@ -40,6 +44,8 @@ export const appStore = defineStore(
         return {
             windowScrollY,
             windowScrollYChange,
+            windowInnerWidth,
+            windowInnerWidthChange,
             isLogin,
             isLoginChange,
             userInfo,

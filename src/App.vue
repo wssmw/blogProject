@@ -22,17 +22,14 @@ onMounted(() => {
     window.addEventListener('scroll', () => {
         store.windowScrollYChange(window.scrollY)
     })
+    window.addEventListener('resize', () => {
+        store.windowInnerWidthChange(window.innerWidth)
+    })
 })
 </script>
 
 <template>
-    <div class="box">
-        <Layout></Layout>
-    </div>
+    <Layout></Layout>
 </template>
 
-<style scoped>
-.box {
-    background: #f2f3f5;
-}
-</style>
+<style scoped></style>

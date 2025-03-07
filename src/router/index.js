@@ -107,6 +107,12 @@ const router = createRouter({
             name: 'user',
             component: () => import('@/page/user/index.vue'),
         },
+        // 修改我的信息
+        {
+            path: '/userSetting',
+            name: 'userSetting',
+            component: () => import('@/page/userSetting/index.vue'),
+        },
     ],
 })
 

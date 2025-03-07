@@ -11,7 +11,7 @@ const store = appStore()
 const route = useRoute()
 const router = useRouter()
 console.log('route.path.split(" / ")[0]', route.path.split('/')[1])
-const isShow = computed(() => ['editor', 'article', 'user', 'about'].includes(route.path.split('/')[1]))
+const isShow = computed(() => ['editor', 'article', 'user', 'about', 'userSetting'].includes(route.path.split('/')[1]))
 const isEditor = computed(() => route.path.includes('/editor'))
 console.log(route, 'route')
 const headerStyle = computed(() => {
@@ -57,7 +57,7 @@ checkCallback()
             </div>
         </el-header>
         <el-container class="m-auto mt-5 justify-center" v-if="!isShow">
-            <el-aside class="mx-4" width="160px">
+            <el-aside class="mx-4" width="160px" v-if="store.windowInnerWidth > 1260">
                 <MainLeft :style="headerStyle"></MainLeft>
             </el-aside>
             <div class="min-h-[900px]">
@@ -65,7 +65,7 @@ checkCallback()
                     <router-view></router-view>
                 </el-main>
             </div>
-            <el-aside class="mx-4" width="260px">
+            <el-aside class="mx-4" width="260px" v-if="store.windowInnerWidth > 960">
                 <MainRight></MainRight>
             </el-aside>
         </el-container>
@@ -75,6 +75,10 @@ checkCallback()
     </div>
 </template>
 <style scoped lang="less">
+.layout {
+    min-width: 1260px;
+    background: #f2f3f5;
+}
 .el-header {
     padding: 0;
 }
