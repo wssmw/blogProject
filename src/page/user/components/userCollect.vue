@@ -35,54 +35,16 @@
             </template>
         </div>
         <el-empty v-else description="暂无数据" />
-        <el-dialog v-model="showDialog" title="添加收藏夹" @close="dialogCloseHandle">
-            <el-form
-                ref="formRef"
-                :model="formData"
-                :rules="rules"
-                label-width="100"
-                label-position="right"
-                size="default"
-            >
-                <el-form-item label="收藏夹名称:" required prop="name">
-                    <el-input v-model="formData.name" placeholder="收藏夹名称" maxlength="20" show-word-limit>
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="简介:" required prop="description">
-                    <el-input
-                        v-model="formData.description"
-                        type="textarea"
-                        placeholder="收藏夹简介"
-                        show-word-limit
-                        maxlength="200"
-                    >
-                    </el-input>
-                </el-form-item>
-                <el-form-item label="是否公开:" required prop="isPublic">
-                    <el-radio-group v-model="formData.isPublic">
-                        <el-radio :value="true" size="small">是</el-radio>
-                        <el-radio :value="false" size="small">否</el-radio>
-                    </el-radio-group>
-                </el-form-item>
-                <div class="w-full text-right">
-                    <el-button @click="submitHandle">{{ editId ? '修改' : '添加' }}</el-button>
-                </div>
-            </el-form>
-        </el-dialog>
+        <addCollect ref="addCollectRef" @searchHandle="searchHandle"></addCollect>
     </div>
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getUserCollectionsRequest, createCollectionsRequest } from '@/api/module/collection'
+import { getUserCollectionsRequest, deleteUserCollectionsRequest } from '@/api/module/collection'
 import { transDate } from '../../../utils'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { deleteUserCollectionsRequest, updateUserCollectionsRequest } from '../../../api/module/collection'
-
-const rules = {
-    name: [{ required: true, message: '请填写收藏夹名称', trigger: 'blur' }],
-    description: [{ required: true, message: '请填写收藏夹描述', trigger: 'blur' }],
-}
+import addCollect from '@/components/addCollect.vue'
 
 let collectList = ref([])
 const route = useRoute()
@@ -92,31 +54,22 @@ onMounted(() => {
     searchHandle()
 })
 
-const showDialog = ref(false)
-const formData = ref({
-    name: '',
-    description: '',
-    isPublic: true,
-})
-const editId = ref('')
 const searchHandle = async () => {
     const { data } = await getUserCollectionsRequest({ userId: userId.value })
     collectList.value = data.collections
     console.log(collectList.value, 'collectList')
 }
+
+const addCollectRef = ref()
 const addColectHandle = () => {
-    editId.value = ''
-    showDialog.value = true
+    addCollectRef.value.open()
 }
 const editHandle = item => {
-    console.log('edit', item)
-    formData.value = {
+    addCollectRef.value.open(item.id, {
         name: item.name,
         description: item.description,
         isPublic: !!item.is_public,
-    }
-    editId.value = item.id
-    showDialog.value = true
+    })
 }
 const deleteHandle = async item => {
     console.log('delete', item)
@@ -136,54 +89,6 @@ const deleteHandle = async item => {
             }
         },
     })
-}
-const dialogCloseHandle = () => {
-    showDialog.value = false
-    resetData()
-}
-const resetData = () => {
-    formData.value = {
-        name: '',
-        description: '',
-        isPublic: true,
-    }
-}
-const formRef = ref()
-const submitHandle = async () => {
-    console.log(formData.value, 'formData.value')
-    await formRef.value.validate(valid => {
-        if (!valid) {
-            return
-        }
-    })
-
-    if (!formData.value.name) {
-        ElMessage.info('请填写收藏夹名称')
-    }
-    if (!formData.value.description) {
-        ElMessage.info('请填写收藏夹简介')
-    }
-    let result
-    if (editId.value) {
-        result = await updateUserCollectionsRequest({
-            ...formData.value,
-            collectionId: editId.value,
-        })
-    } else {
-        result = await createCollectionsRequest({
-            ...formData.value,
-        })
-    }
-    if (result.success) {
-        ElMessage.success(result.message)
-        searchHandle()
-    } else {
-        ElMessage.error(result.message)
-    }
-    showDialog.value = false
-    resetData()
-
-    console.log(result, 'results')
 }
 </script>
 <style scoped lang="less">

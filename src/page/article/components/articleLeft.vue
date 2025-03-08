@@ -38,24 +38,56 @@
     </div>
 
     <!-- 登录弹窗组件 -->
-    <el-dialog v-model="loginDialogVisible" title="登录" width="400px" :show-close="true" @close="closeLoginDialog">
-        <!-- 这里放登录表单组件 -->
-        <login-form @success="closeLoginDialog" />
+    <el-dialog
+        class="dialog"
+        v-model="showCollect"
+        title="收藏夹"
+        width="400px"
+        :show-close="true"
+        @close="closeColectDialog"
+    >
+        <div v-if="!collections.length"> 您还未创建文件夹！ </div>
+        <div v-else>
+            <el-checkbox-group class="checkboxGroup" v-model="checkCollect" :max="1">
+                <template v-for="item in collections">
+                    <el-checkbox class="w-full my-1" :value="item.id" border>
+                        <div class="flex items-center">
+                            {{ item.name }}
+                            <span v-if="!item.is_public" class="ml-1">
+                                <img class="img inline w-[20px]" src="@/assets/svg/点赞_1.svg" alt="" />
+                            </span>
+                        </div>
+                    </el-checkbox>
+                </template>
+            </el-checkbox-group>
+        </div>
+        <template #footer>
+            <div class="dialog-footer flex justify-between">
+                <el-button @click="addColectHandle">
+                    <el-icon><Plus /></el-icon> 新建文件夹
+                </el-button>
+                <el-button type="primary" @click="submitCollect"> 确认 </el-button>
+            </div>
+        </template>
     </el-dialog>
+    <addCollect ref="addCollectRef" @searchHandle="searchHandle"></addCollect>
 </template>
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { likeArticleRequest } from '../../../api/module/likes'
 import { ElMessage } from 'element-plus'
 import { useLogin } from '@/hooks/useLogin'
-
+import { getUserCollectionsRequest, addArticleCollectionsRequest } from '@/api/module/collection.js'
+import { appStore } from '../../../store/module/app'
+import addCollect from '@/components/addCollect.vue'
 const { data } = defineProps({
     data: {
         type: Object,
         required: true,
     },
 })
-
+const store = appStore()
+const userId = computed(() => store.userInfo.id)
 const localData = ref({ ...data })
 const likeCount = computed(() => localData.value.like_count)
 const hasLiked = computed(() => !!localData.value.has_liked)
@@ -78,7 +110,41 @@ const likeHandle = async () => {
     })
 }
 
-const collecteHandle = async () => {}
+const showCollect = ref(false)
+const collections = ref([])
+const checkCollect = ref([])
+const collecteHandle = () => {
+    withLogin(async () => {
+        searchHandle()
+    })
+}
+const searchHandle = async () => {
+    const { data } = await getUserCollectionsRequest({ userId: userId.value })
+    collections.value = data.collections
+    showCollect.value = true
+}
+const addCollectRef = ref()
+const addColectHandle = () => {
+    addCollectRef.value.open()
+}
+const closeColectDialog = () => {
+    checkCollect.value = []
+}
+const submitCollect = async () => {
+    console.log('checkCollect', checkCollect.value)
+    const result = await addArticleCollectionsRequest({
+        collectionId: checkCollect.value[0],
+        articleId: data.id,
+    })
+    if (result.success) {
+        ElMessage.success(result.message)
+        showCollect.value = false
+        checkCollect.value = []
+    } else {
+        ElMessage.error(result.message)
+    }
+}
+
 // 监听父组件数据变化
 watch(
     () => data,

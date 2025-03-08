@@ -3,7 +3,7 @@
         <div class="author">
             <div class="top">
                 <div class="avatar">
-                    <img class="img" :src="data.cover_url" alt="" />
+                    <img class="img" :src="data?.cover_url" alt="" />
                 </div>
                 <div class="avatar_name">名字</div>
             </div>
@@ -21,7 +21,7 @@
                     <div class="desc">文章</div>
                 </div>
             </div>
-            <div class="bot" v-if="data.user_id !== userInfo.id">
+            <div class="bot" v-if="data?.user_id !== userInfo.id">
                 <el-button class="btn">关注</el-button>
                 <el-button class="btn">私信</el-button>
             </div>

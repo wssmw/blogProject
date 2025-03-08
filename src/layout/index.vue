@@ -65,7 +65,7 @@ checkCallback()
                     <router-view></router-view>
                 </el-main>
             </div>
-            <el-aside class="mx-4" width="260px" v-if="store.windowInnerWidth > 960">
+            <el-aside class="mx-4" width="260px">
                 <MainRight></MainRight>
             </el-aside>
         </el-container>
@@ -76,7 +76,7 @@ checkCallback()
 </template>
 <style scoped lang="less">
 .layout {
-    min-width: 1260px;
+    min-width: 1100px;
     background: #f2f3f5;
 }
 .el-header {
