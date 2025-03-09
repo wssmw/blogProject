@@ -14,3 +14,10 @@ export const likeCommentRequest = async data => {
         data,
     })
 }
+// 修改用户头像
+export const updateUserAvatarRequest = async data => {
+    return wsRequest.post({
+        url: `/users/updateUserAvatar`,
+        data,
+    })
+}

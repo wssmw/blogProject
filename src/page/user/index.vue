@@ -11,7 +11,7 @@
                     <div class="desc">简介</div>
                 </div>
                 <div class="user_info_right">
-                    <el-button v-if="id === userInfo.id">编辑个人资料</el-button>
+                    <el-button v-if="id === userInfo.id" @click="editUserInfo">编辑个人资料</el-button>
                     <el-button v-else>关注Ta</el-button>
                 </div>
             </div>
@@ -74,17 +74,22 @@ import { computed, ref } from 'vue'
 import { appStore } from '../../store/module/app'
 import userArticle from './components/userArticle.vue'
 import UserCollect from './components/userCollect.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 const store = appStore()
 const userInfo = computed(() => store.userInfo)
 const route = useRoute()
+const router = useRouter()
 const id = ref(route.params.id)
 console.log(id.value)
 const activeName = ref('recently')
+
+const editUserInfo = () => {
+    router.push('/userSetting')
+}
 </script>
 <style scoped lang="less">
 .user {
-    width: 1280px;
+    width: 1260px;
     display: flex;
     justify-content: center;
     margin-top: 20px;

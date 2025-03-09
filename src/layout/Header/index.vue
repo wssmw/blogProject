@@ -111,7 +111,7 @@
                         </div>
                         <el-divider class="divider"></el-divider>
                         <div class="w-full flex justify-between font-semibold">
-                            <span>我的设置</span>
+                            <span class="cursor-pointer" @click="editUserInfo">我的设置</span>
                             <span class="cursor-pointer" @click="logOutHandle">退出</span>
                         </div>
                     </div>
@@ -183,6 +183,11 @@ const popover = ref()
 const clickHandle = () => {
     console.log(store.userInfo)
     router.push(`/user/${store.userInfo.id}`)
+    popover.value.hide()
+}
+
+const editUserInfo = () => {
+    router.push('/userSetting')
     popover.value.hide()
 }
 </script>
