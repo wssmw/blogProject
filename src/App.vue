@@ -23,6 +23,7 @@ onMounted(() => {
         store.windowScrollYChange(window.scrollY)
     })
     window.addEventListener('resize', () => {
+        console.log(store.windowInnerWidth, 'windowInnerWidth')
         store.windowInnerWidthChange(window.innerWidth)
     })
 })

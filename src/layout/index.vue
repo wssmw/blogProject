@@ -51,13 +51,13 @@ checkCallback()
             <div
                 ref="headerRef"
                 :style="headerStyle"
-                class="header fixed z-50 w-full h-[60px] flex justify-center bg-white"
+                class="header fixed right-0 z-50 w-full h-[60px] flex justify-center bg-white"
             >
                 <Header></Header>
             </div>
         </el-header>
         <el-container class="m-auto mt-5 justify-center" v-if="!isShow">
-            <el-aside class="mx-4" width="160px" v-if="store.windowInnerWidth > 1260">
+            <el-aside class="mr-4" width="160px" v-if="store.windowInnerWidth > 1260">
                 <MainLeft :style="headerStyle"></MainLeft>
             </el-aside>
             <div class="min-h-[900px]">
@@ -65,7 +65,7 @@ checkCallback()
                     <router-view></router-view>
                 </el-main>
             </div>
-            <el-aside class="mx-4" width="260px">
+            <el-aside class="ml-4" width="260px">
                 <MainRight></MainRight>
             </el-aside>
         </el-container>
@@ -76,8 +76,11 @@ checkCallback()
 </template>
 <style scoped lang="less">
 .layout {
-    min-width: 1100px;
+    min-width: 1260px;
     background: #f2f3f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .el-header {
     padding: 0;

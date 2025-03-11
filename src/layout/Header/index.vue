@@ -1,42 +1,46 @@
 <template>
-    <div class="header max-w-[1440px] h-15 flex justify-between">
-        <div class="flex text-base items-center">
-            <div class="flex items-center cursor-pointer" @click="backToHome">
+    <div class="header max-w-[1440px] w-full h-15 flex justify-between">
+        <div class="flex text-base items-center pl-3.5">
+            <div class="flex w-[120px] items-center cursor-pointer" @click="backToHome">
                 <img class="w-8 h-8" src="@/assets/svg/bird-duotone.svg" alt="" />
                 <span class="mx-5">拾光</span>
             </div>
-            <el-menu class="el-menu-popper-demo w-[600px] flex-1" router mode="horizontal">
-                <el-menu-item index="2" route="famousSquare">名言广场</el-menu-item>
-                <el-menu-item index="3" route="toolbox">
+            <el-menu
+                class="el-menu-popper-demo flex-1"
+                :style="resizeStyle"
+                default-active="/"
+                router
+                mode="horizontal"
+            >
+                <el-menu-item index="/">首页</el-menu-item>
+                <el-menu-item index="famousSquare">名言广场</el-menu-item>
+                <el-menu-item index="toolbox">
                     <img class="w-5 h-5" src="@/assets/svg/工具箱.svg" alt="" />
                     工具箱
                 </el-menu-item>
-                <el-menu-item index="4" route="label">
+                <el-menu-item index="label" route="">
                     <img class="w-5 h-5" src="@/assets/svg/标签.svg" alt="" />
                     标签
                 </el-menu-item>
-                <el-sub-menu index="6">
-                    <template #title>
-                        <img class="w-5 h-5" src="@/assets/svg/关于.svg" alt="" />
-                        关于
-                    </template>
-                    <el-menu-item index="6-1" route="about">关于本网站</el-menu-item>
-                </el-sub-menu>
-                <el-sub-menu index="7">
-                    <template #title> 友人帐 </template>
-                    <el-menu-item index="7-1" route="friendChain">友链</el-menu-item>
-                </el-sub-menu>
+                <el-menu-item index="about">关于本网站</el-menu-item>
+                <el-menu-item index="friendChain">友链</el-menu-item>
             </el-menu>
         </div>
         <div class="flex items-center justify-around">
-            <div class="w-[280px]">
+            <div :class="store.windowInnerWidth > 1280 ? 'w-[280px]' : ''">
                 <el-input class="h-10" placeholder="探索拾光">
                     <template #suffix>
                         <el-icon><Search /></el-icon>
                     </template>
                 </el-input>
             </div>
-            <el-dropdown class="ml-4 min-w-[141px]" size="large" split-button type="primary">
+            <el-dropdown
+                v-if="store.windowInnerWidth > 700"
+                class="ml-4 min-w-[141px]"
+                size="large"
+                split-button
+                type="primary"
+            >
                 创造者中心
                 <template #dropdown>
                     <el-dropdown-menu>
@@ -155,6 +159,11 @@ const data = ref([
     },
 ])
 
+const resizeStyle = computed(() => {
+    return {
+        width: `${store.windowInnerWidth / 2 - 160}px`,
+    }
+})
 const backToHome = () => {
     console.log(router)
     router.push('/')
