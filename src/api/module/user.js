@@ -21,3 +21,10 @@ export const updateUserAvatarRequest = async data => {
         data,
     })
 }
+// 修改用户信息
+export const updateUserInfoRequest = async data => {
+    return wsRequest.post({
+        url: `/users/updateUserInfo`,
+        data,
+    })
+}

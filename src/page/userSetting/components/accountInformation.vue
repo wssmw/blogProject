@@ -2,29 +2,57 @@
 import { ElMessage } from 'element-plus'
 import { computed, ref } from 'vue'
 import { appStore } from '../../../store/module/app'
+import { validateQQ, validateWX } from '../../../utils/typeUtil'
+import { updateUserInfoRequest } from '../../../api/module/user'
 
-const props = defineProps({})
 const store = appStore()
-
+const userInfo = computed(() => store.userInfo)
 const formRef = ref()
 const formData = ref({
-    bio: '',
-    qq: '',
-    wechat: '',
-    github: '',
-    website: '',
-    location: '',
-    occupation: '',
-    company: '',
+    bio: userInfo.value.bio,
+    qq: userInfo.value.qq,
+    wechat: userInfo.value.wechat,
+    github: userInfo.value.github,
+    website: userInfo.value.website,
+    location: userInfo.value.location,
+    occupation: userInfo.value.occupation,
+    company: userInfo.value.company,
 })
+
+const ValidateQQ = (rule, value, callback) => {
+    if (value == null || value == '') {
+        callback()
+    } else if (!validateQQ(value)) {
+        callback(new Error('QQ号格式不正确'))
+    } else {
+        callback()
+    }
+}
+const ValidateWX = (rule, value, callback) => {
+    if (value == null || value == '') {
+        callback()
+    } else if (!validateWX(value)) {
+        callback(new Error('微信号格式不正确'))
+    } else {
+        callback()
+    }
+}
 const rules = {
-    username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
-    nickname: [{ required: true, message: '昵称不能为空', trigger: 'blur' }],
+    qq: [{ validator: ValidateQQ, trigger: 'blur' }],
+    wechat: [{ validator: ValidateWX, trigger: 'blur' }],
 }
 const submitHandle = () => {
-    formRef.value.validate(valid => {
+    formRef.value.validate(async valid => {
         if (valid) {
             console.log(formData.value)
+            const results = await updateUserInfoRequest({ ...formData.value })
+            console.log(results, 'results')
+            if (results.success) {
+                ElMessage.success(results.message)
+                store.userInfoChange(results.data.userInfo)
+            } else {
+                ElMessage.error(results.message)
+            }
         }
     })
 }
@@ -35,7 +63,8 @@ const submitHandle = () => {
         <el-divider class="divider"></el-divider>
         <el-form ref="formRef" :model="formData" :rules="rules" label-width="80" label-position="right" size="default">
             <el-form-item label="个人简介:" prop="bio">
-                <el-input v-model="formData.bio" placeholder="个人简介" maxlength="20" show-word-limit> </el-input>
+                <el-input v-model="formData.bio" type="textarea" placeholder="个人简介" maxlength="200" show-word-limit>
+                </el-input>
             </el-form-item>
             <el-form-item label="QQ号:" prop="qq">
                 <el-input v-model="formData.qq" placeholder="QQ号" maxlength="20" show-word-limit> </el-input>

@@ -2,8 +2,9 @@
 import { ElMessage } from 'element-plus'
 import { computed, ref } from 'vue'
 import { appStore } from '../../../store/module/app'
+import { validatePhone, validateEmail } from '../../../utils/typeUtil'
+import { updateUserInfoRequest } from '../../../api/module/user'
 
-const props = defineProps({})
 const store = appStore()
 const userInfo = computed(() => store.userInfo)
 const showAvatarCover = ref(false)
@@ -30,19 +31,48 @@ const successUploadHandle = res => {
 
 const formRef = ref()
 const formData = ref({
-    username: '',
-    nickname: '',
-    email: '',
-    phone: '',
+    username: store.userInfo.username,
+    nickname: store.userInfo.nickname,
+    email: store.userInfo.email,
+    phone: store.userInfo.phone,
 })
+const ValidatePhone = (rule, value, callback) => {
+    console.log(validatePhone(value))
+    if (value == null || value == '') {
+        callback()
+    } else if (!validatePhone(value)) {
+        callback(new Error('手机号格式不正确'))
+    } else {
+        callback()
+    }
+}
+const ValidateEmail = (rule, value, callback) => {
+    if (value == null || value == '') {
+        callback()
+    } else if (!validateEmail(value)) {
+        callback(new Error('邮箱格式不正确'))
+    } else {
+        callback()
+    }
+}
 const rules = {
     username: [{ required: true, message: '用户名不能为空', trigger: 'blur' }],
     nickname: [{ required: true, message: '昵称不能为空', trigger: 'blur' }],
+    phone: [{ validator: ValidatePhone, trigger: 'blur' }],
+    email: [{ validator: ValidateEmail, trigger: 'blur' }],
 }
 const submitHandle = () => {
-    formRef.value.validate(valid => {
+    formRef.value.validate(async valid => {
         if (valid) {
             console.log(formData.value)
+            const results = await updateUserInfoRequest({ ...formData.value })
+            console.log(results, 'results')
+            if (results.success) {
+                ElMessage.success(results.message)
+                store.userInfoChange(results.data.userInfo)
+            } else {
+                ElMessage.error(results.message)
+            }
         }
     })
 }
@@ -68,7 +98,7 @@ const submitHandle = () => {
                     <el-input v-model="formData.nickname" placeholder="昵称" maxlength="20" show-word-limit> </el-input>
                 </el-form-item>
                 <el-form-item label="邮箱:" prop="email">
-                    <el-input v-model="formData.email" placeholder="邮箱" maxlength="20" show-word-limit> </el-input>
+                    <el-input v-model="formData.email" placeholder="邮箱"> </el-input>
                 </el-form-item>
                 <el-form-item label="手机:" prop="phone">
                     <el-input v-model="formData.phone" placeholder="手机"> </el-input>
