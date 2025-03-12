@@ -19,9 +19,7 @@
         </div>
         <div v-else class="p-4 flex flex-col items-center bg-white mt-4 rounded-md relative">
             <div class="flex justify-start w-full items-center">
-                <el-avatar :size="40">
-                    <el-icon><UserFilled /></el-icon>
-                </el-avatar>
+                <img class="w-10 h-10 rounded-full" :src="userInfo.avatar_url" alt="" />
                 <div class="ml-3 flex flex-col justify-between">
                     <div class="text-lg">{{ userInfo.name }}</div>
                     <div> 职业-{{ userInfo.career }} </div>
@@ -30,19 +28,19 @@
             <el-divider class="divider"></el-divider>
             <div class="bottom w-full">
                 <div class="item">
-                    <div class="num"> 1 </div>
+                    <div class="num"> {{ userInfo.following_count || 0 }} </div>
                     <div class="title"> 关注 </div>
                 </div>
                 <div class="item">
-                    <div class="num"> 1 </div>
+                    <div class="num"> {{ userInfo.collection_count || 0 }} </div>
                     <div class="title"> 收藏 </div>
                 </div>
                 <div class="item">
-                    <div class="num"> 1 </div>
+                    <div class="num"> {{ userInfo.article_count || 0 }} </div>
                     <div class="title"> 文章 </div>
                 </div>
                 <div class="item">
-                    <div class="num"> 1 </div>
+                    <div class="num"> 0 </div>
                     <div class="title"> 名言 </div>
                 </div>
             </div>

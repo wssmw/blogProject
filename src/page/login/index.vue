@@ -39,7 +39,7 @@ const store = appStore()
 const dialogTitle = ref('登录')
 const showContent = ref(1) // 登录,注册,忘记密码 分别对应1,2,3
 
-let showDialog = computed(()=>store.showLoginModal)
+let showDialog = computed(() => store.showLoginModal)
 
 const giteeLogin = () => {
     window.location.href = `http://localhost:1234/login/gitee`
@@ -50,7 +50,7 @@ const userInfo = reactive({
     passWord: '',
 })
 
-const dialogCloseHandle= () =>{
+const dialogCloseHandle = () => {
     store.showLoginModalChange(false)
 }
 
@@ -113,7 +113,6 @@ const returnLoginHandle = () => {
     showContent.value = 1
     resetHandle()
 }
-
 </script>
 <style scoped lang="less">
 .dialog {

@@ -8,10 +8,10 @@
                 <div class="user_info_mid">
                     <div class="nickname">{{ userInfo?.nickname }}</div>
                     <div class="career">职业</div>
-                    <div class="desc">简介</div>
+                    <div class="desc">{{ userInfo.bio }}</div>
                 </div>
                 <div class="user_info_right">
-                    <el-button v-if="id === userInfo.id" @click="editUserInfo">编辑个人资料</el-button>
+                    <el-button v-if="store.userInfo.id === userInfo.id" @click="editUserInfo">编辑个人资料</el-button>
                     <el-button v-else>关注Ta</el-button>
                 </div>
             </div>
@@ -70,19 +70,25 @@
     </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue'
-import { appStore } from '../../store/module/app'
+import { onMounted, ref } from 'vue'
 import userArticle from './components/userArticle.vue'
 import UserCollect from './components/userCollect.vue'
 import { useRoute, useRouter } from 'vue-router'
+import { getUserInfoRequest } from '../../api/module/user'
+import { appStore } from '../../store/module/app'
 const store = appStore()
-const userInfo = computed(() => store.userInfo)
 const route = useRoute()
 const router = useRouter()
+
+const userInfo = ref({})
 const id = ref(route.params.id)
 console.log(id.value)
 const activeName = ref('recently')
 
+onMounted(async () => {
+    const { data } = await getUserInfoRequest(id.value)
+    userInfo.value = data
+})
 const editUserInfo = () => {
     router.push('/userSetting')
 }

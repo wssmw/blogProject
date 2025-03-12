@@ -28,3 +28,9 @@ export const updateUserInfoRequest = async data => {
         data,
     })
 }
+// 查看用户信息
+export const getUserInfoRequest = async id => {
+    return wsRequest.get({
+        url: `/users/${id}`,
+    })
+}
