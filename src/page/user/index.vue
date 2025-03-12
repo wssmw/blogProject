@@ -12,7 +12,7 @@
                 </div>
                 <div class="user_info_right">
                     <el-button v-if="store.userInfo.id === userInfo.id" @click="editUserInfo">编辑个人资料</el-button>
-                    <el-button v-else>关注Ta</el-button>
+                    <el-button v-else @click="followHandle">关注Ta</el-button>
                 </div>
             </div>
             <el-tabs v-model="activeName" class="tabs">
@@ -23,8 +23,26 @@
                 <el-tab-pane label="收藏集" name="collect" lazy>
                     <UserCollect />
                 </el-tab-pane>
-                <el-tab-pane label="关注" name="follow">follow</el-tab-pane>
-                <el-tab-pane label="点赞" name="likes">likes</el-tab-pane>
+                <el-tab-pane label="关注" name="follow" lazy>
+                    <el-tabs tab-position="left" style="height: 300px" class="demo-tabs">
+                        <el-tab-pane label="关注用户" lazy>
+                            <UserFollow></UserFollow>
+                        </el-tab-pane>
+                        <el-tab-pane label="关注标签" lazy>
+                            <TagFollow></TagFollow>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-tab-pane>
+                <el-tab-pane label="点赞" name="likes" lazy>
+                    <el-tabs tab-position="left" style="height: 300px" class="demo-tabs">
+                        <el-tab-pane label="点赞的文章" lazy>
+                            <LikeArticle></LikeArticle>
+                        </el-tab-pane>
+                        <el-tab-pane label="点赞的评论" lazy>
+                            <LikeComment></LikeComment>
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-tab-pane>
             </el-tabs>
         </div>
         <div class="right">
@@ -76,6 +94,12 @@ import UserCollect from './components/userCollect.vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getUserInfoRequest } from '../../api/module/user'
 import { appStore } from '../../store/module/app'
+import UserFollow from './components/userFollow.vue'
+import TagFollow from './components/tagFollow.vue'
+import LikeArticle from './components/LikeArticle.vue'
+import LikeComment from './components/LikeComment.vue'
+import { followUserRequest } from '../../api/module/follow'
+import { ElMessage } from 'element-plus'
 const store = appStore()
 const route = useRoute()
 const router = useRouter()
@@ -91,6 +115,16 @@ onMounted(async () => {
 })
 const editUserInfo = () => {
     router.push('/userSetting')
+}
+
+const followHandle = async () => {
+    const result = await followUserRequest({ userId: id.value })
+    console.log(result, 'result')
+    if (result.success) {
+        ElMessage.success(result.message)
+    } else {
+        ElMessage.error(result.message)
+    }
 }
 </script>
 <style scoped lang="less">

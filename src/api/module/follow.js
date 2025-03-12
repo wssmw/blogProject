@@ -14,3 +14,10 @@ export const getFollowingUsersRequest = async data => {
         data,
     })
 }
+// 获取关注的标签列表
+export const getFollowingTagsRequest = async data => {
+    return wsRequest.post({
+        url: `/follow/getFollowingTags`,
+        data,
+    })
+}
