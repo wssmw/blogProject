@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import Layout from '@/layout/index.vue'
-import { onMounted } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { appStore } from './store/module/app'
 import { getLocalStorage, setLocalStorage } from './utils'
+import { debounce } from 'lodash-es'
 const store = appStore()
 // setLocalStorage('userInfo', {
 //     cookie: 'qqqq',
@@ -16,16 +17,22 @@ console.log(userInfo)
 if (userInfo) {
     store.userInfoChange(userInfo)
 }
+const handleResize = debounce(() => {
+    console.log('这里执行')
+    store.windowInnerWidthChange(window.innerWidth)
+}, 200)
+const handleScroll = debounce(() => {
+    store.windowScrollYChange(window.scrollY)
+}, 200)
 onMounted(() => {
     window.scrollTo(0, 0) // 页面加载时滚动到顶部
     store.windowScrollYChange(0)
-    window.addEventListener('scroll', () => {
-        store.windowScrollYChange(window.scrollY)
-    })
-    window.addEventListener('resize', () => {
-        console.log(store.windowInnerWidth, 'windowInnerWidth')
-        store.windowInnerWidthChange(window.innerWidth)
-    })
+    window.addEventListener('scroll', handleScroll)
+    window.addEventListener('resize', handleResize)
+})
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+    window.removeEventListener('scroll', handleScroll)
 })
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-    <div class="article_left">
+    <div class="article_left" :style="headerStyle">
         <el-badge
             :value="likeCount"
             class="item"
@@ -92,6 +92,19 @@ const localData = ref({ ...data })
 const likeCount = computed(() => localData.value.like_count)
 const hasLiked = computed(() => !!localData.value.has_liked)
 const hasCollecte = computed(() => !!localData.value.has_collected)
+const headerStyle = computed(() => {
+    if (store.windowScrollY > 400) {
+        return {
+            transition: 'transform .2s ease-in-out',
+            transform: 'translate3d(0,-60px,0)',
+        }
+    } else {
+        return {
+            transition: 'transform .2s ease-in-out',
+            transform: 'translate3d(0,0,0)',
+        }
+    }
+})
 console.log(hasCollecte, 'hasCollecte')
 // 使用登录hooks
 const { withLogin } = useLogin()

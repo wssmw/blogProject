@@ -15,7 +15,7 @@
                     <el-button v-else>关注Ta</el-button>
                 </div>
             </div>
-            <el-tabs v-model="activeName" class="tabs" @tab-click="handleClick">
+            <el-tabs v-model="activeName" class="tabs">
                 <el-tab-pane label="最近" name="recently">User</el-tab-pane>
                 <el-tab-pane label="文章" name="article" lazy>
                     <userArticle />

@@ -70,7 +70,6 @@ checkCallback()
             </el-aside>
         </el-container>
         <router-view v-else></router-view>
-        <Login ref="loginRef" :showDialog="showLoginModal"></Login>
         <el-backtop :right="50" :bottom="50" />
     </div>
 </template>

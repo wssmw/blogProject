@@ -1,7 +1,7 @@
 <template>
     <el-container class="article mt-5">
         <el-aside class="mx-4" width="60px">
-            <ArticleLeft :data="data" :style="headerStyle"></ArticleLeft>
+            <ArticleLeft :data="data"></ArticleLeft>
         </el-aside>
         <div class="w-[760px] bg-white rounded-md">
             <div class="article_content">
@@ -36,24 +36,11 @@ import ArticleLeft from './components/articleLeft.vue'
 import ArticleRight from './components/articleRight.vue'
 import { appStore } from '../../store/module/app'
 const store = appStore()
-const headerStyle = computed(() => {
-    if (store.windowScrollY > 400) {
-        return {
-            transition: 'transform .2s ease-in-out',
-            transform: 'translate3d(0,-60px,0)',
-        }
-    } else {
-        return {
-            transition: 'transform .2s ease-in-out',
-            transform: 'translate3d(0,0,0)',
-        }
-    }
-})
 
 const route = useRoute()
 let id = computed(() => route.params.id)
 
-let data = ref()
+let data = ref({})
 onMounted(async () => {
     console.log(id, 'id')
     const result = await getArticleByIdRequest(id.value)

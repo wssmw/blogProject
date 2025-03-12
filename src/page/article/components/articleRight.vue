@@ -38,7 +38,7 @@ const { data } = defineProps({
     },
 })
 const store = appStore()
-const userInfo = computed(() => store.userInfo)
+const userInfo = computed(() => store.userInfo || {})
 console.log(data, 'datazzz')
 </script>
 <style scoped lang="less">

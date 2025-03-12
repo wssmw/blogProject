@@ -6,7 +6,6 @@ import { appStore } from '../../../store/module/app'
 const props = defineProps({})
 const store = appStore()
 const userInfo = computed(() => store.userInfo)
-const avatarUrl = ref(userInfo.value.avatar_url)
 const showAvatarCover = ref(false)
 const headers = {
     Authorization: `Bearer ${store.token}`,
@@ -20,8 +19,9 @@ const mouseleave = () => {
 const successUploadHandle = res => {
     console.log(res, 'res')
     if (res.success) {
-        avatarUrl.value = res.data.userInfo.avatar_url
-        console.log(avatarUrl.value, 'avatarUrl')
+        store.userInfoChange({
+            ...res.data.userInfo,
+        })
         ElMessage.success(res.message)
     } else {
         ElMessage.error(res.message)
@@ -86,7 +86,7 @@ const submitHandle = () => {
                 :on-success="successUploadHandle"
             >
                 <div class="upload_content" @mouseenter="mouseEnter" @mouseleave="mouseleave">
-                    <img class="img" :src="avatarUrl" alt="头像" />
+                    <img class="img" :src="userInfo.avatar_url" alt="头像" />
                     <div class="cover" v-show="showAvatarCover">
                         <el-icon class="icon"><Plus /></el-icon>
                         点击修改头像
