@@ -8,11 +8,9 @@
             <el-menu
                 class="el-menu-popper-demo flex-1"
                 :style="resizeStyle"
-                default-active="/"
                 router
                 mode="horizontal"
             >
-                <el-menu-item index="/">首页</el-menu-item>
                 <el-menu-item index="famousSquare">名言广场</el-menu-item>
                 <el-menu-item index="toolbox">
                     <img class="w-5 h-5" src="@/assets/svg/工具箱.svg" alt="" />
