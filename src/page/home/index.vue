@@ -15,10 +15,11 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import { getArticleRequest } from '@/api/module/articles'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import articleItem from '@/components/articleItem.vue'
 // 常量定义
 const router = useRouter()
+const route = useRoute()
 const TAG_TYPES = ['primary', 'success', 'warning']
 const PAGE_SIZE = 10
 const OBSERVER_OPTIONS = {
@@ -58,6 +59,7 @@ const requestHandle = async () => {
     const { data } = await getArticleRequest({
         page: page.value,
         pageSize: PAGE_SIZE,
+        category: route.params.categoryId,
     })
     const { total, articles } = data
     articleList.value = [...articleList.value, ...articles]

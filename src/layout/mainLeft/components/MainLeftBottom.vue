@@ -1,77 +1,66 @@
 <template>
-  <div class="main_left_bootom bg-white rounded-md p-3">
-    <div class="text-base">热门分类</div>
-    <el-divider class="divider"></el-divider>
-    <div class="content">
-      <div :class="`item ${currentRoutePath=='/frontend'?'active':''}`" @click="changeRouter('/frontend')">
-        <img class="w-5 h-5 mr-2" src="@/assets/svg/8_3前端开发.svg" alt="" />
-        前端
-      </div>
-      <div :class="`item ${currentRoutePath=='/backend'?'active':''}`" @click="changeRouter('/backend')">
-        <img class="w-5 h-5 mr-2" src="@/assets/svg/后端.svg" alt="" />
-        后端
-      </div>
-      <div :class="`item ${currentRoutePath=='/android'?'active':''}`" @click="changeRouter('/android')">
-        <img class="w-5 h-5 mr-2" src="@/assets/svg/Android.svg" alt="" />
-        Android
-      </div>
-      <div :class="`item ${currentRoutePath=='/ios'?'active':''}`" @click="changeRouter('/ios')">
-        <img class="w-5 h-5 mr-2" src="@/assets/svg/ios.svg" alt="" />
-        iOS
-      </div>
-      <div :class="`item ${currentRoutePath=='/ai'?'active':''}`" @click="changeRouter('/ai')">
-        <img class="w-5 h-5 mr-2" src="@/assets/svg/8_8人工智能.svg" alt="" />
-        人工智能
-      </div>
-      <div :class="`item ${currentRoutePath=='/freebie'?'active':''}`" @click="changeRouter('/freebie')">
-        <img class="w-5 h-5 mr-2" src="@/assets/svg/开发工具.svg" alt="" />
-        开发工具
-      </div>
-      <div :class="`item ${currentRoutePath=='/operatingSystem'?'active':''}`" @click="changeRouter('/operatingSystem')">
-        <img class="w-5 h-5 mr-2" src="@/assets/svg/操作系统.svg" alt="" />
-        操作系统
-      </div>
+    <div class="main_left_bootom bg-white rounded-md p-3">
+        <div class="text-base">热门分类</div>
+        <el-divider class="divider"></el-divider>
+        <div class="content">
+            <template v-for="item in categoryList" :key="item.id">
+                <div :class="`item ${currentRoutePath.includes(item.id) ? 'active' : ''}`" @click="changeRouter(item)">
+                    <div class="w-5 h-5 mr-2" v-html="item.svg_icon"></div>
+                    {{ item.name }}
+                </div>
+            </template>
+        </div>
     </div>
-  </div>
 </template>
 <script setup>
-import { computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { getCategoryListRequest } from '../../../api/module/category'
 const router = useRouter()
 const route = useRoute()
-const currentRoutePath = computed(()=>route.path)
-const changeRouter = (route) => {
-  router.push(route)
+
+const categoryList = ref([])
+onMounted(async () => {
+    const result = await getCategoryListRequest()
+    console.log(result, 'result')
+    categoryList.value = result.data.categories
+})
+
+console.log(route, 'route')
+const currentRoutePath = computed(() => route.path)
+
+const changeRouter = item => {
+    router.replace({ path: `/${item.id}` })
 }
 </script>
 <style scoped lang="less">
 .main_left_bootom {
-  .divider {
-    margin: 10px 0;
-  }
-  .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .item {
-      display: flex;
-      align-items: center;
-      width: 140px;
-      height: 40px;
-      line-height: 40px;
-      padding-left: 20px;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      &:hover {
-        background: #f7f8fa;
-        color: #1e80ff;
-      }
+    .divider {
+        margin: 10px 0;
     }
-  }
+    .content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .item {
+            display: flex;
+            align-items: center;
+            width: 140px;
+            height: 40px;
+            line-height: 40px;
+            padding-left: 20px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            &:hover {
+                background: #f7f8fa;
+                color: #1e80ff;
+            }
+        }
+    }
 }
 .active {
-  background-color: #eaf2ff!important;
-  color: #1e80ff;
+    background-color: #eaf2ff !important;
+    color: #1e80ff;
 }
 </style>
