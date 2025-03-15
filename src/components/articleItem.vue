@@ -35,6 +35,15 @@
                             {{ articleItem.like_count }}
                         </span>
                     </div>
+                    <el-dropdown class="mx-2" v-if="userInfo.id === articleItem.user_id">
+                        <el-icon><MoreFilled /></el-icon>
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item @click.stop="editHandle(articleItem)">编辑</el-dropdown-item>
+                                <el-dropdown-item @click.stop="deleteHandle(articleItem.id)">删除 </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </div>
                 <div class="flex">
                     <template
@@ -52,10 +61,15 @@
             <img class="w-[108px] h-[72px]" :src="articleItem.cover_url" alt="" />
         </div>
     </div>
+    <OperateInfo ref="operateInfoRef" content="是否确认删除" @confirmHandle="confirmHandle"></OperateInfo>
 </template>
 <script setup>
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { appStore } from '../store/module/app'
 import { getTimeAgo } from '../utils'
+import OperateInfo from './operateInfo.vue'
+import { deleteArticlesRequest } from '@/api/module/articles.js'
 const { articleItem } = defineProps({
     articleItem: {
         type: Object,
@@ -66,6 +80,12 @@ const { articleItem } = defineProps({
         default: false,
     },
 })
+const emit = defineEmits(['refeshHandle'])
+
+const store = appStore()
+const userInfo = computed(() => store.userInfo || {})
+console.log(articleItem, 'articleItem')
+console.log(userInfo, 'userInfo')
 const TAG_TYPES = ['primary', 'success', 'warning']
 // 常量定义
 const router = useRouter()
@@ -76,6 +96,23 @@ const clickHandle = article => {
 const goToUserHandle = userId => {
     console.log(userId)
     router.push(`/user/${userId}`)
+}
+
+const editHandle = () => {}
+
+const operateInfoRef = ref()
+const deleteHandle = () => {
+    operateInfoRef.value.open()
+}
+const confirmHandle = async () => {
+    const result = await deleteArticlesRequest({ articleId: articleItem.id })
+    console.log('result', result)
+    if (result.success) {
+        ElMessage.success(result.message)
+        emit('refeshHandle')
+    } else {
+        ElMessage.error(result.message)
+    }
 }
 </script>
 <style scoped lang="scss"></style>

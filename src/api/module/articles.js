@@ -41,3 +41,10 @@ export const getHotArticlesRequest = async data => {
         data,
     })
 }
+// 删除文章
+export const deleteArticlesRequest = async data => {
+    return wsRequest.post({
+        url: `/article/delete`,
+        data,
+    })
+}
