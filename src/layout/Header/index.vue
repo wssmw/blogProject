@@ -6,22 +6,24 @@
                 <span class="mx-5">拾光</span>
             </div>
             <el-menu
+                ref="menuRef"
+                :default-active="activeMenu"
                 class="el-menu-popper-demo flex-1"
                 :style="resizeStyle"
                 router
                 mode="horizontal"
             >
-                <el-menu-item index="famousSquare">名言广场</el-menu-item>
-                <el-menu-item index="toolbox">
+                <el-menu-item index="2" route="famousSquare">名言广场</el-menu-item>
+                <el-menu-item index="3" route="toolbox">
                     <img class="w-5 h-5" src="@/assets/svg/工具箱.svg" alt="" />
                     工具箱
                 </el-menu-item>
-                <el-menu-item index="label" route="">
+                <el-menu-item index="4" route="label">
                     <img class="w-5 h-5" src="@/assets/svg/标签.svg" alt="" />
                     标签
                 </el-menu-item>
-                <el-menu-item index="about">关于本网站</el-menu-item>
-                <el-menu-item index="friendChain">友链</el-menu-item>
+                <el-menu-item index="5" route="about">关于本网站</el-menu-item>
+                <el-menu-item index="6" route="friendChain">友链</el-menu-item>
             </el-menu>
         </div>
         <div class="flex items-center justify-around">
@@ -125,7 +127,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { appStore } from '../../store/module/app'
-import { computed, ref } from 'vue'
+import { computed, ref, watch, nextTick } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
@@ -162,9 +164,46 @@ const resizeStyle = computed(() => {
         width: `${store.windowInnerWidth / 2 - 160}px`,
     }
 })
+
+const menuRef = ref()
+const activeMenu = ref('1')
+
+// 添加路由监听
+watch(
+    () => router.currentRoute.value.path,
+    newPath => {
+        // 如果当前已经是首页且激活项是1，则不需要重复设置
+        if (newPath === '/' && activeMenu.value === '1') {
+            return
+        }
+
+        // 根据路径设置激活的菜单
+        switch (newPath) {
+            case '/':
+                activeMenu.value = ''
+                break
+            case '/famousSquare':
+                activeMenu.value = '2'
+                break
+            case '/toolbox':
+                activeMenu.value = '3'
+                break
+            case '/label':
+                activeMenu.value = '4'
+                break
+            case '/about':
+                activeMenu.value = '5'
+                break
+            case '/friendChain':
+                activeMenu.value = '6'
+                break
+        }
+    },
+    { immediate: true },
+)
+
 const backToHome = () => {
-    console.log(router)
-    router.push('/')
+    router.push('/') // 后进行路由跳转
 }
 const jumpToEditor = () => {
     if (store.isLogin) {

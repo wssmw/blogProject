@@ -3,43 +3,66 @@
         <div class="author">
             <div class="top">
                 <div class="avatar">
-                    <img class="img" :src="data?.cover_url" alt="" />
+                    <img class="img" :src="userInfo.avatar_url" alt="" />
                 </div>
                 <div class="avatar_name">名字</div>
             </div>
             <div class="mid">
                 <div class="item">
-                    <div class="num">1</div>
+                    <div class="num">{{ userInfo.article_count }}</div>
                     <div class="desc">文章</div>
                 </div>
                 <div class="item">
-                    <div class="num">1</div>
-                    <div class="desc">文章</div>
+                    <div class="num">{{ userInfo.follower_count }}</div>
+                    <div class="desc">粉丝</div>
                 </div>
                 <div class="item">
-                    <div class="num">1</div>
-                    <div class="desc">文章</div>
+                    <div class="num">{{ userInfo.total_views }}</div>
+                    <div class="desc">阅读</div>
                 </div>
             </div>
-            <div class="bot" v-if="data?.user_id !== userInfo.id">
-                <el-button class="btn">关注</el-button>
+            <div class="bot">
+                <el-button class="btn" v-if="!userInfo.has_followed" @click="followUserHandle">关注</el-button>
+                <el-button class="btn" type="success" v-else @click="followUserHandle">取关</el-button>
                 <el-button class="btn">私信</el-button>
             </div>
         </div>
     </div>
 </template>
 <script setup>
-import { appStore } from '../../../store/module/app'
-import { computed } from 'vue'
-const { data } = defineProps({
+import { ref, watch } from 'vue'
+import { getUserInfoRequest } from '../../../api/module/user'
+import { followUserRequest } from '../../../api/module/follow'
+import { ElMessage } from 'element-plus'
+const props = defineProps({
     data: {
         type: Object,
-        required: true,
     },
 })
-const store = appStore()
-const userInfo = computed(() => store.userInfo || {})
-console.log(data, 'datazzz')
+const userInfo = ref({})
+watch(
+    () => props.data.user_id,
+    newData => {
+        requestHandle()
+    },
+    { deep: true },
+)
+const requestHandle = async () => {
+    const result = await getUserInfoRequest(props.data.user_id)
+    console.log(result, 'result')
+    userInfo.value = result.data
+}
+
+const followUserHandle = async () => {
+    const result = await followUserRequest({ userId: props.data.user_id })
+    console.log(result, 'result')
+    if (result.success) {
+        ElMessage.success(result.message)
+        requestHandle()
+    } else {
+        ElMessage.success(result.message)
+    }
+}
 </script>
 <style scoped lang="less">
 .article_right {

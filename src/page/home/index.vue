@@ -5,7 +5,7 @@
                 <articleItem :articleItem="item" />
             </template>
         </div>
-        <el-skeleton v-else-if="articleList.length === 0" :rows="5" animated />
+        <el-skeleton v-else-if="loading" :rows="5" animated />
         <!-- 加载提示 -->
         <div v-if="loading" class="loading">加载中...</div>
         <div v-if="noMoreData" class="no-more">没有更多数据了</div>
@@ -13,14 +13,12 @@
     </div>
 </template>
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import { getArticleRequest } from '@/api/module/articles'
 import { useRoute, useRouter } from 'vue-router'
 import articleItem from '@/components/articleItem.vue'
 // 常量定义
-const router = useRouter()
 const route = useRoute()
-const TAG_TYPES = ['primary', 'success', 'warning']
 const PAGE_SIZE = 10
 const OBSERVER_OPTIONS = {
     root: null,
@@ -37,6 +35,16 @@ const noMoreData = ref(false)
 
 let observer
 let debounceTimer = null // 用于防抖的timer
+
+watch(
+    () => route.params,
+    newData => {
+        articleList.value = []
+        page.value = 0
+        requestHandle()
+    },
+    { deep: true },
+)
 
 onMounted(() => {
     observer = new IntersectionObserver(entries => {
@@ -68,10 +76,6 @@ const requestHandle = async () => {
     if (page.value * PAGE_SIZE > total) {
         noMoreData.value = true
     }
-}
-
-const clickHandle = article => {
-    router.push(`/article/${article.id}`)
 }
 
 onUnmounted(() => {

@@ -10,10 +10,8 @@ import { loginWidthGitee } from '../api/module/login'
 const store = appStore()
 const route = useRoute()
 const router = useRouter()
-console.log('route.path.split(" / ")[0]', route.path.split('/')[1])
-const isShow = computed(() =>
-    ['editor', 'article', 'user', 'about', 'userSetting', 'backend'].includes(route.path.split('/')[1]),
-)
+console.log(route, 'route')
+const isShow = computed(() => route.name === 'home')
 const isEditor = computed(() => route.path.includes('/editor'))
 console.log(route, 'route')
 const headerStyle = computed(() => {
@@ -58,7 +56,7 @@ checkCallback()
                 <Header></Header>
             </div>
         </el-header>
-        <el-container class="m-auto mt-5 justify-center" v-if="!isShow">
+        <el-container class="m-auto mt-5 justify-center" v-if="isShow">
             <el-aside class="mr-4" width="160px" v-if="store.windowInnerWidth > 1260">
                 <MainLeft :style="headerStyle"></MainLeft>
             </el-aside>
@@ -79,6 +77,7 @@ checkCallback()
 <style scoped lang="less">
 .layout {
     min-width: 1260px;
+    min-height: 100vh;
     background: #f2f3f5;
     display: flex;
     flex-direction: column;

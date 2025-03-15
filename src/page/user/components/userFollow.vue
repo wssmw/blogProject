@@ -16,7 +16,7 @@
                         </div>
                     </div>
                     <div class="right">
-                        <el-button> 已关注</el-button>
+                        <el-button @click="followUserHandle(item.id)" type="success"> 取关</el-button>
                     </div>
                 </div>
                 <el-divider></el-divider>
@@ -27,7 +27,7 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getFollowingUsersRequest } from '../../../api/module/follow'
+import { followUserRequest, getFollowingUsersRequest } from '../../../api/module/follow'
 import { useRoute } from 'vue-router'
 import { transDate } from '../../../utils'
 
@@ -35,11 +35,24 @@ const route = useRoute()
 console.log(route, 'route')
 const followUserList = ref([])
 const id = ref(route.params.id)
-onMounted(async () => {
+onMounted(() => {
+    requestHandle()
+})
+const requestHandle = async () => {
     const { data } = await getFollowingUsersRequest({ userId: id.value })
     console.log(data)
     followUserList.value = data.users
-})
+}
+
+const followUserHandle = async id => {
+    const result = await followUserRequest({ userId: id })
+    if (result.success) {
+        ElMessage.success(result.message)
+        requestHandle()
+    } else {
+        ElMessage.error(result.message)
+    }
+}
 </script>
 <style scoped lang="less">
 .user-follow {

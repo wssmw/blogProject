@@ -44,7 +44,6 @@ let data = ref({})
 onMounted(async () => {
     console.log(id, 'id')
     const result = await getArticleByIdRequest(id.value)
-    console.log(result, 'result')
     data.value = result.data
 })
 </script>
