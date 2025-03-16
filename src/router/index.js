@@ -60,11 +60,13 @@ const router = createRouter({
             name: 'last-article',
             component: () => import('@/page/lastArticle/index.vue'),
         },
+        // 编辑
         {
             path: '/editor',
             name: 'editor',
             component: () => import('@/page/aieditor/index.vue'),
         },
+        // 用户
         {
             path: '/user/:id',
             name: 'user',
@@ -75,6 +77,11 @@ const router = createRouter({
             path: '/userSetting',
             name: 'userSetting',
             component: () => import('@/page/userSetting/index.vue'),
+        },
+        {
+            path: '/news',
+            name: 'news',
+            component: () => import('@/page/news/index.vue'),
         },
     ],
 })

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex p-4 items-center justify-between bg-white rounded-md">
+        <div class="flex p-4 items-center bg-[#95E1D3] bg-opacity-20 justify-between rounded-md">
             <div class="flex flex-col">
                 <div class="mb-1 text-base font-medium text-black">晚上好</div>
                 <div>点亮在拾光的每一天</div>

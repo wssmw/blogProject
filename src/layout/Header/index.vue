@@ -53,7 +53,7 @@
                 </template>
             </el-dropdown>
             <div class="w-[40px] h-10 mx-4 flex items-center">
-                <el-badge :value="12" class="item">
+                <el-badge :value="12" class="item cursor-pointer" @click="gotoNewsHandle">
                     <img class="w-6 h-6" src="@/assets/svg/提示.svg" />
                 </el-badge>
             </div>
@@ -236,6 +236,10 @@ const editUserInfo = () => {
     router.push('/userSetting')
     popover.value.hide()
 }
+
+const gotoNewsHandle = () => {
+    router.push('/news')
+}
 </script>
 <style scoped lang="less">
 .header {
@@ -254,6 +258,7 @@ const editUserInfo = () => {
         display: flex;
         flex-direction: column;
         align-items: center;
+        cursor: pointer;
         .num {
             color: #fa8739;
             font-size: 14px;

@@ -16,10 +16,9 @@
             </el-form-item>
             <el-form-item label="文章封面：">
                 <el-upload
-                    v-model:file-list="fileList"
                     class="upload-demo"
                     drag
-                    action="http://localhost:8000/api/article/upload"
+                    :action="`${origin}/api/article/upload`"
                     :headers="headers"
                     :limit="1"
                     :on-success="successUploadHandle"
@@ -30,9 +29,6 @@
                         <div class="el-upload__tip"> 上传大小不超过5MB 格式为png/jpg/jpeg的文件 </div>
                     </template>
                 </el-upload>
-                <el-dialog v-model="dialogVisible">
-                    <img w-full :src="dialogImageUrl" alt="Preview Image" />
-                </el-dialog>
             </el-form-item>
             <el-form-item label="添加标签：" required>
                 <el-select v-model="formData.tags" multiple placeholder="请选择标签">
@@ -79,7 +75,8 @@ const headers = {
     Authorization: `Bearer ${store.token}`,
 }
 const categoryList = ref()
-
+const origin = window.location.origin
+console.log(window.location.origin)
 const formData = reactive({
     category: '', //分类
     tags: [], //标签
