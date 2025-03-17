@@ -5,23 +5,23 @@
         </el-aside>
         <div class="w-[760px] bg-white rounded-md">
             <div class="article_content">
-                <h1 class="title">{{ data?.title }}</h1>
+                <h1 class="title">{{ data.title }}</h1>
                 <div class="message">
                     <div class="author">
                         {{ data?.author_nickname }}
                     </div>
                     <div class="createTime">
-                        {{ transDate(data?.created_at, 'yyyy-MM-dd HH:mm:ss') }}
+                        {{ transDate(data.created_at, 'yyyy-MM-dd HH:mm:ss') }}
                     </div>
                     <div class="view"> 123 </div>
                     <div class="category_name"> 分类:{{ data?.category_name }} </div>
                 </div>
-                <AieContent :html="data?.content"></AieContent>
+                <AieContent :html="data.content"></AieContent>
             </div>
             <comment :articleId="id"></comment>
         </div>
         <el-aside class="mx-4" width="260px">
-            <ArticleRight :data="data"></ArticleRight>
+            <ArticleRight v-if="data.user_id" :data="data"></ArticleRight>
         </el-aside>
     </el-container>
 </template>

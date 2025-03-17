@@ -1,5 +1,5 @@
 <template>
-    <div class="article_right">
+    <div class="article_right" :style="headerStyle">
         <div class="author">
             <div class="top">
                 <div class="avatar">
@@ -27,26 +27,48 @@
                 <el-button class="btn">私信</el-button>
             </div>
         </div>
+        <div class="toc">
+            <Toc :tocItems="tocItems"></Toc>
+        </div>
     </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { getUserInfoRequest } from '../../../api/module/user'
 import { followUserRequest } from '../../../api/module/follow'
 import { ElMessage } from 'element-plus'
+import Toc from '../../../components/toc.vue'
+import { appStore } from '../../../store/module/app'
 const props = defineProps({
     data: {
         type: Object,
+    },
+    tocItems: {
+        type: Array,
     },
 })
 const userInfo = ref({})
 watch(
     () => props.data.user_id,
-    newData => {
+    () => {
         requestHandle()
     },
     { deep: true },
 )
+const store = appStore()
+const headerStyle = computed(() => {
+    if (store.windowScrollY > 400) {
+        return {
+            transition: 'transform .2s ease-in-out',
+            transform: 'translate3d(0,-60px,0)',
+        }
+    } else {
+        return {
+            transition: 'transform .2s ease-in-out',
+            transform: 'translate3d(0,0,0)',
+        }
+    }
+})
 const requestHandle = async () => {
     const result = await getUserInfoRequest(props.data.user_id)
     console.log(result, 'result')
@@ -66,6 +88,7 @@ const followUserHandle = async () => {
 </script>
 <style scoped lang="less">
 .article_right {
+    position: fixed;
     .author {
         padding: 20px;
         background: white;
@@ -115,6 +138,11 @@ const followUserHandle = async () => {
                 width: 120px;
             }
         }
+    }
+    .toc {
+        margin-top: 20px;
+        padding: 20px;
+        background: white;
     }
 }
 </style>
