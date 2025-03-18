@@ -7,6 +7,7 @@
                 v-for="item in tocItems"
                 :key="item.id"
                 :class="['toc-item', { active: item.id === activeSection }, `offset-${item.level}`]"
+                @click.prevent="scrollToSection(item.id)"
             >
                 <a :href="`#${item.id}`">{{ item.text }}</a>
             </li>
@@ -16,6 +17,7 @@
 <script setup>
 import { onMounted, onUnmounted, ref } from 'vue'
 import { appStore } from '../store/module/app'
+import { debounce } from 'lodash-es'
 const store = appStore()
 const aieContentRef = ref(document.querySelector('.aie-content'))
 console.log(aieContentRef, 'aieContentRef')
@@ -23,6 +25,7 @@ console.log(document.querySelector('.aie-content'), '这里执行')
 const tocItems = ref([])
 const activeSection = ref('')
 const headings = ref([])
+const allowScrollUpdate = ref(true)
 const generateTOC = () => {
     console.log('这里执行', aieContentRef.value)
     if (aieContentRef.value) {
@@ -65,18 +68,44 @@ const generateTOC = () => {
     }
 }
 // 监听滚动，高亮当前章节
-const handleScroll = () => {
+const handleScroll = debounce(() => {
+    if (!allowScrollUpdate.value) return  // 如果不允许更新，直接返回
+
     let currentSection = ''
     headings.value.forEach(heading => {
         const rect = heading.getBoundingClientRect()
         if ((store.windowScrollY < 400 && rect.top <= 60) || (store.windowScrollY > 400 && rect.top <= 20)) {
-            // 100 是偏移量，可以根据需要调整
             currentSection = heading.id
         }
     })
 
     activeSection.value = currentSection
+},200)
+
+// 添加滚动处理函数
+const scrollToSection = (id) => {
+    const element = document.getElementById(id)
+    if (element) {
+        const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
+        const offset = elementPosition > 400 ? 0 : 60
+        
+        // 禁止滚动更新
+        allowScrollUpdate.value = false
+        // 设置当前活动章节
+        activeSection.value = id
+
+        window.scrollTo({
+            top: elementPosition - offset,
+            behavior: 'smooth'
+        })
+
+        // 等待滚动动画完成后恢复滚动更新
+        setTimeout(() => {
+            allowScrollUpdate.value = true
+        }, 1000) // 假设滚动动画持续 1 秒
+    }
 }
+
 onMounted(() => {
     generateTOC()
     window.addEventListener('scroll', handleScroll)

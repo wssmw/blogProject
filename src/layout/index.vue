@@ -60,7 +60,7 @@ checkCallback()
             <el-aside class="mr-4" width="160px" v-if="store.windowInnerWidth > 1260">
                 <MainLeft :style="headerStyle"></MainLeft>
             </el-aside>
-            <div class="min-h-[900px]">
+            <div>
                 <el-main class="w-[760px] bg-white rounded-md">
                     <router-view></router-view>
                 </el-main>
