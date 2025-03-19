@@ -53,7 +53,13 @@
                 </template>
             </el-dropdown>
             <div class="w-[40px] h-10 mx-4 flex items-center">
-                <el-badge :value="12" class="item cursor-pointer" @click="gotoNewsHandle">
+                <el-badge
+                    :value="store.newsNum"
+                    max="99"
+                    :hidden="store.newsNum === 0"
+                    class="item cursor-pointer"
+                    @click="gotoNewsHandle"
+                >
                     <el-dropdown class="mx-2">
                         <img class="w-6 h-6" src="@/assets/svg/提示.svg" />
                         <template #dropdown>

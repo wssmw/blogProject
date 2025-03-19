@@ -2,8 +2,10 @@
 import Layout from '@/layout/index.vue'
 import { onMounted, onUnmounted } from 'vue'
 import { appStore } from './store/module/app'
-import { getLocalStorage, setLocalStorage } from './utils'
+import { getLocalStorage } from './utils'
 import { debounce } from 'lodash-es'
+import { getUnreadNotificationsRequest } from './api/module/notification'
+
 const store = appStore()
 // setLocalStorage('userInfo', {
 //     cookie: 'qqqq',
@@ -17,6 +19,7 @@ console.log(userInfo)
 if (userInfo) {
     store.userInfoChange(userInfo)
 }
+
 const handleResize = debounce(() => {
     console.log('这里执行')
     store.windowInnerWidthChange(window.innerWidth)

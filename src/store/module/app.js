@@ -1,6 +1,5 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
-
 export const appStore = defineStore(
     'App',
     () => {
@@ -41,6 +40,12 @@ export const appStore = defineStore(
         const showLoginModalChange = e => {
             showLoginModal.value = e
         }
+
+        // token
+        let newsNum = ref(0)
+        const newsNumChange = e => {
+            newsNum.value = e
+        }
         return {
             windowScrollY,
             windowScrollYChange,
@@ -54,6 +59,8 @@ export const appStore = defineStore(
             tokenChange,
             showLoginModal,
             showLoginModalChange,
+            newsNum,
+            newsNumChange,
         }
     },
     {

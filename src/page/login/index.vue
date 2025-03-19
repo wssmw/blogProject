@@ -31,9 +31,10 @@
 </template>
 <script setup>
 import { ElMessage } from 'element-plus'
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive, computed, onMounted } from 'vue'
 import { loginRequest, registerRequest } from '../../api/module/login'
 import { appStore } from '../../store/module/app'
+import { useSocket } from '../../hooks/useSorket'
 const store = appStore()
 
 const dialogTitle = ref('登录')
@@ -58,7 +59,7 @@ const resetHandle = () => {
     userInfo.passWord = ''
     userInfo.userName = ''
 }
-
+const { connectSocket, sendSocketMessage } = useSocket()
 const loginHandle = async () => {
     // 非空校验
     if (!userInfo.passWord || !userInfo.passWord) {
@@ -78,10 +79,20 @@ const loginHandle = async () => {
         store.userInfoChange(userInfo)
         ElMessage.success('登录成功~')
         store.showLoginModalChange(false)
+        connectSocket()
+        sendSocketMessage(store.userInfo.Id)
     } else {
         ElMessage.error(res.message)
     }
 }
+onMounted(() => {
+    if (store.isLogin) {
+        connectSocket()
+        setTimeout(() => {
+            sendSocketMessage(store.userInfo.id)
+        }, 200)
+    }
+})
 // 去注册页面
 const goResetHandle = () => {
     showContent.value = 2
