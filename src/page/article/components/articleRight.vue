@@ -48,13 +48,7 @@ const props = defineProps({
     },
 })
 const userInfo = ref({})
-watch(
-    () => props.data.user_id,
-    () => {
-        requestHandle()
-    },
-    { deep: true },
-)
+
 const store = appStore()
 const headerStyle = computed(() => {
     if (store.windowScrollY > 400) {
@@ -85,6 +79,13 @@ const followUserHandle = async () => {
         ElMessage.success(result.message)
     }
 }
+watch(
+    () => props.data.user_id,
+    () => {
+        requestHandle()
+    },
+    { deep: true, immediate: true },
+)
 </script>
 <style scoped lang="less">
 .article_right {

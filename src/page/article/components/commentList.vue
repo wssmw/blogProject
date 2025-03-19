@@ -3,11 +3,11 @@
         <template v-for="item in commentList" :key="item.id">
             <div class="main_comment">
                 <div class="left_avatar">
-                    <img class="img" :src="item.user.avatar_url" alt="" />
+                    <img class="img" :src="item.user?.avatar_url" alt="" />
                 </div>
                 <div class="right_content">
                     <div class="nickname">
-                        {{ item.user.nickname }}
+                        {{ item.user?.nickname }}
                     </div>
                     <div class="comment_content">
                         {{ item.content }}

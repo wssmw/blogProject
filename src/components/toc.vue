@@ -30,7 +30,7 @@ const generateTOC = () => {
     console.log('这里执行', aieContentRef.value)
     if (aieContentRef.value) {
         headings.value = aieContentRef.value.querySelectorAll('h1, h2, h3, h4, h5')
-        activeSection.value = headings.value[0].id
+        activeSection.value = headings.value[0]?.id || ''
         let arr = []
         let previousLevel = 0 // 记录上一个标题的 level
         headings.value.forEach(heading => {
@@ -69,7 +69,7 @@ const generateTOC = () => {
 }
 // 监听滚动，高亮当前章节
 const handleScroll = debounce(() => {
-    if (!allowScrollUpdate.value) return  // 如果不允许更新，直接返回
+    if (!allowScrollUpdate.value) return // 如果不允许更新，直接返回
 
     let currentSection = ''
     headings.value.forEach(heading => {
@@ -80,15 +80,15 @@ const handleScroll = debounce(() => {
     })
 
     activeSection.value = currentSection
-},200)
+}, 200)
 
 // 添加滚动处理函数
-const scrollToSection = (id) => {
+const scrollToSection = id => {
     const element = document.getElementById(id)
     if (element) {
         const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
         const offset = elementPosition > 400 ? 0 : 60
-        
+
         // 禁止滚动更新
         allowScrollUpdate.value = false
         // 设置当前活动章节
@@ -96,7 +96,7 @@ const scrollToSection = (id) => {
 
         window.scrollTo({
             top: elementPosition - offset,
-            behavior: 'smooth'
+            behavior: 'smooth',
         })
 
         // 等待滚动动画完成后恢复滚动更新

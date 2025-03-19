@@ -138,7 +138,7 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import { appStore } from '../../store/module/app'
-import { computed, ref, watch, nextTick } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const router = useRouter()
