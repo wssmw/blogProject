@@ -54,7 +54,18 @@
             </el-dropdown>
             <div class="w-[40px] h-10 mx-4 flex items-center">
                 <el-badge :value="12" class="item cursor-pointer" @click="gotoNewsHandle">
-                    <img class="w-6 h-6" src="@/assets/svg/提示.svg" />
+                    <el-dropdown class="mx-2">
+                        <img class="w-6 h-6" src="@/assets/svg/提示.svg" />
+                        <template #dropdown>
+                            <el-dropdown-menu>
+                                <el-dropdown-item @click.stop="newsHandle('comment')">评论</el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('like')">点赞 </el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('follow')">关注 </el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('privateMessage')">私信 </el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('systemMessage')">系统消息 </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </template>
+                    </el-dropdown>
                 </el-badge>
             </div>
             <div class="w-[50px]">
@@ -239,6 +250,13 @@ const editUserInfo = () => {
 
 const gotoNewsHandle = () => {
     router.push('/news')
+}
+
+const newsHandle = type => {
+    router.push({
+        path: '/news',
+        query: { type },
+    })
 }
 </script>
 <style scoped lang="less">
