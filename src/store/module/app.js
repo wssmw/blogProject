@@ -42,9 +42,14 @@ export const appStore = defineStore(
         }
 
         // token
-        let newsNum = ref(0)
-        const newsNumChange = e => {
-            newsNum.value = e
+        let newsNumObj = ref({
+            total: 0,
+            likeAndCollectNum: 0,
+            commentNum: 0,
+            followNum: 0,
+        })
+        const newsNumObjChange = e => {
+            newsNumObj.value = e
         }
         return {
             windowScrollY,
@@ -59,8 +64,8 @@ export const appStore = defineStore(
             tokenChange,
             showLoginModal,
             showLoginModalChange,
-            newsNum,
-            newsNumChange,
+            newsNumObj,
+            newsNumObjChange,
         }
     },
     {

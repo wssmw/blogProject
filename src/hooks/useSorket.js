@@ -19,7 +19,24 @@ export function useSocket() {
             console.log('WebSocket 连接成功')
         })
         const { data } = await getUnreadNotificationsRequest()
-        store.newsNumChange(data.count)
+        let { byType } = data
+        byType = {
+            collect_article: Number(byType.collect_article),
+            comment_article: Number(byType.comment_article),
+            follow_user: Number(byType.follow_user),
+            like_article: Number(byType.like_article),
+            like_comment: Number(byType.like_comment),
+            reply_comment: Number(byType.reply_comment),
+        }
+        console.log(data, 'data')
+        console.log(byType, 'data')
+        let obj = {
+            total: data.total,
+            likeAndCollectNum: byType.like_article + byType.like_comment + byType.collect_article,
+            commentNum: byType.reply_comment + byType.comment_article,
+            followNum: byType.follow_user,
+        }
+        store.newsNumObjChange(obj)
         socket.value.on('new_notification', async message => {
             console.log('收到服务器消息:', message)
             const results = await getUnreadNotificationsRequest()

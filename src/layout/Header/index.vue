@@ -54,21 +54,46 @@
             </el-dropdown>
             <div class="w-[40px] h-10 mx-4 flex items-center">
                 <el-badge
-                    :value="store.newsNum"
-                    max="99"
-                    :hidden="store.newsNum === 0"
+                    :value="store.newsNumObj.total"
+                    :max="99"
+                    :hidden="store.newsNumObj.total === 0"
                     class="item cursor-pointer"
                     @click="gotoNewsHandle"
                 >
                     <el-dropdown class="mx-2">
                         <img class="w-6 h-6" src="@/assets/svg/提示.svg" />
                         <template #dropdown>
-                            <el-dropdown-menu>
-                                <el-dropdown-item @click.stop="newsHandle('comment')">评论</el-dropdown-item>
-                                <el-dropdown-item @click.stop="newsHandle('like')">点赞 </el-dropdown-item>
-                                <el-dropdown-item @click.stop="newsHandle('follow')">关注 </el-dropdown-item>
-                                <el-dropdown-item @click.stop="newsHandle('privateMessage')">私信 </el-dropdown-item>
-                                <el-dropdown-item @click.stop="newsHandle('systemMessage')">系统消息 </el-dropdown-item>
+                            <el-dropdown-menu class="w-36">
+                                <el-dropdown-item @click.stop="newsHandle('comment')">
+                                    <div class="flex justify-between w-full"
+                                        >评论<span
+                                            class="flex justify-center items-center w-5 h-5 rounded-full bg-[#f56c6c] text-white size-4"
+                                            >{{ store.newsNumObj.commentNum }}</span
+                                        ></div
+                                    >
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('like')">
+                                    <div class="flex justify-between w-full"
+                                        >点赞和收藏<span
+                                            class="flex justify-center items-center w-5 h-5 rounded-full bg-[#f56c6c] text-white size-4"
+                                            >{{ store.newsNumObj.likeAndCollectNum }}</span
+                                        ></div
+                                    >
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('follow')">
+                                    <div class="flex justify-between w-full"
+                                        >关注<span
+                                            class="flex justify-center items-center w-5 h-5 rounded-full bg-[#f56c6c] text-white size-4"
+                                            >{{ store.newsNumObj.followNum }}</span
+                                        ></div
+                                    >
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('privateMessage')">
+                                    <div>私信</div>
+                                </el-dropdown-item>
+                                <el-dropdown-item @click.stop="newsHandle('systemMessage')">
+                                    <div>系统消息</div>
+                                </el-dropdown-item>
                             </el-dropdown-menu>
                         </template>
                     </el-dropdown>

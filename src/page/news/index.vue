@@ -11,7 +11,7 @@ const activeName = ref(route.query.type || 'comment')
 <template>
     <div class="news">
         <el-tabs v-model="activeName" class="tabs" tab-position="left">
-            <el-tab-pane label="评论" name="comment">
+            <el-tab-pane label="评论" name="comment" lazy>
                 <Comment></Comment>
             </el-tab-pane>
             <el-tab-pane label="点赞" name="like" lazy>
@@ -39,10 +39,11 @@ const activeName = ref(route.query.type || 'comment')
 </template>
 <style lang="less" scoped>
 .news {
-    width: 1260px;
+    width: 1060px;
     display: flex;
-    margin-top: 20px;
-    padding-bottom: 20px;
+    margin: 20px;
+    padding: 20px;
+    background-color: #fff;
     .tabs {
         width: 100%;
     }
