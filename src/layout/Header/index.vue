@@ -68,6 +68,7 @@
                                     <div class="flex justify-between w-full"
                                         >评论<span
                                             class="flex justify-center items-center w-5 h-5 rounded-full bg-[#f56c6c] text-white size-4"
+                                            v-if="store.newsNumObj.commentNum > 0"
                                             >{{ store.newsNumObj.commentNum }}</span
                                         ></div
                                     >
@@ -76,6 +77,7 @@
                                     <div class="flex justify-between w-full"
                                         >点赞和收藏<span
                                             class="flex justify-center items-center w-5 h-5 rounded-full bg-[#f56c6c] text-white size-4"
+                                            v-if="store.newsNumObj.likeAndCollectNum > 0"
                                             >{{ store.newsNumObj.likeAndCollectNum }}</span
                                         ></div
                                     >
@@ -84,6 +86,7 @@
                                     <div class="flex justify-between w-full"
                                         >关注<span
                                             class="flex justify-center items-center w-5 h-5 rounded-full bg-[#f56c6c] text-white size-4"
+                                            v-if="store.newsNumObj.followNum > 0"
                                             >{{ store.newsNumObj.followNum }}</span
                                         ></div
                                     >
@@ -127,22 +130,12 @@
                         </div>
                         <el-divider class="divider"></el-divider>
                         <div class="bottom w-full">
-                            <div class="item">
-                                <div class="title"> 关注 </div>
-                                <div class="num"> 1 </div>
-                            </div>
-                            <div class="item">
-                                <div class="title"> 收藏 </div>
-                                <div class="num"> 1 </div>
-                            </div>
-                            <div class="item">
-                                <div class="title"> 文章 </div>
-                                <div class="num"> 1 </div>
-                            </div>
-                            <div class="item">
-                                <div class="title"> 名言 </div>
-                                <div class="num"> 1 </div>
-                            </div>
+                            <template v-for="item in data1" :key="item.key">
+                                <div class="item" @click="clickHandle(item.type)">
+                                    <div class="title">{{ item.title }}</div>
+                                    <div class="num">{{ userInfo[item.key] }}</div>
+                                </div>
+                            </template>
                         </div>
                         <div class="flex flex-wrap">
                             <template v-for="item in data" :key="item.title">
@@ -198,6 +191,28 @@ const data = ref([
     },
     {
         title: '我的足迹',
+    },
+])
+const data1 = ref([
+    {
+        title: '关注',
+        key: 'following_count',
+        type: 'follow',
+    },
+    {
+        title: '收藏',
+        key: 'collection_count',
+        type: 'collect',
+    },
+    {
+        title: '文章',
+        key: 'article_count',
+        type: 'article',
+    },
+    {
+        title: '点赞',
+        key: 'like_count',
+        type: 'likes',
     },
 ])
 
@@ -268,9 +283,15 @@ const logOutHandle = () => {
 }
 const popover = ref()
 
-const clickHandle = () => {
-    console.log(store.userInfo)
-    router.push(`/user/${store.userInfo.id}`)
+const clickHandle = type => {
+    if (type) {
+        router.push({
+            path: `/user/${store.userInfo.id}`,
+            query: { type },
+        })
+    } else {
+        router.push(`/user/${store.userInfo.id}`)
+    }
     popover.value.hide()
 }
 

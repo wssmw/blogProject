@@ -14,3 +14,10 @@ export const getUnreadNotificationsRequest = async () => {
         url: `/notification/unread`,
     })
 }
+// 标记通知为已读
+export const readNotificationsRequest = async data => {
+    return wsRequest.post({
+        url: `/notification/read`,
+        data,
+    })
+}

@@ -17,7 +17,7 @@
                             <div class="commentContent">
                                 {{ item.commentContent }}
                             </div>
-                            <div class="target">
+                            <div class="target" v-if="item.articleTitle">
                                 <el-divider direction="vertical"></el-divider> {{ item.articleTitle }}
                             </div>
                             <div class="operate">
@@ -35,14 +35,49 @@
 </template>
 <script setup>
 import { onMounted, ref } from 'vue'
-import { getNotificationsRequest } from '../../../api/module/notification'
+import {
+    getNotificationsRequest,
+    getUnreadNotificationsRequest,
+    readNotificationsRequest,
+} from '../../../api/module/notification'
+import { appStore } from '../../../store/module/app'
+
+const store = appStore()
 
 const likeList = ref([])
 onMounted(async () => {
     console.log('comment')
-    const { data } = await getNotificationsRequest({ type: ['like_comment', 'like_article'] })
+    // 查看数据
+    const { data } = await getNotificationsRequest({ type: ['like_comment', 'like_article', 'collect_article'] })
     console.log(data)
     likeList.value = data.notifications
+    // 已读当前类型
+    if (store.newsNumObj.likeAndCollectNum) {
+        let result = await readNotificationsRequest({ type: ['like_comment', 'like_article', 'collect_article'] })
+        console.log(result, 'result')
+        console.log(store.newsNumObj.likeAndCollectNum, 'result')
+        if (result.success) {
+            const { data } = await getUnreadNotificationsRequest()
+            let { byType } = data
+            byType = {
+                collect_article: Number(byType.collect_article),
+                comment_article: Number(byType.comment_article),
+                follow_user: Number(byType.follow_user),
+                like_article: Number(byType.like_article),
+                like_comment: Number(byType.like_comment),
+                reply_comment: Number(byType.reply_comment),
+            }
+            console.log(data, 'data')
+            console.log(byType, 'data')
+            let obj = {
+                total: data.total,
+                likeAndCollectNum: byType.like_article + byType.like_comment + byType.collect_article,
+                commentNum: byType.reply_comment + byType.comment_article,
+                followNum: byType.follow_user,
+            }
+            store.newsNumObjChange(obj)
+        }
+    }
 })
 </script>
 <style scoped lang="less">

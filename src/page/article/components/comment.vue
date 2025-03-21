@@ -3,7 +3,7 @@
         <div class="title">评论{{ 123 }}</div>
         <div class="create_comment">
             <div class="avatar">
-                <img v-if="store.isLogin" :src="userInfo.avatar_url" alt="" />
+                <img class="img" v-if="store.isLogin" :src="userInfo.avatar_url" alt="" />
                 <el-icon size="40" v-else><UserFilled /></el-icon>
             </div>
             <div class="textarea" v-if="store.isLogin">
@@ -81,6 +81,10 @@ const loginHandle = () => {
             border-radius: 50%;
             overflow: hidden;
             margin-right: 16px;
+            .img {
+                width: 40px;
+                height: 40px;
+            }
             .el-icon {
                 width: 100%;
                 height: 100%;

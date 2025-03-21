@@ -11,11 +11,19 @@
                     <div class="desc">{{ userInfo.bio }}</div>
                 </div>
                 <div class="user_info_right">
-                    <el-button v-if="store.userInfo.id === userInfo.id" @click="editUserInfo">编辑个人资料</el-button>
+                    <el-button v-if="store.userInfo?.id === userInfo.id" @click="editUserInfo">编辑个人资料</el-button>
                     <el-button v-else @click="followHandle">关注Ta</el-button>
                 </div>
             </div>
-            <el-tabs v-model="activeName" class="tabs">
+            <el-tabs
+                v-model="activeName"
+                class="tabs"
+                @tab-click="
+                    () => {
+                        $router.push({ query: { type: activeName } })
+                    }
+                "
+            >
                 <el-tab-pane label="最近" name="recently">User</el-tab-pane>
                 <el-tab-pane label="文章" name="article" lazy>
                     <userArticle />
@@ -50,34 +58,29 @@
                 <div class="title">个人成就</div>
                 <el-divider></el-divider>
                 <div class="item">
-                    <el-icon size="16"><Document /></el-icon>
+                    <el-icon size="16" color="rgb(124, 184, 252)"><Document /></el-icon>
                     <div class="desc">发布文章</div>
-                    <div class="num">1</div>
+                    <div class="num">{{ userInfo.article_count }}</div>
                 </div>
                 <div class="item">
-                    <el-icon size="16"><Document /></el-icon>
-                    <div class="desc">发布文章</div>
-                    <div class="num">1</div>
+                    <el-icon size="16" color="rgb(36, 171, 138)"><CircleCheckFilled /></el-icon>
+                    <div class="desc">文章被点赞了</div>
+                    <div class="num">{{ userInfo.like_count }}</div>
                 </div>
                 <div class="item">
-                    <el-icon size="16"><Document /></el-icon>
-                    <div class="desc">发布文章</div>
-                    <div class="num">1</div>
-                </div>
-                <div class="item">
-                    <el-icon size="16"><Document /></el-icon>
-                    <div class="desc">发布文章</div>
-                    <div class="num">1</div>
+                    <el-icon size="16" color="rgb(97, 183, 229)"><View /></el-icon>
+                    <div class="desc">文章被阅读</div>
+                    <div class="num">{{ userInfo.total_views }}</div>
                 </div>
             </div>
             <div class="follow">
                 <div class="item">
                     <div class="top">关注了</div>
-                    <div class="num">1</div>
+                    <div class="num">{{ userInfo.following_count }}</div>
                 </div>
                 <div class="item">
-                    <div class="top">关注了</div>
-                    <div class="num">1</div>
+                    <div class="top">关注者</div>
+                    <div class="num">{{ userInfo.follower_count }}</div>
                 </div>
             </div>
             <div class="createTime">
@@ -88,7 +91,7 @@
     </div>
 </template>
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import userArticle from './components/userArticle.vue'
 import UserCollect from './components/userCollect.vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -100,31 +103,55 @@ import LikeArticle from './components/LikeArticle.vue'
 import LikeComment from './components/LikeComment.vue'
 import { followUserRequest } from '../../api/module/follow'
 import { ElMessage } from 'element-plus'
+import { useLogin } from '@/hooks/useLogin'
+
 const store = appStore()
 const route = useRoute()
 const router = useRouter()
 
 const userInfo = ref({})
 const id = ref(route.params.id)
+console.log(route, 'route')
 console.log(id.value)
-const activeName = ref('recently')
+const activeName = ref(route.query.type)
 
-onMounted(async () => {
+watch(
+    () => route.params.id,
+    () => {
+        id.value = route.params.id
+        getUserInfo()
+    },
+)
+watch(
+    () => route.query.type,
+    () => {
+        activeName.value = route.query.type
+    },
+)
+const getUserInfo = async () => {
     const { data } = await getUserInfoRequest(id.value)
     userInfo.value = data
+}
+onMounted(() => {
+    getUserInfo()
 })
+
 const editUserInfo = () => {
     router.push('/userSetting')
 }
 
+// 使用登录hooks
+const { withLogin } = useLogin()
 const followHandle = async () => {
-    const result = await followUserRequest({ userId: id.value })
-    console.log(result, 'result')
-    if (result.success) {
-        ElMessage.success(result.message)
-    } else {
-        ElMessage.error(result.message)
-    }
+    withLogin(async () => {
+        const result = await followUserRequest({ userId: id.value })
+        console.log(result, 'result')
+        if (result.success) {
+            ElMessage.success(result.message)
+        } else {
+            ElMessage.error(result.message)
+        }
+    })
 }
 </script>
 <style scoped lang="less">
@@ -206,6 +233,8 @@ const followHandle = async () => {
             background: white;
             border-radius: 4px;
             display: flex;
+            font-size: 16px;
+            font-weight: 500;
             justify-content: space-around;
             .item {
                 display: flex;
@@ -218,8 +247,10 @@ const followHandle = async () => {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
+            font-size: 16px;
+            font-weight: 500;
             .right {
-                width: 78px;
+                width: 130px;
             }
         }
     }

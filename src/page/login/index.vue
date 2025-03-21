@@ -35,6 +35,7 @@ import { ref, reactive, computed, onMounted } from 'vue'
 import { loginRequest, registerRequest } from '../../api/module/login'
 import { appStore } from '../../store/module/app'
 import { useSocket } from '../../hooks/useSorket'
+import { getUserInfoRequest } from '../../api/module/user'
 const store = appStore()
 
 const dialogTitle = ref('登录')
@@ -75,8 +76,9 @@ const loginHandle = async () => {
     if (res.success) {
         let { data } = res
         let { token, userInfo } = data
+        const result = await getUserInfoRequest(userInfo.id)
         store.tokenChange(token)
-        store.userInfoChange(userInfo)
+        store.userInfoChange({ ...userInfo, ...result.data })
         ElMessage.success('登录成功~')
         store.showLoginModalChange(false)
         connectSocket()

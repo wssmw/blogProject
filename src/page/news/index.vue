@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Comment from './components/comment.vue'
 import Follow from './components/follow.vue'
 import Like from './components/like.vue'
@@ -7,10 +7,25 @@ import { useRoute } from 'vue-router'
 const route = useRoute()
 console.log(route, 'route')
 const activeName = ref(route.query.type || 'comment')
+watch(
+    () => route.query.type,
+    () => {
+        activeName.value = route.query.type
+    },
+)
 </script>
 <template>
     <div class="news">
-        <el-tabs v-model="activeName" class="tabs" tab-position="left">
+        <el-tabs
+            v-model="activeName"
+            class="tabs"
+            tab-position="left"
+            @tab-click="
+                () => {
+                    $router.push({ query: { type: activeName } })
+                }
+            "
+        >
             <el-tab-pane label="评论" name="comment" lazy>
                 <Comment></Comment>
             </el-tab-pane>
