@@ -20,8 +20,7 @@
     "socket.io-client": "^4.8.1",
     "tocbot": "^4.35.0",
     "vue": "^3.5.10",
-    "vue-router": "^4.4.5",
-    "vue-scrollactive": "^0.9.3"
+    "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
