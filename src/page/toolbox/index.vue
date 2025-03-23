@@ -4,7 +4,7 @@
         <div class="menu-sidebar">
             <el-menu ref="menuRef" :default-active="activeSection" class="menu-vertical" @select="scrollToSection">
                 <el-menu-item v-for="item in tools" :key="item.key" :index="item.key">
-                    <img v-if="item.iconUrl" :src="item.iconUrl" alt="" />
+                    <img v-if="item.iconUrl" v-lazy="item.iconUrl" class="menu-icon" />
                     <span>{{ item.category }}</span>
                 </el-menu-item>
             </el-menu>
@@ -58,8 +58,8 @@
                         <el-card v-for="secItem in item.items" :key="secItem.key" shadow="hover" class="card-item">
                             <template #header>
                                 <div class="card-item-header">
-                                    <img :src="secItem.iconUrl" alt="" />
-                                    <span>{{ item.category }}</span>
+                                    <img v-lazy="secItem.iconUrl" class="item-icon" />
+                                    <span>{{ secItem.name }}</span>
                                 </div>
                             </template>
                             <p class="text item">{{ secItem.description }}</p>
@@ -333,7 +333,7 @@ const hideDropdownDelayed = () => {
             border-right: none;
             .el-menu-item {
                 padding: 10px 20px;
-                img {
+                .menu-icon {
                     width: 20px;
                     height: 20px;
                     margin-right: 10px;
@@ -421,7 +421,7 @@ const hideDropdownDelayed = () => {
                         .card-item-header {
                             display: flex;
                             align-items: center;
-                            img {
+                            .item-icon {
                                 width: 20px;
                                 height: 20px;
                                 margin-right: 10px;
@@ -455,5 +455,26 @@ const hideDropdownDelayed = () => {
             width: 64px;
         }
     }
+}
+
+img {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+
+    &.loaded {
+        opacity: 1;
+    }
+}
+
+.menu-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.item-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
 }
 </style>
