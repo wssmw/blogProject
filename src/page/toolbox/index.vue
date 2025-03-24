@@ -3,7 +3,7 @@
         <!-- 左侧菜单 -->
         <div class="menu-sidebar">
             <el-menu ref="menuRef" :default-active="activeSection" class="menu-vertical" @select="scrollToSection">
-                <el-menu-item v-for="item in tools" :key="item.key" :index="item.key">
+                <el-menu-item v-for="item in tools" :key="item.id" :index="item.id">
                     <img v-if="item.iconUrl" v-lazy="item.iconUrl" class="menu-icon" />
                     <span>{{ item.category }}</span>
                 </el-menu-item>
@@ -43,8 +43,8 @@
             <div class="content-wrapper">
                 <el-card
                     v-for="item in tools"
-                    :key="item.key"
-                    :id="item.key"
+                    :key="item.id"
+                    :id="item.id"
                     ref="sections"
                     class="content-section"
                     shadow="hover"
@@ -55,7 +55,13 @@
                         </div>
                     </template>
                     <div class="card-content">
-                        <el-card v-for="secItem in item.items" :key="secItem.key" shadow="hover" class="card-item">
+                        <el-card
+                            v-for="secItem in item.items"
+                            :key="secItem.id"
+                            shadow="hover"
+                            class="card-item"
+                            @click="jumpToOutstation(secItem.website)"
+                        >
                             <template #header>
                                 <div class="card-item-header">
                                     <img v-lazy="secItem.iconUrl" class="item-icon" />
@@ -74,101 +80,17 @@
 <script setup>
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { Search } from '@element-plus/icons-vue'
+import { getToolsListRequest } from '../../api/module/tools'
 
 const searchText = ref('')
-const activeSection = ref('section1')
+const activeSection = ref('1')
 const sections = ref([])
 const contentContainerRef = ref(null)
 const showDropdown = ref(false)
 const matchedItems = ref([])
 const menuRef = ref(null) // 添加菜单引用
 
-const tools = [
-    {
-        key: 'design-tools',
-        category: '设计工具',
-        iconUrl: 'https://img.icons8.com/color/48/000000/design--v1.png', // 设计工具分类图标
-        items: [
-            {
-                key: 'canva',
-                name: 'Canva',
-                description: '一个简单易用的图形设计工具，适合创建社交媒体图像、演示文稿、海报等。',
-                iconUrl: 'https://www.canva.com/favicon.ico',
-                website: 'https://www.canva.com/',
-            },
-            {
-                key: 'figma',
-                name: 'Figma',
-                description: '一款强大的在线设计工具，支持团队协作，适合UI/UX设计。',
-                iconUrl: 'https://static.figma.com/app/icon/1/favicon.png',
-                website: 'https://www.figma.com/',
-            },
-        ],
-    },
-    {
-        key: 'dev-tools',
-        category: '开发工具',
-        iconUrl: 'https://img.icons8.com/color/48/000000/code.png', // 开发工具分类图标
-        items: [
-            {
-                key: 'github',
-                name: 'GitHub',
-                description: '全球最大的代码托管平台，支持版本控制和协作开发。',
-                iconUrl: 'https://github.com/favicon.ico',
-                website: 'https://github.com/',
-            },
-            {
-                key: 'codepen',
-                name: 'CodePen',
-                description: '一个在线代码编辑器，适合前端开发者快速测试和分享代码片段。',
-                iconUrl: 'https://codepen.io/favicon.ico',
-                website: 'https://codepen.io/',
-            },
-        ],
-    },
-    {
-        key: 'productivity-tools',
-        category: '生产力工具',
-        iconUrl: 'https://img.icons8.com/color/48/000000/todo-list.png', // 生产力工具分类图标
-        items: [
-            {
-                key: 'notion',
-                name: 'Notion',
-                description: '一款集笔记、任务管理、数据库于一体的生产力工具。',
-                iconUrl: 'https://www.notion.so/favicon.ico',
-                website: 'https://www.notion.so/',
-            },
-            {
-                key: 'trello',
-                name: 'Trello',
-                description: '一个看板式的任务管理工具，适合团队协作和项目管理。',
-                iconUrl: 'https://trello.com/favicon.ico',
-                website: 'https://trello.com/',
-            },
-        ],
-    },
-    {
-        key: 'image-tools',
-        category: '图像处理',
-        iconUrl: 'https://img.icons8.com/color/48/000000/image.png', // 图像处理分类图标
-        items: [
-            {
-                key: 'unsplash',
-                name: 'Unsplash',
-                description: '提供高质量免费图片的图库网站，适合用于设计和博客。',
-                iconUrl: 'https://unsplash.com/favicon.ico',
-                website: 'https://unsplash.com/',
-            },
-            {
-                key: 'remove-bg',
-                name: 'Remove.bg',
-                description: '一个在线工具，可以快速去除图片背景。',
-                iconUrl: 'https://www.remove.bg/favicon.ico',
-                website: 'https://www.remove.bg/',
-            },
-        ],
-    },
-]
+const tools = ref([])
 
 // 滚动到指定区域
 const scrollToSection = id => {
@@ -224,7 +146,15 @@ const observer = new IntersectionObserver(
     },
 )
 
-onMounted(() => {
+onMounted(async () => {
+    const results = await getToolsListRequest()
+    console.log(results, 'results')
+    tools.value = results.data.tools.map(item => {
+        return {
+            ...item,
+            id: String(item.id),
+        }
+    })
     // 等待 DOM 更新完成
     nextTick(() => {
         sections.value.forEach(section => {
@@ -312,6 +242,11 @@ const hideDropdownDelayed = () => {
     setTimeout(() => {
         showDropdown.value = false
     }, 200)
+}
+
+const jumpToOutstation = url => {
+    console.log(url)
+    window.open(url)
 }
 </script>
 
