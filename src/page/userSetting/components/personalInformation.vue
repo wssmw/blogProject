@@ -11,6 +11,8 @@ const showAvatarCover = ref(false)
 const headers = {
     Authorization: `Bearer ${store.token}`,
 }
+
+const uploadActionUrl = `${window.location.origin}/api/users/updateUserAvatar`
 const mouseEnter = () => {
     showAvatarCover.value = true
 }
@@ -109,7 +111,7 @@ const submitHandle = () => {
         <div class="right">
             <el-upload
                 class="upload"
-                action="http://localhost:8000/api/users/updateUserAvatar"
+                :action="uploadActionUrl"
                 :limit="1"
                 :headers="headers"
                 :show-file-list="false"
