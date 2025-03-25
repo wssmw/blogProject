@@ -44,7 +44,11 @@ const showContent = ref(1) // 登录,注册,忘记密码 分别对应1,2,3
 let showDialog = computed(() => store.showLoginModal)
 
 const giteeLogin = () => {
-    window.location.href = `http://localhost:1234/login/gitee`
+    if (window.location.href.indexOf('localhost') !== -1) {
+        window.location.href = `http://localhost:1234/login/gitee`
+    } else {
+        window.location.href = `${window.location.origin}:8000/login/gitee`
+    }
 }
 
 const userInfo = reactive({
