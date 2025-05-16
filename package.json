@@ -9,12 +9,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "aieditor": "^1.2.8",
     "axios": "^1.7.7",
     "element-plus": "^2.8.5",
     "less": "^4.2.0",
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
+    "md-editor-v3": "^5.5.1",
     "pinia": "^2.2.4",
     "pinia-plugin-persist": "^1.0.0",
     "socket.io-client": "^4.8.1",

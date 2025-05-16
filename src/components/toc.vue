@@ -19,7 +19,7 @@ import { onMounted, onUnmounted, ref } from 'vue'
 import { appStore } from '../store/module/app'
 import { debounce } from 'lodash-es'
 const store = appStore()
-const aieContentRef = ref(document.querySelector('.aie-content'))
+const aieContentRef = ref(document.querySelector('.md-editor-preview'))
 console.log(aieContentRef, 'aieContentRef')
 console.log(document.querySelector('.aie-content'), '这里执行')
 const tocItems = ref([])

@@ -1,9 +1,14 @@
 <template>
-    <div v-html="htmlString" class="aie-content"></div>
+    <!-- <div v-html="htmlString" class="aie-content"></div> -->
+    <MdPreview :modelValue="htmlString" />
+    <!-- <MdCatalog :scrollElement="scrollElement" /> -->
 </template>
 <script setup>
 import 'aieditor/dist/style.css'
 import { computed } from 'vue'
+import { MdPreview, MdCatalog } from 'md-editor-v3'
+// preview.css相比style.css少了编辑器那部分样式
+import 'md-editor-v3/lib/preview.css'
 const prop = defineProps({
     html: {
         type: String,
