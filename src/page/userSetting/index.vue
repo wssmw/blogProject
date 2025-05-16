@@ -33,7 +33,7 @@ const backToUser = () => {
 </script>
 <style scoped lang="less">
 .userSetting {
-    margin: auto;
+    margin: 0 auto ;
     width: 1080px;
     display: flex;
     justify-content: center;

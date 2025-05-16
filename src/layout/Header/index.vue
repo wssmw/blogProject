@@ -141,7 +141,7 @@
                             <template v-for="item in data" :key="item.title">
                                 <div
                                     class="w-2/4 flex justify-center cursor-pointer my-1 py-2 rounded hover:bg-slate-100"
-                                    @click="clickHandle"
+                                    @click="clickHandle()"
                                 >
                                     <!-- <img class="w-5 h-5 mr-2" src="@/assets/svg/关于.svg" alt="" /> -->
                                     {{ item.title }}
@@ -284,6 +284,7 @@ const logOutHandle = () => {
 const popover = ref()
 
 const clickHandle = type => {
+    console.log(type,'type')
     if (type) {
         router.push({
             path: `/user/${store.userInfo.id}`,

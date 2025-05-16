@@ -113,7 +113,7 @@ const userInfo = ref({})
 const id = ref(route.params.id)
 console.log(route, 'route')
 console.log(id.value)
-const activeName = ref(route.query.type)
+const activeName = ref(route.query.type || 'recently')
 
 watch(
     () => route.params.id,
