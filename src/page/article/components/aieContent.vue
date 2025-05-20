@@ -4,7 +4,6 @@
     <!-- <MdCatalog :scrollElement="scrollElement" /> -->
 </template>
 <script setup>
-import 'aieditor/dist/style.css'
 import { computed } from 'vue'
 import { MdPreview, MdCatalog } from 'md-editor-v3'
 // preview.css相比style.css少了编辑器那部分样式
