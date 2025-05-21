@@ -9,6 +9,7 @@ import { getUnreadNotificationsRequest } from './api/module/notification'
 console.log('测试jenkins')
 console.log('测试jenkins1')
 console.log('测试jenkins2')
+console.log('测试jenkins3')
 
 const store = appStore()
 // setLocalStorage('userInfo', {
