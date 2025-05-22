@@ -27,8 +27,8 @@
                 <el-button class="btn">私信</el-button>
             </div>
         </div>
-        <div class="toc">
-            <Toc :tocItems="tocItems"></Toc>
+        <div class="toc" ref="tocRef">
+            <Toc v-if="renderCompletedFlag"></Toc>
         </div>
     </div>
 </template>
@@ -39,12 +39,14 @@ import { followUserRequest } from '../../../api/module/follow'
 import { ElMessage } from 'element-plus'
 import Toc from '../../../components/toc.vue'
 import { appStore } from '../../../store/module/app'
+
 const props = defineProps({
     data: {
         type: Object,
     },
-    tocItems: {
-        type: Array,
+    renderCompletedFlag: {
+        type: Boolean,
+        default: false,
     },
 })
 const userInfo = ref({})

@@ -1,7 +1,12 @@
 <template>
     <div class="aieditor">
         <Header @releaseHandle="releaseHandle"></Header>
-        <MdEditor v-model="data.html" @onUploadImg="onUploadImg"></MdEditor>
+        <MdEditor
+            class="md-editor"
+            v-model="data.html"
+            :mdHeadingId="mdHeadingId"
+            @onUploadImg="onUploadImg"
+        ></MdEditor>
         <el-dialog title="文章发布" v-model="showDialog">
             <Release :data="data"></Release>
         </el-dialog>
@@ -55,7 +60,7 @@ const releaseHandle = title => {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    .aiEditorRef {
+    .md-editor {
         flex: 1;
         border-radius: 4px;
     }

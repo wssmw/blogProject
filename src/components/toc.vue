@@ -2,7 +2,7 @@
     <div class="toc_content">
         <div class="title"> 目录 </div>
         <el-divider></el-divider>
-        <el-scrollbar height="300px">
+        <el-scrollbar ref="tocScrollbar" height="300px">
             <li
                 v-for="item in tocItems"
                 :key="item.id"
@@ -15,17 +15,18 @@
     </div>
 </template>
 <script setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch, nextTick } from 'vue'
 import { appStore } from '../store/module/app'
 import { debounce } from 'lodash-es'
 const store = appStore()
 const aieContentRef = ref(document.querySelector('.md-editor-preview'))
 console.log(aieContentRef, 'aieContentRef')
-console.log(document.querySelector('.aie-content'), '这里执行')
+console.log(document.querySelector('.md-editor-preview'), '这里执行')
 const tocItems = ref([])
 const activeSection = ref('')
 const headings = ref([])
 const allowScrollUpdate = ref(true)
+const tocScrollbar = ref(null)
 const generateTOC = () => {
     console.log('这里执行', aieContentRef.value)
     if (aieContentRef.value) {
@@ -80,7 +81,37 @@ const handleScroll = debounce(() => {
     })
 
     activeSection.value = currentSection
-}, 200)
+}, 20)
+
+nextTick(() => {
+    console.log(activeSection.value, 'activeSection')
+})
+
+watch(activeSection, async () => {
+    await nextTick()
+    const activeToc = document.querySelector('.toc-item.active')
+    const scrollbarWrap = tocScrollbar.value?.wrapRef // el-scrollbar 的滚动容器
+
+    if (activeToc && scrollbarWrap) {
+        const container = scrollbarWrap
+        const containerHeight = container.clientHeight
+        const itemOffsetTop = activeToc.offsetTop
+        const itemHeight = activeToc.offsetHeight
+
+        // 让高亮项尽量居中
+        let scrollTop = itemOffsetTop - containerHeight / 2 + itemHeight / 2
+
+        // 边界处理
+        if (scrollTop < 0) scrollTop = 0
+        const maxScroll = container.scrollHeight - containerHeight
+        if (scrollTop > maxScroll) scrollTop = maxScroll
+
+        container.scrollTo({
+            top: scrollTop,
+            behavior: 'smooth',
+        })
+    }
+})
 
 // 添加滚动处理函数
 const scrollToSection = id => {
@@ -107,7 +138,9 @@ const scrollToSection = id => {
 }
 
 onMounted(() => {
-    generateTOC()
+    setTimeout(() => {
+        generateTOC()
+    }, 0)
     window.addEventListener('scroll', handleScroll)
 })
 

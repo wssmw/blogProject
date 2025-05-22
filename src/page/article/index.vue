@@ -16,12 +16,12 @@
                     <div class="view"> 123 </div>
                     <div class="category_name"> 分类:{{ data?.category_name }} </div>
                 </div>
-                <AieContent :html="data.content"></AieContent>
+                <AieContent :html="data.content" @renderCompleted="renderCompleted"></AieContent>
             </div>
             <comment :articleId="id"></comment>
         </div>
         <el-aside class="mx-4" width="260px">
-            <ArticleRight v-if="data.user_id" :data="data"></ArticleRight>
+            <ArticleRight v-if="data.user_id" :data="data" :renderCompletedFlag="renderCompletedFlag"></ArticleRight>
         </el-aside>
     </el-container>
 </template>
@@ -34,8 +34,6 @@ import comment from './components/comment.vue'
 import { transDate } from '../../utils'
 import ArticleLeft from './components/articleLeft.vue'
 import ArticleRight from './components/articleRight.vue'
-import { appStore } from '../../store/module/app'
-const store = appStore()
 
 const route = useRoute()
 let id = computed(() => route.params.id)
@@ -46,6 +44,11 @@ onMounted(async () => {
     const result = await getArticleByIdRequest(id.value)
     data.value = result.data
 })
+const renderCompletedFlag = ref(false)
+const renderCompleted = () => {
+    console.log('renderCompleted')
+    renderCompletedFlag.value = true
+}
 </script>
 <style scoped lang="less">
 .article {
