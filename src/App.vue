@@ -18,6 +18,7 @@ console.log('测试jenkins8')
 console.log('测试jenkins9')
 console.log('测试jenkins10')
 console.log('测试jenkins11')
+console.log('测试jenkins12')
 
 const store = appStore()
 // setLocalStorage('userInfo', {
