@@ -6,6 +6,8 @@ import { getLocalStorage } from './utils'
 import { debounce } from 'lodash-es'
 import { getUnreadNotificationsRequest } from './api/module/notification'
 
+console.log('test')
+
 const store = appStore()
 // setLocalStorage('userInfo', {
 //     cookie: 'qqqq',
