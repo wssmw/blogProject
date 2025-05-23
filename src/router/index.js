@@ -20,9 +20,9 @@ const router = createRouter({
         },
         // 名言广场
         {
-            path: '/famousSquare',
-            name: 'famousSquare',
-            component: () => import('@/page/famousSquare/index.vue'),
+            path: '/notes',
+            name: 'notes',
+            component: () => import('@/page/notes/index.vue'),
         },
         // 工具箱
         {

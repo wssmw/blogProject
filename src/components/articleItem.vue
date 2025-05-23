@@ -58,7 +58,11 @@
             </div>
         </div>
         <div class="w-[108px] h-[78px] ml-4" v-if="articleItem.cover_url">
-            <img class="w-[108px] h-[72px]  rounded-md" :src="articleItem.cover_url" alt="" />
+            <img
+                class="w-[108px] h-[72px] rounded-md transition-transform duration-300 hover:scale-110"
+                :src="articleItem.cover_url"
+                alt=""
+            />
         </div>
     </div>
     <OperateInfo ref="operateInfoRef" content="是否确认删除" @confirmHandle="confirmHandle"></OperateInfo>

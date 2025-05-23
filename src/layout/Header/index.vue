@@ -13,7 +13,10 @@
                 router
                 mode="horizontal"
             >
-                <el-menu-item index="2" route="/famousSquare">名言广场</el-menu-item>
+                <el-menu-item index="2" route="/notes">
+                    <img class="w-5 h-5" src="@/assets/svg/小记.svg" alt="" />
+                    小记
+                </el-menu-item>
                 <el-menu-item index="3" route="/toolbox">
                     <img class="w-5 h-5" src="@/assets/svg/工具箱.svg" alt="" />
                     工具箱
