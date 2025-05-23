@@ -13,17 +13,17 @@
                 router
                 mode="horizontal"
             >
-                <el-menu-item index="2" route="famousSquare">名言广场</el-menu-item>
-                <el-menu-item index="3" route="toolbox">
+                <el-menu-item index="2" route="/famousSquare">名言广场</el-menu-item>
+                <el-menu-item index="3" route="/toolbox">
                     <img class="w-5 h-5" src="@/assets/svg/工具箱.svg" alt="" />
                     工具箱
                 </el-menu-item>
-                <el-menu-item index="4" route="label">
+                <el-menu-item index="4" route="/label">
                     <img class="w-5 h-5" src="@/assets/svg/标签.svg" alt="" />
                     标签
                 </el-menu-item>
-                <el-menu-item index="5" route="about">关于本网站</el-menu-item>
-                <el-menu-item index="6" route="friendChain">友链</el-menu-item>
+                <el-menu-item index="5" route="/about">关于本网站</el-menu-item>
+                <el-menu-item index="6" route="/friendChain">友链</el-menu-item>
             </el-menu>
         </div>
         <div class="flex items-center justify-around">
@@ -284,7 +284,7 @@ const logOutHandle = () => {
 const popover = ref()
 
 const clickHandle = type => {
-    console.log(type,'type')
+    console.log(type, 'type')
     if (type) {
         router.push({
             path: `/user/${store.userInfo.id}`,
