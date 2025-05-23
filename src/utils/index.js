@@ -60,3 +60,9 @@ export const getTimeAgo = date => {
         return `${diffInYears}年前`
     }
 }
+
+export const getWeek = date => {
+    const week = ['日', '一', '二', '三', '四', '五', '六']
+    return `周${week[new Date(date).getDay()]}`
+}
+
