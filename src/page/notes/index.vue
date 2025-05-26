@@ -1,5 +1,5 @@
 <template>
-    <div class="notes-container">
+    <div class="notes-container" v-if="isLogin">
         <!-- 顶部栏 -->
         <div class="header">
             <div class="left">
@@ -31,7 +31,7 @@
             </div>
             <div class="right">
                 <el-button type="primary" @click="newNote">新建小记</el-button>
-                <el-button type="primary" @click="queryNoteList">刷新</el-button>
+                <el-button type="primary" @click="resetList">刷新</el-button>
                 <el-button type="primary" class="save-btn" @click="saveNote">保存</el-button>
                 <el-button type="danger" @click="deleteNote(editNote.id)" :disabled="!editNote.id">删除</el-button>
             </div>
@@ -42,7 +42,13 @@
             <div class="notes-list">
                 <div class="list-title">历史小记</div>
                 <div class="list-search">
-                    <el-input class="search-input" v-model="search" placeholder="搜索" clearable />
+                    <el-input
+                        class="search-input"
+                        v-model="search"
+                        placeholder="搜索"
+                        clearable
+                        @input="filterHandle"
+                    />
                 </div>
                 <div class="list-content">
                     <div
@@ -60,7 +66,8 @@
                     </div>
                     <!-- 加载提示 -->
                     <div v-if="loading" class="loading">加载中...</div>
-                    <div v-if="noMoreData" class="no-more">没有更多数据了</div>
+                    <div v-if="noMoreData && notes.length !== 0" class="no-more">没有更多数据了</div>
+                    <div class="no-more" v-if="notes.length === 0">请先新增小记</div>
                     <div ref="observerTarget" class="observer-target"></div>
                 </div>
             </div>
@@ -68,13 +75,19 @@
             <MdEditor v-model="editNote.content" placeholder="在此输入您的小记..." class="editor" />
         </div>
     </div>
+    <el-empty v-else>
+        <template #description>
+            <div style="font-size: 20px">请先登录</div>
+        </template>
+    </el-empty>
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, nextTick } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import { ElButton, ElMessage, ElInput, ElSelect, ElOption, ElDatePicker } from 'element-plus'
+import { debounce } from 'lodash-es'
+
 import { transDate, getWeek } from '@/utils'
 import { addNoteRequest, getNoteListRequest, deleteNoteRequest, updateNoteRequest } from '@/api/module/notes'
 
@@ -83,6 +96,11 @@ import sunnyIcon from '@/assets/svg/晴天.svg'
 import cloudyIcon from '@/assets/svg/多云.svg'
 import rainyIcon from '@/assets/svg/雨天.svg'
 import snowyIcon from '@/assets/svg/阵雪.svg'
+import { appStore } from '../../store/module/app'
+
+const store = appStore()
+
+const isLogin = computed(() => store.isLogin)
 
 const editNote = ref({})
 
@@ -164,12 +182,11 @@ const resetList = () => {
 }
 
 const queryNoteList = () => {
-    if (loading.value || noMoreData.value) return
-
     loading.value = true
     getNoteListRequest({
         page: page.value,
         pageSize: PAGE_SIZE,
+        title: search.value,
     })
         .then(res => {
             const { total, notes: newNotes } = res.data
@@ -187,6 +204,9 @@ const queryNoteList = () => {
                 if (processedNotes.length > 0) {
                     currentId.value = processedNotes[0].id
                     editNote.value = { ...processedNotes[0] }
+                } else {
+                    currentId.value = ''
+                    editNote.value = {}
                 }
             } else {
                 notes.value = [...notes.value, ...processedNotes]
@@ -195,7 +215,7 @@ const queryNoteList = () => {
             // 更新分页状态
             page.value++
             loading.value = false
-
+            console.log(notes.value, 'notes')
             // 判断是否还有更多数据
             if (notes.value.length >= total) {
                 noMoreData.value = true
@@ -211,6 +231,15 @@ const clickNote = id => {
     const note = notes.value.find(note => note.id === id)
     editNote.value = { ...note }
 }
+
+// 左侧查询
+const search = ref('')
+const filterHandle = debounce(() => {
+    console.log(search.value)
+    page.value = 1
+    noMoreData.value = false
+    queryNoteList()
+}, 200)
 
 // 监听当前小记变化，更新编辑区
 
@@ -264,7 +293,7 @@ const saveNote = () => {
 }
 
 const deleteNote = id => {
-    deleteNoteRequest(id).then(res => {
+    deleteNoteRequest({ id }).then(res => {
         if (res.code === 200) {
             ElMessage.success('删除成功')
             resetList()
