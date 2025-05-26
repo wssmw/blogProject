@@ -5,7 +5,15 @@
             <div class="left">
                 <el-input class="title-input" v-model="editNote.title" clearable placeholder="请输入标题" />
                 <el-select class="weather-select" v-model="editNote.weather" placeholder="天气">
-                    <el-option v-for="item in weatherList" :key="item.name" :label="item.name" :value="item.name">
+                    <template #prefix>
+                        <img
+                            v-if="editNote.weather"
+                            style="width: 20px; height: 20px; margin-right: 8px"
+                            :src="weatherList.find(item => item.value === editNote.weather)?.icon"
+                            :alt="weatherList.find(item => item.value === editNote.weather)?.name"
+                        />
+                    </template>
+                    <el-option v-for="item in weatherList" :key="item.name" :label="item.name" :value="item.value">
                         <div class="flex items-center gap-2">
                             <img style="width: 20px; height: 20px" :src="item.icon" :alt="item.name" />
                             <span class="weather-text">{{ item.name }}</span>
@@ -13,7 +21,7 @@
                     </el-option>
                 </el-select>
                 <el-date-picker
-                    v-model="editNote.time"
+                    v-model="editNote.note_time"
                     type="date"
                     placeholder="选择时间"
                     format="YYYY-MM-DD"
@@ -23,6 +31,7 @@
             </div>
             <div class="right">
                 <el-button type="primary" @click="newNote">新建小记</el-button>
+                <el-button type="primary" @click="queryNoteList">刷新</el-button>
                 <el-button type="primary" class="save-btn" @click="saveNote">保存</el-button>
                 <el-button type="danger" @click="deleteNote(editNote.id)" :disabled="!editNote.id">删除</el-button>
             </div>
@@ -44,30 +53,30 @@
                     >
                         <div class="note-time">
                             <img style="width: 20px; height: 20px" :src="note.weatherIcon" :alt="note.weather.name" />
-                            <span>{{ transDate(note.time, 'yyyy-MM-dd') }}</span>
-                            <span>{{ getWeek(note.time) }}</span>
+                            <span>{{ transDate(note.note_time, 'yyyy-MM-dd') }}</span>
+                            <span>{{ getWeek(note.note_time) }}</span>
                         </div>
                         <div class="note-title">{{ note.title || '无标题' }}</div>
                     </div>
+                    <!-- 加载提示 -->
+                    <div v-if="loading" class="loading">加载中...</div>
+                    <div v-if="noMoreData" class="no-more">没有更多数据了</div>
+                    <div ref="observerTarget" class="observer-target"></div>
                 </div>
             </div>
             <!-- 编辑区 -->
-            <MdEditor
-                v-model="editNote.content"
-                :toolbars="toolbars"
-                placeholder="在此输入您的小记..."
-                class="editor"
-            />
+            <MdEditor v-model="editNote.content" placeholder="在此输入您的小记..." class="editor" />
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onMounted, onUnmounted, ref, nextTick } from 'vue'
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 import { ElButton, ElMessage, ElInput, ElSelect, ElOption, ElDatePicker } from 'element-plus'
 import { transDate, getWeek } from '@/utils'
+import { addNoteRequest, getNoteListRequest, deleteNoteRequest, updateNoteRequest } from '@/api/module/notes'
 
 // 导入天气图标
 import sunnyIcon from '@/assets/svg/晴天.svg'
@@ -75,115 +84,127 @@ import cloudyIcon from '@/assets/svg/多云.svg'
 import rainyIcon from '@/assets/svg/雨天.svg'
 import snowyIcon from '@/assets/svg/阵雪.svg'
 
-const editNote = ref({
-    id: null,
-    title: '',
-    content: '',
-    weather: '',
-    time: new Date().toISOString().slice(0, 16),
-})
+const editNote = ref({})
 
 const weatherList = ref([
     {
         name: '晴天',
+        value: '1',
         icon: sunnyIcon,
     },
     {
         name: '多云',
+        value: '2',
         icon: cloudyIcon,
     },
     {
         name: '雨天',
+        value: '3',
         icon: rainyIcon,
     },
     {
         name: '雪天',
+        value: '4',
         icon: snowyIcon,
     },
 ])
-
-const toolbars = [
-    'bold',
-    'underline',
-    'italic',
-    '-',
-    'title',
-    'strikeThrough',
-    'sub',
-    'sup',
-    'quote',
-    'unorderedList',
-    'orderedList',
-    'task',
-    '-',
-    'codeRow',
-    'code',
-    'link',
-    'image',
-    'table',
-    'mermaid',
-    'katex',
-    '-',
-    'revoke',
-    'next',
-    'save',
-    '=',
-    'pageFullscreen',
-    'fullscreen',
-    'preview',
-    'previewOnly',
-    'htmlPreview',
-    'catalog',
-    'github',
-]
 const currentId = ref(null)
-const notes = ref([
-    {
-        id: 1,
-        title: '小记1',
-        content: '小记1内容',
-        time: 1716460800000,
-        weather: 'sunny',
-        time: '2024-05-19',
-        weatherIcon: sunnyIcon,
-    },
-    {
-        id: 2,
-        title: '小记2',
-        content: '小记2内容',
-        time: 1716460800000,
-        weather: 'cloudy',
-        time: '2024-05-20',
-        weatherIcon: cloudyIcon,
-    },
-    {
-        id: 3,
-        title: '小记3',
-        content: '小记3内容',
-        time: 1716460800000,
-        weather: 'overcast',
-        time: '2024-05-21',
-        weatherIcon: rainyIcon,
-    },
-    {
-        id: 4,
-        title: '小记4',
-        content: '小记4内容',
-        time: 1716460800000,
-        weather: 'rainy',
-        time: '2024-05-22',
-        weatherIcon: snowyIcon,
-    },
-    {
-        id: 5,
-        title: '小记5',
-        content: '小记5内容',
-        time: 1716460800000,
-        weather: 'snowy',
-        time: '2024-05-23',
-        weatherIcon: snowyIcon,
-    },
-])
+
+const notes = ref([])
+
+// 常量定义
+const PAGE_SIZE = 10
+const OBSERVER_OPTIONS = {
+    root: null,
+    rootMargin: '200px', // 增加触发区域
+    threshold: 0.1,
+}
+
+let observer
+let debounceTimer = null // 用于防抖的timer
+const page = ref(1)
+const observerTarget = ref()
+const loading = ref(false)
+const noMoreData = ref(false)
+
+onMounted(() => {
+    // 初始化加载第一页
+    // queryNoteList()
+
+    // 设置观察者
+    observer = new IntersectionObserver(entries => {
+        const target = entries[0]
+        console.log('Intersection:', target.isIntersecting, 'Loading:', loading.value, 'NoMore:', noMoreData.value)
+        if (target.isIntersecting && !loading.value && !noMoreData.value) {
+            clearTimeout(debounceTimer) // 清除之前的定时器
+            debounceTimer = setTimeout(() => {
+                queryNoteList()
+            }, 200)
+        }
+    }, OBSERVER_OPTIONS)
+
+    // 确保DOM更新后再观察
+    if (observerTarget.value) {
+        observer.observe(observerTarget.value)
+    }
+})
+onUnmounted(() => {
+    if (observer) {
+        observer.disconnect()
+    }
+    clearTimeout(debounceTimer) // 清理定时器
+})
+
+// 重置列表
+const resetList = () => {
+    page.value = 1
+    notes.value = []
+    noMoreData.value = false
+    queryNoteList()
+}
+
+const queryNoteList = () => {
+    if (loading.value || noMoreData.value) return
+
+    loading.value = true
+    getNoteListRequest({
+        page: page.value,
+        pageSize: PAGE_SIZE,
+    })
+        .then(res => {
+            const { total, notes: newNotes } = res.data
+
+            // 处理新数据
+            const processedNotes = newNotes.map(item => ({
+                ...item,
+                note_time: transDate(item.note_time, 'yyyy-MM-dd'),
+                weatherIcon: weatherList.value.find(weather => weather.value === item.weather)?.icon,
+            }))
+
+            // 追加新数据
+            if (page.value === 1) {
+                notes.value = processedNotes
+                if (processedNotes.length > 0) {
+                    currentId.value = processedNotes[0].id
+                    editNote.value = { ...processedNotes[0] }
+                }
+            } else {
+                notes.value = [...notes.value, ...processedNotes]
+            }
+
+            // 更新分页状态
+            page.value++
+            loading.value = false
+
+            // 判断是否还有更多数据
+            if (notes.value.length >= total) {
+                noMoreData.value = true
+            }
+        })
+        .catch(() => {
+            loading.value = false
+        })
+}
 
 const clickNote = id => {
     currentId.value = id
@@ -194,7 +215,12 @@ const clickNote = id => {
 // 监听当前小记变化，更新编辑区
 
 const newNote = () => {
-    editNote.value = { id: null, title: '', content: '' }
+    editNote.value = {
+        title: '',
+        content: '',
+        weather: '',
+        note_time: new Date().toISOString().slice(0, 10),
+    }
     currentId.value = null
 }
 
@@ -203,18 +229,49 @@ const saveNote = () => {
         ElMessage.warning('内容不能为空')
         return
     }
+    if (!editNote.value.weather) {
+        ElMessage.warning('天气不能为空')
+        return
+    }
+    if (!editNote.value.note_time) {
+        ElMessage.warning('时间不能为空')
+        return
+    }
+    if (!editNote.value.title) {
+        ElMessage.warning('标题不能为空')
+        return
+    }
+
     if (editNote.value.id) {
-        notes.value = notes.value.map(note => (note.id === editNote.value.id ? editNote.value : note))
-        ElMessage.success('保存成功')
+        updateNoteRequest(editNote.value).then(res => {
+            if (res.code === 200) {
+                ElMessage.success('保存成功')
+                resetList()
+            } else {
+                ElMessage.error('保存失败')
+            }
+        })
     } else {
-        notes.value.unshift({ ...editNote.value, time: Date.now() })
-        ElMessage.success('新建成功')
+        addNoteRequest(editNote.value).then(res => {
+            if (res.code === 200) {
+                ElMessage.success('新建成功')
+                resetList()
+            } else {
+                ElMessage.error('新建失败')
+            }
+        })
     }
 }
 
 const deleteNote = id => {
-    notes.value = notes.value.filter(note => note.id !== id)
-    ElMessage.success('删除成功')
+    deleteNoteRequest(id).then(res => {
+        if (res.code === 200) {
+            ElMessage.success('删除成功')
+            resetList()
+        } else {
+            ElMessage.error('删除失败')
+        }
+    })
 }
 </script>
 
@@ -243,7 +300,7 @@ const deleteNote = id => {
                 width: 200px;
             }
             .weather-select {
-                width: 100px;
+                width: 120px;
             }
 
             .time-picker {
@@ -277,6 +334,21 @@ const deleteNote = id => {
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
+                padding-bottom: 20px;
+
+                .observer-target {
+                    height: 20px;
+                    width: 100%;
+                    margin-top: 10px;
+                }
+
+                .loading,
+                .no-more {
+                    text-align: center;
+                    padding: 10px;
+                    color: #909399;
+                    font-size: 14px;
+                }
             }
 
             .note-item {
