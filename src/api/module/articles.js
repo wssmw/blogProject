@@ -48,3 +48,33 @@ export const deleteArticlesRequest = async data => {
         data,
     })
 }
+
+// 草稿箱
+
+// 发布草稿
+export const draftPublishRequest = async data => {
+    return wsRequest.post({
+        url: `/article/draft/publish`,
+        data,
+    })
+}
+// 创建草稿
+export const draftSaveRequest = async data => {
+    return wsRequest.post({
+        url: `/article/draft/save`,
+        data,
+    })
+}
+// 获取草稿列表
+export const draftListRequest = async () => {
+    return wsRequest.get({
+        url: `/article/drafts`,
+    })
+}
+// 删除草稿
+export const draftDeleteRequest = async data => {
+    return wsRequest.post({
+        url: `/article/draft/delete`,
+        data,
+    })
+}

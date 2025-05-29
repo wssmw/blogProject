@@ -1,6 +1,6 @@
 <template>
     <div class="aieditor">
-        <Header @releaseHandle="releaseHandle"></Header>
+        <Header @releaseHandle="releaseHandle" @recurrentDraft="recurrentDraft"></Header>
         <MdEditor
             class="md-editor"
             v-model="data.html"
@@ -51,6 +51,10 @@ const releaseHandle = title => {
         return
     }
     showDialog.value = true
+}
+// 回显草稿
+const recurrentDraft = e => {
+    data.html = e.content
 }
 </script>
 <style scoped lang="less">
