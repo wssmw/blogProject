@@ -30,7 +30,7 @@
             </el-menu>
         </div>
         <div class="flex items-center justify-around">
-            <div :class="store.windowInnerWidth > 1280 ? 'w-[280px]' : ''">
+            <div :class="store.windowInnerWidth > 1280 ? 'w-[380px]' : ''">
                 <el-input class="h-10" placeholder="探索拾光">
                     <template #suffix>
                         <el-icon><Search /></el-icon>

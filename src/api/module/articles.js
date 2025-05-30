@@ -14,6 +14,13 @@ export const getArticleRequest = async data => {
         data,
     })
 }
+// 查看最新文章
+export const getLatestArticlesRequest = async data => {
+    return wsRequest.post({
+        url: `/article/getLatestArticles`,
+        data,
+    })
+}
 // 查看单个文章
 export const getArticleByIdRequest = async id => {
     return wsRequest.get({

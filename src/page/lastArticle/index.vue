@@ -1,5 +1,108 @@
 <template>
-  <div>last-article </div>
+    <div>
+        <div v-if="articleList.length">
+            <template v-for="item in articleList" :key="item.id">
+                <articleItem :articleItem="item" />
+            </template>
+        </div>
+        <el-skeleton v-else-if="loading" :rows="5" animated />
+        <!-- 加载提示 -->
+        <div v-if="loading" class="loading">加载中...</div>
+        <div v-if="noMoreData" class="no-more">没有更多数据了</div>
+        <div ref="observerTarget"></div>
+    </div>
 </template>
-<script setup></script>
-<style scoped lang="scss"></style>
+<script setup>
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { getLatestArticlesRequest } from '@/api/module/articles'
+import { useRoute, useRouter } from 'vue-router'
+import articleItem from '@/components/articleItem.vue'
+// 常量定义
+const route = useRoute()
+const PAGE_SIZE = 10
+const OBSERVER_OPTIONS = {
+    root: null,
+    rootMargin: '200px',
+    threshold: 0.1,
+}
+
+// 响应式数据
+const articleList = ref([])
+const page = ref(0)
+const observerTarget = ref()
+const loading = ref(false)
+const noMoreData = ref(false)
+
+let observer
+let debounceTimer = null // 用于防抖的timer
+
+watch(
+    () => route.params,
+    newData => {
+        articleList.value = []
+        page.value = 0
+        requestHandle()
+    },
+    { deep: true },
+)
+
+onMounted(() => {
+    observer = new IntersectionObserver(entries => {
+        const target = entries[0]
+        if (target.isIntersecting && !loading.value && !noMoreData.value) {
+            clearTimeout(debounceTimer) // 清除之前的定时器
+            debounceTimer = setTimeout(() => {
+                requestHandle()
+            }, 200)
+        }
+    }, OBSERVER_OPTIONS)
+
+    if (observerTarget.value) {
+        observer.observe(observerTarget.value)
+    }
+})
+
+const requestHandle = async () => {
+    loading.value = true
+    const { data } = await getLatestArticlesRequest({
+        page: page.value,
+        pageSize: PAGE_SIZE,
+        category: route.params.categoryId,
+    })
+    const { total, articles } = data
+    articleList.value = [...articleList.value, ...articles]
+    page.value = page.value + 1
+    loading.value = false
+    if (page.value * PAGE_SIZE > total) {
+        noMoreData.value = true
+    }
+}
+
+onUnmounted(() => {
+    if (observer) {
+        observer.disconnect()
+    }
+    clearTimeout(debounceTimer) // 清理定时器
+})
+</script>
+<style scoped lang="less">
+/* 没有更多数据样式 */
+.no-more {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    font-size: 14px;
+    position: relative;
+}
+
+.no-more::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #eee;
+    z-index: -1;
+}
+</style>
