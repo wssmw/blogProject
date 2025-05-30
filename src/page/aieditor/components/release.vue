@@ -55,7 +55,7 @@
 </template>
 <script setup>
 import { onMounted, reactive, ref } from 'vue'
-import { createArticleRequest } from '../../../api/module/articles'
+import { createArticleRequest, draftPublishRequest } from '../../../api/module/articles'
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import { getTagListRequest } from '../../../api/module/tags'
@@ -66,7 +66,12 @@ const prop = defineProps({
     data: {
         type: Object,
     },
+    draftInfo: {
+        type: Object,
+    },
 })
+const emit = defineEmits(['resetHandle'])
+
 const router = useRouter()
 const tagsList = ref()
 const store = appStore()
@@ -118,10 +123,20 @@ const releaseSubmitHandle = async () => {
         category: formData.category,
         cover_url: formData.cover_url,
     }
-    console.log(params)
-    const result = await createArticleRequest(params)
+    console.log(prop.draftInfo, 'draftInfo')
+    if (prop.draftInfo.id) {
+        params.id = prop.draftInfo.id
+    }
+    console.log(params, 'params')
+    let result
+    if (params.id) {
+        result = await draftPublishRequest(params)
+    } else {
+        result = await createArticleRequest(params)
+    }
     let { success, message } = result
     if (success) {
+        emit('resetHandle')
         ElMessage.success(message)
         router.replace('/')
     } else {

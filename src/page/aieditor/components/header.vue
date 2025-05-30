@@ -1,6 +1,13 @@
 <template>
     <div class="header">
-        <el-input v-model="articleTitle" show-word-limit placeholder="请输入文章标题" maxlength="120" size="large">
+        <el-input
+            v-model="articleTitle"
+            @input="titleChangeHandle"
+            show-word-limit
+            placeholder="请输入文章标题"
+            maxlength="120"
+            size="large"
+        >
         </el-input>
         <el-dropdown trigger="click">
             <el-button class="drafts"> 草稿箱 </el-button>
@@ -52,9 +59,14 @@ import { appStore } from '../../../store/module/app'
 import { draftListRequest, draftDeleteRequest } from '@/api/module/articles.js'
 
 const props = defineProps(['content'])
-const emit = defineEmits(['releaseHandle', 'recurrentDraft'])
+const emit = defineEmits(['titleChangeHandle', 'releaseHandle', 'recurrentDraft'])
 const store = appStore()
 const articleTitle = ref()
+
+const titleChangeHandle = () => {
+    emit('titleChangeHandle', articleTitle.value)
+}
+
 const releaseHandle = () => {
     console.log(props.content)
     if (!articleTitle.value) {

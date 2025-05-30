@@ -37,21 +37,18 @@
                     </template>
                 </el-input>
             </div>
-            <el-dropdown
-                v-if="store.windowInnerWidth > 700"
-                class="ml-4 min-w-[141px]"
-                size="large"
-                split-button
-                type="primary"
-            >
-                创造者中心
+            <el-dropdown v-if="store.windowInnerWidth > 700" class="ml-4" size="large" type="primary">
+                <img class="w-7 h-7" src="@/assets/svg/yly_编辑.svg" alt="" />
                 <template #dropdown>
                     <el-dropdown-menu>
                         <el-dropdown-item @click="jumpToEditor">
                             <img class="w-5 h-5" src="@/assets/svg/用研.svg" alt="" />
                             写文章
                         </el-dropdown-item>
-                        <el-dropdown-item>记录文言</el-dropdown-item>
+                        <el-dropdown-item @click="jumpToNotes">
+                            <img class="w-5 h-5" src="@/assets/svg/小记.svg" alt="" />
+                            小记
+                        </el-dropdown-item>
                     </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -272,6 +269,9 @@ const jumpToEditor = () => {
         ElMessage.warning('请先登录')
         store.showLoginModalChange(true)
     }
+}
+const jumpToNotes = () => {
+    router.push('/notes')
 }
 
 const loginHandle = () => {
