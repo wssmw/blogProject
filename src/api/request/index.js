@@ -1,8 +1,8 @@
 import axios from 'axios'
-
+import { refreshTokenRequest } from '@/api/module/login'
 import { ElLoading } from 'element-plus'
 import { appStore } from '@/store/module/app'
-
+import { getLocalStorage, setLocalStorage } from '@/utils/index'
 const DEAFULT_LOADING = false
 
 class WsRequest {
@@ -28,8 +28,11 @@ class WsRequest {
                     })
                 }
                 let store = appStore()
-                if (store.token) {
+                if (store.token && !config?.data?.refreshToken) {
                     config.headers.Authorization = `Bearer ${store.token}`
+                } else if (config?.data?.refreshToken) {
+                    config.headers.Authorization = `Bearer ${config.data.refreshToken}`
+                    delete config.data.refreshToken
                 }
                 // let token = (getSessionStorage('App') || {}).token
                 // if (token) {
@@ -41,7 +44,38 @@ class WsRequest {
             },
         )
         this.instance.interceptors.response.use(
-            response => {
+            async response => {
+                if (response.data.code === '410') {
+                    // 刷新token
+                    try {
+                        const refreshToken = getLocalStorage('refreshToken')
+                        console.log(refreshToken, 'refreshToken')
+                        // 尝试刷新token，将refreshToken放在header中
+                        const res = await refreshTokenRequest({
+                            refreshToken,
+                        })
+                        const { token, refreshToken: newRefreshToken } = res.data
+                        // 更新token
+                        setLocalStorage('accessToken', token)
+                        setLocalStorage('refreshToken', newRefreshToken)
+
+                        // 更新store中的token
+                        const store = appStore()
+                        store.tokenChange(token)
+
+                        // 重试原请求
+                        response.config.headers.Authorization = `Bearer ${token}`
+                        return this.request(response.config)
+                    } catch (error) {
+                        console.error('刷新token失败:', error)
+                    }
+                } else if (response.data.code === '411') {
+                    // 刷新令牌已过期，请重新登录
+                    const store = appStore()
+                    store.isLoginChange(false)
+                    store.userInfoChange({})
+                    store.tokenChange('')
+                }
                 this.loading?.close()
                 return response.data
             },

@@ -164,6 +164,8 @@ import { useRouter } from 'vue-router'
 import { appStore } from '../../store/module/app'
 import { computed, ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
+import { logoutRequest } from '../../api/module/login'
+import { setLocalStorage, getLocalStorage } from '../../utils'
 
 const router = useRouter()
 const store = appStore()
@@ -283,6 +285,10 @@ const logOutHandle = () => {
     console.log(store)
     store.userInfoChange({})
     store.tokenChange('')
+    logoutRequest({ refreshToken: getLocalStorage('refreshToken') })
+    setLocalStorage('accessToken', '')
+    setLocalStorage('refreshToken', '')
+    store.isLoginChange(false)
 }
 const popover = ref()
 

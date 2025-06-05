@@ -36,6 +36,7 @@ import { loginRequest, registerRequest } from '../../api/module/login'
 import { appStore } from '../../store/module/app'
 import { useSocket } from '../../hooks/useSorket'
 import { getUserInfoRequest } from '../../api/module/user'
+import { setLocalStorage } from '../../utils'
 const store = appStore()
 
 const dialogTitle = ref('登录')
@@ -79,9 +80,12 @@ const loginHandle = async () => {
     console.log(res, 'test')
     if (res.success) {
         let { data } = res
-        let { token, userInfo } = data
+        let { token, refreshToken, userInfo } = data
         const result = await getUserInfoRequest(userInfo.id)
-        store.tokenChange(token)
+        // 存储双token
+        setLocalStorage('accessToken', token)
+        setLocalStorage('refreshToken', refreshToken)
+        store.tokenChange(token) // 更新store中的token
         store.userInfoChange({ ...userInfo, ...result.data })
         ElMessage.success('登录成功~')
         store.showLoginModalChange(false)

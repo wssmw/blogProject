@@ -26,3 +26,17 @@ export const loginRequest = async data => {
         data,
     })
 }
+// 刷新登录
+export const refreshTokenRequest = async data => {
+    return wsRequest.post({
+        url: '/refresh-token',
+        data,
+    })
+}
+// 登出接口
+export const logoutRequest = async data => {
+    return wsRequest.post({
+        url: '/logout',
+        data,
+    })
+}

@@ -1,8 +1,19 @@
+import { isObject } from './typeUtil'
 export const setLocalStorage = (key, item) => {
-    localStorage.setItem(key, JSON.stringify(item))
+    if (!isObject(item)) {
+        localStorage.setItem(key, item)
+    } else {
+        localStorage.setItem(key, JSON.stringify(item))
+    }
 }
 export const getLocalStorage = key => {
-    return JSON.parse(localStorage.getItem(key))
+    const item = localStorage.getItem(key)
+    console.log(item, 'item')
+    if (!isObject(item)) {
+        return item
+    } else {
+        return JSON.parse(localStorage.getItem(key))
+    }
 }
 export const getSessionStorage = key => {
     return JSON.parse(sessionStorage.getItem(key))
@@ -65,4 +76,3 @@ export const getWeek = date => {
     const week = ['日', '一', '二', '三', '四', '五', '六']
     return `周${week[new Date(date).getDay()]}`
 }
-
