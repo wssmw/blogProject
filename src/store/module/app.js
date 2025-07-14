@@ -51,6 +51,12 @@ export const appStore = defineStore(
         const newsNumObjChange = e => {
             newsNumObj.value = e
         }
+
+        // 主题色
+        const theme = ref(localStorage.getItem('theme') || 'light')
+        const themeChange = (e) => {
+            theme.value = e
+        }
         return {
             windowScrollY,
             windowScrollYChange,
@@ -66,6 +72,8 @@ export const appStore = defineStore(
             showLoginModalChange,
             newsNumObj,
             newsNumObjChange,
+            theme,
+            themeChange
         }
     },
     {

@@ -18,7 +18,7 @@ body {
     /*把主体设为统一格式*/
     font-size: 12px;
     font-family: '微软雅黑';
-    color: #716f70;
+    color: var(--theme-color);
 }
 a {
     /*改变a链接的默认格式，颜色和下划线*/

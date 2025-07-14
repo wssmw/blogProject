@@ -102,6 +102,14 @@
                     </el-dropdown>
                 </el-badge>
             </div>
+            <el-switch class="mr-4" v-model="theme" @change="changeTheme" active-value="dark" inactive-value="light">
+                <template #active-action>
+                    <el-icon><Moon /></el-icon>
+                </template>
+                <template #inactive-action>
+                    <el-icon><Sunny /></el-icon>
+                </template>
+            </el-switch>
             <div class="w-[50px]">
                 <el-avatar :size="40" class="cursor-pointer" v-if="!store.isLogin" @click="loginHandle">
                     登录
@@ -274,6 +282,11 @@ const jumpToEditor = () => {
 }
 const jumpToNotes = () => {
     router.push('/notes')
+}
+
+let theme = ref(store.theme)
+const changeTheme = () => {
+    document.documentElement.classList.toggle('dark')
 }
 
 const loginHandle = () => {
