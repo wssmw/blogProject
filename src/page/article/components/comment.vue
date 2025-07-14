@@ -64,13 +64,13 @@ const loginHandle = () => {
 <style scoped lang="less">
 .comment {
     margin-top: 16px;
-    background: white;
+    background: var(--theme-sec-background);
     border-radius: 6px;
     padding: 20px;
     .title {
         font-size: 18px;
         font-weight: 600;
-        color: black;
+        color: var(--theme-color);
         margin-bottom: 16px;
     }
     .create_comment {
@@ -114,7 +114,7 @@ const loginHandle = () => {
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #f2f3f5;
+            background-color: var(--theme-background);
             border-radius: 4px;
             .btn {
                 margin: 40px 0;

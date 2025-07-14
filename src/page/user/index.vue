@@ -168,7 +168,7 @@ const followHandle = async () => {
             display: flex;
             align-items: center;
             padding: 20px;
-            background: white;
+            background: var(--theme-sec-background);
             border-radius: 4px;
 
             .user_info_left {
@@ -189,7 +189,7 @@ const followHandle = async () => {
                 .nickname {
                     font-size: 20px;
                     font-weight: 600;
-                    color: black;
+                    color: var(--theme-color);
                 }
             }
             .user_info_right {
@@ -200,7 +200,7 @@ const followHandle = async () => {
         }
         .tabs {
             margin-top: 20px;
-            background: white;
+            background: var(--theme-sec-background);
             border-radius: 4px;
             padding: 20px;
         }
@@ -209,12 +209,12 @@ const followHandle = async () => {
         width: 16.6%;
         .achievement {
             padding: 20px;
-            background: white;
+            background: var(--theme-sec-background);
             border-radius: 4px;
             .title {
                 font-size: 16px;
                 font-weight: 600;
-                color: #31445b;
+                color: var(--theme-color);
             }
             .item {
                 display: flex;
@@ -222,7 +222,7 @@ const followHandle = async () => {
                 margin: 10px 0;
                 .desc {
                     margin: 0 10px;
-                    color: #5a5e66;
+                    color: var(--theme-color);
                     font-size: 14px;
                 }
             }
@@ -230,7 +230,7 @@ const followHandle = async () => {
         .follow {
             padding: 20px;
             margin-top: 20px;
-            background: white;
+            background: var(--theme-sec-background);
             border-radius: 4px;
             display: flex;
             font-size: 16px;

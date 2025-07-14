@@ -102,7 +102,7 @@
                     </el-dropdown>
                 </el-badge>
             </div>
-            <el-switch class="mr-4" v-model="theme" @change="changeTheme" active-value="dark" inactive-value="light">
+            <el-switch class="mr-4" v-model="theme" @change="changeTheme" inactive-value="light" active-value="dark">
                 <template #active-action>
                     <el-icon><Moon /></el-icon>
                 </template>
@@ -123,7 +123,7 @@
                             alt="头像"
                         />
                     </template>
-                    <div class="p-2 flex flex-col items-center bg-white rounded-md relative">
+                    <div class="p-2 flex flex-col items-center bg-bgSec rounded-md relative">
                         <div class="flex justify-start w-full items-center">
                             <img
                                 class="cursor-pointer rounded-full"
@@ -284,11 +284,20 @@ const jumpToNotes = () => {
     router.push('/notes')
 }
 
-let theme = ref(store.theme)
-const changeTheme = () => {
-    document.documentElement.classList.toggle('dark')
+let theme = computed(() => store.theme)
+
+if (theme.value === 'dark') {
+    document.documentElement.classList.add('dark')
 }
 
+const changeTheme = () => {
+    document.documentElement.classList.toggle('dark')
+    let obj = {
+        dark: 'light',
+        light: 'dark',
+    }
+    store.themeChange(obj[theme.value])
+}
 const loginHandle = () => {
     store.showLoginModalChange(true)
 }

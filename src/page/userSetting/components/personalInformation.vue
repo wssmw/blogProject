@@ -144,7 +144,7 @@ const submitHandle = () => {
         .title {
             font-size: 22px;
             font-weight: bold;
-            color: black;
+            color: var(--theme-color);
         }
     }
     .right {
@@ -165,7 +165,7 @@ const submitHandle = () => {
                     height: 80px;
                     border-radius: 50%;
                     background: rgba(29, 33, 41, 0.5);
-                    color: white;
+                    color: var(--theme-color);
                     .icon {
                         margin-bottom: 4px;
                     }

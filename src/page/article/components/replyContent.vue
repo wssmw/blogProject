@@ -112,7 +112,7 @@ const submitCommentHandle = async () => {
         margin-top: 8px;
         flex-grow: 1;
         position: relative;
-        border: 2px solid #f2f3f5;
+        border: 2px solid var(--theme-background);
         border-radius: 4px;
         :deep(.el-textarea__inner) {
             border: none;

@@ -255,7 +255,7 @@ const jumpToOutstation = url => {
     display: flex;
     height: calc(100vh - 60px);
     width: 1260px;
-    background-color: #fff;
+    background: var(--theme-sec-background);
     .menu-sidebar {
         width: 200px;
         height: 100%;
@@ -285,7 +285,7 @@ const jumpToOutstation = url => {
             position: sticky;
             top: 0;
             padding: 20px;
-            background-color: #fff;
+            background: var(--theme-sec-background);
             z-index: 1;
             border-bottom: 1px solid #e6e6e6;
 

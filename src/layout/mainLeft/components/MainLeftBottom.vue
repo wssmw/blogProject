@@ -1,5 +1,5 @@
 <template>
-    <div class="main_left_bootom bg-white rounded-md p-3">
+    <div class="main_left_bootom bg-bgSec rounded-md p-3">
         <div class="text-base">热门分类</div>
         <el-divider class="divider"></el-divider>
         <div class="content">

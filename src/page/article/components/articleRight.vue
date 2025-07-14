@@ -5,7 +5,7 @@
                 <div class="avatar">
                     <img class="img" :src="userInfo.avatar_url" alt="" />
                 </div>
-                <div class="avatar_name">名字</div>
+                <div class="avatar_name">{{ userInfo.username }}</div>
             </div>
             <div class="mid">
                 <div class="item">
@@ -94,7 +94,7 @@ watch(
     position: fixed;
     .author {
         padding: 20px;
-        background: white;
+        background: var(--theme-sec-background);
         border-radius: 6px;
         .top {
             display: flex;
@@ -145,7 +145,7 @@ watch(
     .toc {
         margin-top: 20px;
         padding: 20px;
-        background: white;
+        background: var(--theme-sec-background);
     }
 }
 </style>

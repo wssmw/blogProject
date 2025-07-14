@@ -58,7 +58,7 @@ watch(
     display: flex;
     margin: 20px;
     padding: 20px;
-    background-color: #fff;
+    background-color: var(--theme-sec-background);
     .tabs {
         width: 100%;
     }

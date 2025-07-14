@@ -56,6 +56,7 @@ export const appStore = defineStore(
         const theme = ref(localStorage.getItem('theme') || 'light')
         const themeChange = (e) => {
             theme.value = e
+            localStorage.setItem('theme', e)
         }
         return {
             windowScrollY,

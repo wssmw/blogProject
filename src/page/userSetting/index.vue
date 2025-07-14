@@ -33,19 +33,19 @@ const backToUser = () => {
 </script>
 <style scoped lang="less">
 .userSetting {
-    margin: 0 auto ;
+    margin: 0 auto;
     width: 1080px;
     display: flex;
     justify-content: center;
     flex-direction: column;
     padding: 20px;
     .backToUser {
-        background-color: white;
+        background-color: var(--theme-sec-background);
         padding: 10px;
     }
     .content {
         margin-top: 20px;
-        background-color: white;
+        background-color: var(--theme-sec-background);
         padding: 20px;
     }
 }

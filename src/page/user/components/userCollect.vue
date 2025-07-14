@@ -111,7 +111,7 @@ const deleteHandle = async item => {
                     }
                     .name {
                         margin-left: 20px;
-                        color: #2f3542;
+                        color: var(--theme-color);
                         font-size: 18px;
                     }
                 }

@@ -10,6 +10,7 @@
             class="md-editor"
             v-model="data.html"
             :mdHeadingId="mdHeadingId"
+            :theme="theme"
             @onUploadImg="onUploadImg"
         ></MdEditor>
         <el-dialog title="文章发布" v-model="showDialog">
@@ -23,10 +24,16 @@ import Header from './components/header.vue'
 import { MdEditor } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
 
-import { onBeforeUnmount, reactive, ref } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref } from 'vue'
 import Release from './components/release.vue'
 import { ElMessage } from 'element-plus'
 import { articleUploadRequest, draftSaveRequest } from '../../api/module/articles'
+
+import { appStore } from '../../store/module/app'
+
+const store = appStore()
+
+const theme = computed(() => store.theme)
 
 const onUploadImg = async (files, callback) => {
     const res = await Promise.all(

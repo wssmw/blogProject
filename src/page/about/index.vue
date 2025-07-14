@@ -80,20 +80,20 @@ onMounted(async () => {
     width: 848px;
     padding: 20px;
     margin: auto;
-    background: white;
+    background: var(--theme-sec-background);
     border-radius: 4px;
     margin-top: 20px;
     .about_title {
         font-size: 30px;
         font-weight: 700;
         line-height: 46px;
-        color: black;
+        color: var(--theme-color);
         text-align: center;
     }
     .title {
         font-size: 16px;
         font-weight: bold;
-        color: #303133;
+        color: var(--theme-color);
         margin-top: 10px;
     }
     .descriptions {
@@ -102,7 +102,7 @@ onMounted(async () => {
     .timeline {
         margin-top: 20px;
         .commit-card {
-            background-color: #fff;
+            background: var(--theme-sec-background);
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             padding: 16px;

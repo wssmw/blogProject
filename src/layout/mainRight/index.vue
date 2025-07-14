@@ -11,13 +11,13 @@
         </div>
         <div
             v-if="!isLogin"
-            class="p-4 flex flex-col items-center cursor-pointer bg-white mt-4 rounded-md"
+            class="p-4 flex flex-col items-center cursor-pointer bg-bgSec mt-4 rounded-md"
             @click="loginHandle"
         >
             <el-icon size="40"><User /></el-icon>
             <div class="text-base">登录</div>
         </div>
-        <div v-else class="p-4 flex flex-col items-center bg-white mt-4 rounded-md relative">
+        <div v-else class="p-4 flex flex-col items-center bg-bgSec mt-4 rounded-md relative">
             <div class="flex justify-start w-full items-center">
                 <img class="w-10 h-10 rounded-full" :src="userInfo.avatar_url" alt="" />
                 <div class="ml-3 flex flex-col justify-between">
@@ -48,7 +48,7 @@
             <div class="yellow"></div>
             <div class="blue"></div>
         </div>
-        <div :style="fixedStyle" class="p-4 bg-white mt-4 rounded-md">
+        <div :style="fixedStyle" class="p-4 bg-bgSec mt-4 rounded-md">
             <div class="flex justify-between mb-4">
                 <div class="text-base">精选文章</div>
                 <div class="flex items-center cursor-pointer">

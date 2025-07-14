@@ -3,7 +3,7 @@
         <el-aside class="mx-4" width="60px">
             <ArticleLeft :data="data"></ArticleLeft>
         </el-aside>
-        <div class="w-[760px] bg-white rounded-md">
+        <div class="w-[760px] bg-bgSec rounded-md">
             <div class="article_content">
                 <h1 class="title">{{ data.title }}</h1>
                 <div class="message">
@@ -57,12 +57,12 @@ const renderCompleted = () => {
     padding-bottom: 40px;
     .article_content {
         width: 760px;
-        background: white;
+        background: var(--theme-sec-background);
         border-radius: 6px;
         padding: 20px;
         .title {
             font-size: 36px;
-            color: black;
+            color: var(--theme-color);
             font-weight: 600;
         }
         .message {
@@ -70,10 +70,10 @@ const renderCompleted = () => {
             font-size: 14px;
             margin: 16px 0;
             padding: 10px;
-            background-color: #f6f7f7;
+            background: var(--theme-sec-background);
             border-radius: 4px;
             .author {
-                color: black;
+                color: var(--theme-color);
             }
             .createTime,
             .view,

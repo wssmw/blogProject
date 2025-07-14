@@ -179,7 +179,7 @@ watch(
         width: 48px;
         height: 48px;
         border-radius: 50%;
-        background: white;
+        background: var(--theme-sec-background);
         box-shadow: 0 2px 4px 0 rgba(50, 50, 50, 0.04);
         cursor: pointer;
         .img {

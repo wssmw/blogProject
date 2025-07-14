@@ -112,7 +112,7 @@ const confirmHandle = async () => {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-    background: white;
+    background: var(--theme-sec-background);
     border-radius: 4px;
     .drafts {
         margin: 0 10px;

@@ -97,7 +97,7 @@ const submitHandle = () => {
     .title {
         font-size: 22px;
         font-weight: bold;
-        color: black;
+        color: var(--theme-color);
     }
 }
 </style>

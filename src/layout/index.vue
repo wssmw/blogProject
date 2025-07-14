@@ -51,7 +51,7 @@ checkCallback()
             <div
                 ref="headerRef"
                 :style="headerStyle"
-                class="header fixed right-0 z-50 w-full h-[60px] flex justify-center bg-white"
+                class="header fixed right-0 z-50 w-full h-[60px] flex justify-center bg-bgSec"
             >
                 <Header></Header>
             </div>
@@ -61,7 +61,7 @@ checkCallback()
                 <MainLeft :style="headerStyle"></MainLeft>
             </el-aside>
             <div>
-                <el-main class="w-[760px] bg-white rounded-md">
+                <el-main class="w-[760px] bg-bgSec rounded-md">
                     <router-view></router-view>
                 </el-main>
             </div>
@@ -78,7 +78,7 @@ checkCallback()
 .layout {
     min-width: 1260px;
     min-height: 100vh;
-    background: #f2f3f5;
+    background: var(--theme-background);
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -72,7 +72,7 @@
                 </div>
             </div>
             <!-- 编辑区 -->
-            <MdEditor v-model="editNote.content" placeholder="在此输入您的小记..." class="editor" />
+            <MdEditor v-model="editNote.content" :theme="theme" placeholder="在此输入您的小记..." class="editor" />
         </div>
     </div>
     <el-empty v-else>
@@ -101,6 +101,8 @@ import { appStore } from '../../store/module/app'
 const store = appStore()
 
 const isLogin = computed(() => store.isLogin)
+
+const theme = computed(() => store.theme)
 
 const editNote = ref({})
 
@@ -312,7 +314,7 @@ const deleteNote = id => {
     flex-direction: column;
     padding: 20px;
     margin: auto;
-    background: white;
+    background: var(--theme-sec-background);
     border-radius: 4px;
     margin-top: 20px;
     .header {
@@ -320,7 +322,7 @@ const deleteNote = id => {
         align-items: center;
         justify-content: space-between;
         padding: 1rem 1.5rem;
-        background-color: white;
+        background: var(--theme-sec-background);
         .left {
             display: flex;
             align-items: center;
@@ -345,7 +347,7 @@ const deleteNote = id => {
 
         .notes-list {
             width: 20%;
-            background-color: white;
+            background: var(--theme-sec-background);
             border-right: 1px solid #e5e7eb;
             padding: 0 1.5rem;
             display: flex;
@@ -419,7 +421,7 @@ const deleteNote = id => {
             flex: 1;
             border: 1px solid #93c5fd;
             border-radius: 0.375rem;
-            background-color: white;
+            background: var(--theme-sec-background);
             min-height: 400px;
         }
     }

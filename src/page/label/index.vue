@@ -65,7 +65,7 @@ const followTagHandle = async data => {
         display: flex;
         align-items: center;
         margin: 0 20px;
-        background-color: white;
+        background-color: var(--theme-sec-background);
         .svg {
             width: 48px;
             height: 48px;
