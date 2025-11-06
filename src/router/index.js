@@ -24,6 +24,12 @@ const router = createRouter({
             name: 'notes',
             component: () => import('@/page/notes/index.vue'),
         },
+        // ai
+        {
+            path: '/ai',
+            name: 'ai',
+            component: () => import('@/page/ai/index.vue'),
+        },
         // 工具箱
         {
             path: '/toolbox',
