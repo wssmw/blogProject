@@ -27,7 +27,7 @@
                 </el-menu-item>
                 <el-menu-item index="5" route="/about">关于本网站</el-menu-item>
                 <el-menu-item index="6" route="/friendChain">友链</el-menu-item>
-                <el-menu-item index="6" route="/ai">AI</el-menu-item>
+                <el-menu-item index="7" route="/ai">AI</el-menu-item>
             </el-menu>
         </div>
         <div class="flex items-center justify-around">
