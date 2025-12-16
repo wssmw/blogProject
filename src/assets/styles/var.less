@@ -1,24 +1,32 @@
-@light-color:  #716f70;
+@light-color: #716f70;
 @light-primary: #1e80ff;
 @light-bg: #f2f3f5;
 @light-sec-bg: #fff;
+@heightlight-bg: #f7f8fa;
+@border-color: #ced4da;
 
-@dark-color: #e5eaf3;
-@dark-primary: #3a8cff;
-@dark-bg: #18181c;
-@dark-sec-bg: #232324;
+@dark-color: #e0e6ef;
+@dark-primary: #4da6ff;
+@dark-bg: rgb(22, 22, 22);
+@dark-sec-bg: rgb(41, 41, 41);
+@dark-heightlight-bg: rgb(58, 58, 58);
+@dark-border-color: #33373f;
 
 :root {
     /* 主题文字颜色 */
     --theme-color: @light-color;
-    /* 主题文字强调色 */
+    /* 主题文字强调色 高亮文字颜色 */
     --theme-primary-color: @light-primary;
     /* 主题背景颜色 */
     --theme-background: @light-bg;
     /* 次要背景色 */
     --theme-sec-background: @light-sec-bg;
+    // 高亮背景颜色
+    --theme-highlight-bg: @heightlight-bg;
+    // 边框颜色
+    --theme-border-color: @border-color;
 }
-.dark {
+html.dark {
     /* 主题文字颜色 */
     --theme-color: @dark-color;
     /* 主题文字强调色 */
@@ -27,4 +35,8 @@
     --theme-background: @dark-bg;
     /* 次要背景色 */
     --theme-sec-background: @dark-sec-bg;
+    // 高亮色
+    --theme-highlight-bg: @dark-heightlight-bg;
+    // 边框颜色
+    --theme-border-color: @dark-border-color;
 }

@@ -1,6 +1,6 @@
 <template>
     <div
-        class="cursor-pointer flex justify-between items-center w-full h-[100px] border-b border-solid"
+        class="cursor-pointer px-5 flex justify-between items-center w-full h-[100px] border-b border-base border-solid hover:bg-heightLightbg"
         @click="clickHandle(articleItem)"
     >
         <div class="flex flex-1 flex-col justify-between h-[78px] overflow-hidden">

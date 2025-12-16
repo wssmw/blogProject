@@ -44,7 +44,7 @@
                         {{ item.name }}
                     </div>
                 </template>
-                <a class="text-sky-300" :href="item.url">{{ item.url }}</a>
+                <a class="text-theme" :href="item.url">{{ item.url }}</a>
             </el-descriptions-item>
         </el-descriptions>
     </div>
@@ -117,7 +117,6 @@ onMounted(async () => {
         .commit-author {
             display: flex;
             align-items: center;
-            justify-content: center;
             margin-bottom: 12px;
         }
 
@@ -136,24 +135,24 @@ onMounted(async () => {
         .author-name {
             font-size: 14px;
             font-weight: 600;
-            color: #333;
+            color: var(--theme-color);
         }
 
         .commit-date {
             font-size: 12px;
-            color: #666;
+            color: var(--theme-color);
         }
 
         .commit-message {
             font-size: 14px;
-            color: #444;
+            color: var(--theme-color);
             margin-bottom: 12px;
         }
 
         .commit-link {
             display: inline-block;
             font-size: 12px;
-            color: #1890ff;
+            color: var(--theme-primary-color);
             text-decoration: none;
             transition: color 0.3s ease;
         }

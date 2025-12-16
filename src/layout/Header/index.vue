@@ -149,7 +149,7 @@
                         <div class="flex flex-wrap">
                             <template v-for="item in data" :key="item.title">
                                 <div
-                                    class="w-2/4 flex justify-center cursor-pointer my-1 py-2 rounded hover:bg-slate-100"
+                                    class="w-2/4 flex justify-center cursor-pointer my-1 py-2 rounded hover:bg-heightLightbg"
                                     @click="clickHandle()"
                                 >
                                     <!-- <img class="w-5 h-5 mr-2" src="@/assets/svg/关于.svg" alt="" /> -->

@@ -61,7 +61,7 @@ checkCallback()
                 <MainLeft :style="headerStyle"></MainLeft>
             </el-aside>
             <div>
-                <el-main class="w-[760px] bg-bgSec rounded-md">
+                <el-main class="w-[760px] bg-bgSec rounded-md !p-0">
                     <router-view></router-view>
                 </el-main>
             </div>
@@ -76,7 +76,7 @@ checkCallback()
 </template>
 <style scoped lang="less">
 .layout {
-    min-width: 1260px;
+    min-width: 1100px;
     min-height: 100vh;
     background: var(--theme-background);
     display: flex;

@@ -61,7 +61,7 @@ const followTagHandle = async data => {
     .item {
         padding: 20px;
         border-radius: 6px;
-        border: 1px solid #e2e2e5;
+        border: 1px solid var(--theme-border-color);
         display: flex;
         align-items: center;
         margin: 0 20px;

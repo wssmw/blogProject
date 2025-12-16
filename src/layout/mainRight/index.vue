@@ -2,7 +2,7 @@
     <div>
         <div class="flex p-4 items-center bg-[#95E1D3] bg-opacity-20 justify-between rounded-md">
             <div class="flex flex-col">
-                <div class="mb-1 text-base font-medium text-black">晚上好</div>
+                <div class="mb-1 text-base font-medium text-[]">晚上好</div>
                 <div>点亮在拾光的每一天</div>
             </div>
             <div class="">
@@ -58,10 +58,7 @@
             </div>
             <div class="content">
                 <template v-for="item in hotData" :key="item.id">
-                    <div
-                        class="flex items-center my-4 cursor-pointer hover:text-indigo-500"
-                        @click="articleHandle(item)"
-                    >
+                    <div class="flex items-center pl-4 py-4 cursor-pointer rounded-[5px] hover:text-secPrimary hover:bg-heightLightbg" @click="articleHandle(item)">
                         <div class="border-solid border-2 border-indigo-500 h-5 mr-2"></div>
                         <div class="text-base overflow-hidden w-full">{{ item.title }}</div>
                     </div>

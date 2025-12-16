@@ -195,7 +195,7 @@ const handleSearchInput = () => {
     }
 
     // 搜索匹配项
-    matchedItems.value = tools.reduce((acc, category) => {
+    matchedItems.value = tools.value.reduce((acc, category) => {
         const matchedTools = category.items
             .filter(
                 tool =>
@@ -259,7 +259,7 @@ const jumpToOutstation = url => {
     .menu-sidebar {
         width: 200px;
         height: 100%;
-        border-right: 1px solid #e6e6e6;
+        border-right: 1px solid var(--theme-border-color);
         position: sticky;
         top: 0;
         overflow-y: auto;
@@ -287,7 +287,7 @@ const jumpToOutstation = url => {
             padding: 20px;
             background: var(--theme-sec-background);
             z-index: 1;
-            border-bottom: 1px solid #e6e6e6;
+            border-bottom: 1px solid var(--theme-border-color);
 
             // 添加下拉框样式
             .search-dropdown {

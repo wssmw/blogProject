@@ -54,13 +54,13 @@ const changeRouter = route => {
         border-radius: 5px;
         cursor: pointer;
         &:hover {
-            background: #f7f8fa;
-            color: #1e80ff;
+            background: var(--theme-highlight-bg);
+            color: var(--theme-primary-color);
         }
     }
 }
 .active {
-    background-color: #eaf2ff !important;
-    color: #1e80ff;
+    background-color: var(--theme-highlight-bg) !important;
+    color: var(--theme-primary-color);
 }
 </style>
