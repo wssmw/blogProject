@@ -11,6 +11,7 @@ import piniaPersist from 'pinia-plugin-persist'
 // 如果您正在使用CDN引入，请删除下面一行。
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import lazyload from './directives/lazyload'
+import { initPerformanceMonitor } from './utils/performanceMonitor'
 
 const pinia = createPinia()
 
@@ -23,5 +24,8 @@ pinia.use(piniaPersist)
 app.use(pinia)
 app.use(router)
 app.directive('lazy', lazyload)
+
+// 初始化性能监控（自动处理用户信息监听）
+initPerformanceMonitor()
 
 app.mount('#app')
